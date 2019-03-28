@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+    <meta content="minimal-ui" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <title>Translator | The New AUI</title>
+    <style>
+        .aui-start-screen {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 5;
+            background: white;
+        }
+
+        .aui-start-screen-logo {
+            position: absolute;
+            top: calc(50% - 50px);
+            display: block;
+            z-index: -1;
+            transform: translateY(-50%);
+            opacity: .2;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            font-family: "黑体" !important;
+            font-size: 150px;
+            font-weight: 200;
+            color: #0a0a0a;
+        }
+    </style>
+    <style id="bodyHidden">
+        body > div:not(.aui-start-screen) {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<!--导航栏 Start-->
+<div id="auiNavBar" class="aui-page-nav bottom">
+    <div class="aui-tabs-left-group" id="auiPageNav"></div>
+    <div class="aui-tabs-right-group" id="auiNavTabsRightGroup"></div>
+</div>
+<!--导航栏 End-->
+
+<!--主容器 Start-->
+<div id="auiPageCtn" class="aui-window-ctn"></div>
+
+<!--主容器 End-->
+
+
+<!--Start Screen Start-->
+<div id="auiStartScreen" class="aui-start-screen">
+    <h1 class="aui-start-screen-logo">国际化</h1>
+</div>
+<!--Start Screen End-->
+
+<!--脚本 Start-->
+<script>
+    window.auiApp = {
+        mode: 'translator',
+        version: 520000,
+        debug: true,
+        css: ['css/aui-viewer.css'],
+        layout: {
+            "panels": {
+                "auiConfigureDefFrame": {
+                    "desp": "配置定义",
+                    "display": "block",
+                    "icon": "aui-peizhidingyi",
+                    "role": "info",
+                    "iconList": [{
+                        "role": "maximization",
+                        "icon": "aui-quanping",
+                        "desp": "切换全屏"
+                    }]
+                },
+                "auiDevelopmentFrame": {
+                    "desp": "开发者中心",
+                    "display": "block",
+                    "icon": "aui-kaifazhezhongxin1",
+                    "role": "develop",
+                    "iconList": [{
+                        "role": "maximization",
+                        "icon": "aui-quanping",
+                        "desp": "切换全屏"
+                    }]
+                }
+            },
+            "groups": [{
+                "css": {"top": 0, "left": "56.728%", "height": "100%", "width": "43.077%", "zIndex": 0},
+                "content": ["auiDevelopmentFrame"],
+                "active": "auiDevelopmentFrame",
+                "id": "5F78F85BD16E2C036E03-D888",
+                "index": 0
+            }, {
+                "css": {"top": 0, "left": 0, "height": "99.761%", "width": "56.471%", "zIndex": 1},
+                "content": ["auiConfigureDefFrame"],
+                "active": "auiConfigureDefFrame",
+                "id": "530872603921F67F3AF4-E7E7",
+                "index": 1
+            }],
+            "classes": {"auiPageCtt": "aui-page-ctt"},
+            "version": 520002
+        },
+        nav: {
+            attr: [
+                {
+                    id: "auiNavRefreshModeBtn",
+                    title: '刷新',
+                    iconClass: 'aui-shuaxin'
+                },
+                /*{
+                 id: "auiDeBugModeBtn",
+                 title: '调试',
+                 iconClass: 'aui-tiaoshi'
+                 },*/
+                {
+                    id: "auiNavHelpModeBtn",
+                    title: '关闭帮助模式',
+                    iconClass: 'aui-kaiguan-kai'
+                },
+                {
+                    id: "auiNavResetLayoutBtn",
+                    title: '重置AWEB IDE前端编辑器面板布局',
+                    iconClass: 'aui-zhongzhimianbanbuju'
+                },
+                {
+                    id: "auiNavResetBtn",
+                    title: '清除內容（Alt+R）',
+                    iconClass: 'aui-neirongqingkong'
+                },
+                {
+                    id: "auiNavSaveBtn",
+                    title: '保存（Ctrl+S）',
+                    iconClass: 'aui-baocun'
+                }
+            ]
+        },
+        init: function () {
+            require.config({
+                //依赖定义
+                shim: {
+                    translator: {
+                        deps: ["index"]
+                    }
+                },
+                paths: {
+                    //此处为开发外部库文件
+                    translator: './script/spa/translator',
+                }
+            });
+
+
+            require(['translator'], function (translator) {
+
+                if (auiApp.debug) {
+                    window.TL = translator;
+                }
+
+                translator.init();
+            });
+        }
+    }
+</script>
+<script type="text/javascript" src="script/lib/require.js" data-main="bootloader"></script>
+<!--脚本 End-->
+</body>
+</html>

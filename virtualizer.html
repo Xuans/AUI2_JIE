@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+    <meta content="minimal-ui" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <title>Virtualizer | The New AUI</title>
+    <link type="text/css" href="./css/aui-virtualizer.css" rel="stylesheet"/>
+    <script src="./script/lib/require.js"></script>
+
+    <style>
+        .default-theme {
+            height: 100% !important;
+            overflow: auto !important;
+        }
+
+        .aui-start-screen {
+            position: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 5;
+            background: white;
+        }
+
+        .aui-start-screen-logo {
+            z-index: -1;
+            opacity: .2;
+            padding: 0;
+            color: #0a0a0a;
+            line-height: 2.5;
+            font-size: 50px;
+            font-family: "黑体" !important;
+            font-weight: 200;
+            text-rendering: optimizelegibility;
+            cursor: default;
+            display: flex; /*Flex布局*/
+            display: -webkit-flex; /* Safari */
+            align-items: center; /*指定垂直居中*/
+        }
+
+    </style>
+    <style id="bodyHidden">
+        body > div:not(.aui-start-screen) {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="default-theme">
+<div data-role="pageModule"></div>
+<!--Start Screen Start-->
+<div id="auiStartScreen" class="aui-start-screen">
+    <h1 class="aui-start-screen-logo">预览</h1>
+</div>
+<!--Start Screen End-->
+</body>
+
+
+<script>
+    (function (global) {
+        var
+            CONST = {
+                HEAD: {
+                    BODY_HIDDEN_SELECTOR: '#bodyHidden'
+                },
+                MODE: {
+                    VIEWER: 'viewer'
+                },
+                PAGE: {
+                    START_SCREEN_SELECTOR: '#auiStartScreen',
+                    PAGE_CSS: 'AWEB/css/aweb.page.css'
+                },
+                ACTIVE: 'aui-virtualizer-active'
+            },
+            winParent = window.parent,
+            AUI = winParent.A,
+            dataModel = winParent.M;
+
+        require.config({
+            waitSeconds: 0,
+
+            paths: {
+                requireCss: "script/lib/require-css.min",
+                template: "script/lib/template",
+                codeCompile: "script/spa/codeCompile",
+                toolset: "script/spa/toolset",
+                'socket.io': "script/lib/socket.io",
+                jquery: "script/lib/jquery-1.9.1",
+                widget: (winParent.auiApp.isNewDir?winParent.external.staticTargetPath+'/':'')+'dependence/AWEB/js/aweb.widget',
+                api:( winParent.auiApp.isHttp?winParent.external.staticTargetPath+'/':'')+'dependence/AWEB/js/aweb.api',
+                uglifyjs: 'script/lib/uglifyjs',
+                const: 'script/spa/const',
+                apiApp: 'script/spa/api.app',
+                preview: 'script/spa/preview',
+                'Model.Data': 'script/spa/Model.Data',
+                'Model.Io': 'script/spa/Model.Io'
+            },
+            shim: {
+                codeCompile: {
+                    deps: ['requireCss']
+                }
+            },
+
+        });
+
+        require.onError = function (err) {
+            if (app && app.shelter) {
+                app.shelter.hideAll();
+            }
+            throw  err;
+        };
+
+
+        global.external = winParent.external;
+        global.app = {};
+        global.auiApp = {
+            mode: 'virtualizer',
+            version: 510000,
+            debug: true,
+            author: 'lijiancheng@agree.com.cn',
+            accumulator: 20,
+            dependence: (function () {
+                var map = {},
+                    requireConfig = {
+                        shim: {},
+                        paths: {}
+                    },
+                    _config,
+                    codeCompile,
+                    defer = [],
+                    loadedJSMap = {},
+                    jsLoadList = [],
+                    _dependence = function (deps, callback, context) {
+                        if (!_config) {
+                            defer.push(arguments);
+                        } else {
+                            var i, len, arr, name,
+                                j, config,
+
+                                isPath;
+                            if (deps) {
+                                if ((arr = deps.css) && (len = arr.length)) {
+                                    for (i = -1; ++i < len;) {
+
+                                        if (_config[arr[i]]) {
+
+                                            (function (cssItem) {
+
+
+
+                                                codeCompile.validateCss(cssItem, dataModel.get('dependence'), function () {
+
+                                                    codeCompile.requireCss(cssItem);
+
+                                                })
+                                            }(arr[i]));
+
+                                        }
+
+                                    }
+                                }
+                                if ((arr = deps.js) && (len = arr.length)) {
+                                    for (i = -1; ++i < len;) {
+
+
+                                        name = arr[i];
+
+                                        //将路径切换为名字
+                                        if (map[name] || map['dependence/' + name]) {
+
+                                            name = map[name] || map['dependence/' + name];
+
+                                        } else if (/[\\\/]/.test(name)) {
+                                            isPath = false;
+                                            config = _config;
+
+                                            for (j in config) {
+                                                if (config[j] && config[j].path && config[j].path.indexOf(name) !== -1) {
+                                                    name = map[name] = j;
+                                                    isPath = true;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (!isPath) {
+
+                                                name = 'dependence/' + name;
+
+                                                if (!/.js$/.test(name)) {
+                                                    name += '.js';
+                                                }
+                                            }
+
+                                            map[name] = name;
+                                        } else {
+                                            if (requireConfig.paths[name]) {
+                                                map[name] = name;
+                                            } else {
+                                                map[name] = '';
+                                                name = '';
+                                            }
+                                        }
+
+                                        if (!loadedJSMap[name]) {
+                                            jsLoadList.push(name);
+                                            loadedJSMap[name] = true;
+                                        }
+
+                                    }
+
+                                    if (jsLoadList && jsLoadList.length) {
+//                                        codeCompile.v
+                                        require(jsLoadList, function () {
+                                            var exportTo = context || window,
+                                                args = arguments,
+                                                _i, _item,
+                                                namespaces, obj;
+
+                                            //对外暴露接口
+                                            for (_i = jsLoadList.length; _item = jsLoadList[--_i];) {
+                                                if (requireConfig.shim[_item] && requireConfig.shim[_item].exports && args[_i]) {
+                                                    namespaces = requireConfig.shim[_item].exports.split('.');
+                                                    obj = exportTo;
+
+                                                    while (namespaces.length > 1) {
+                                                        obj = obj[namespaces[0]] || (obj[namespaces[0]] = {});
+                                                        namespaces.shift();
+                                                    }
+                                                    obj[namespaces[0]] = args[_i];
+                                                }
+                                            }
+
+                                            callback && callback();
+                                        });
+                                    } else {
+                                        callback && callback();
+                                    }
+                                } else {
+                                    callback && callback();
+                                }
+                            } else {
+                                callback && callback();
+                            }
+                        }
+                    };
+
+                require(['jquery', 'codeCompile', 'requireCss'], function ($, CodeCompile) {
+                    //  global.external = external;
+
+                    codeCompile = new CodeCompile(dataModel);
+                    AUI.getDependenceConfig(function (config) {
+                        var dependenceList = dataModel.get('dependence');
+                        if (!dependenceList || $.isEmptyObject(dependenceList)) {
+                            dataModel.set('dependence', config);
+                            //  AUI.data.dependence = config;
+                        }
+                        _config = config;
+                        var _i, _path;
+
+                        //将IDE配置转换为require config配置
+                        for (_i in config) {
+                            if (_i && config.hasOwnProperty(_i)) {
+                                if (config[_i].path) {
+                                    requireConfig.shim[_i] = {
+                                        deps: config[_i].deps,
+                                        exports: config[_i]["export"]   //IE 不兼容的问题
+                                    };
+
+                                    _path = config[_i].path;
+                                    requireConfig.paths[_i] = ~_path.indexOf('.js') ? _path.substring(0, _path.length - 3) : _path;
+                                } else if (_i.match(/\.css$/)) {
+
+                                }
+                            }
+                        }
+
+                        require.config(requireConfig);
+
+
+                        defer.map(function (args) {
+                            _dependence.apply(AUI, args);
+                        });
+                    });
+                });
+
+                return _dependence;
+            }()),
+            log: function (e) {
+                console.error(e);
+                if(e && e.message){
+                    window.parent.onerror.call(window.parent, e.message);
+                }
+
+            },
+
+            requirePageLess:function(callback){
+                var hasCss=false,i,item,
+                    structure=dataModel.get('structure')().get(),
+                    webContentPath= external.webContentPath,
+                    lessName=dataModel.get('pageModule')+'-'+dataModel.get('pageName')+'_'+dataModel.get('uuid')+'.css';
+
+                if(global.parent.auiApp.mode === CONST.MODE.VIEWER){
+                    lessName='index.layout.css';
+                }
+                for(i=-1;item=structure[++i];){
+                    if(item && item.css && item.css.cssCode){
+                        hasCss=true;
+                        break;
+                    }
+                }
+                if(hasCss){
+
+                     var currentHref;
+                       if(winParent.auiApp.isHttp){
+                         currentHref=external.staticTargetPath+'/dependence/css/'+lessName;
+                       }else{
+                         if(webContentPath){
+
+                           currentHref = webContentPath.replace('WebContent','WebRoot')+ '/dependence/css/'+lessName+'?cleverLijiancheng=' + new Date().getTime();
+                             }
+                        }
+                        require(['requireCss!' + currentHref], function () {
+                            callback && callback();
+                        })
+                }else{
+                    callback && callback();
+                }
+
+
+            },
+            WIDGET_EDITOR: {
+                widgetCreator: 'widgetCreator'
+            },
+            zoomOut: function ($elem, callback) {
+                $elem.addClass('hide').removeAttr('style');
+                callback && callback();
+            },
+            hideWelcomeScreen: function (callback) {
+
+                setTimeout(function () {
+                    $(CONST.HEAD.BODY_HIDDEN_SELECTOR, 'head').remove();
+                    global.auiApp.zoomOut($(CONST.PAGE.START_SCREEN_SELECTOR));
+
+                    callback && callback();
+                }, 200);
+            },
+            init: function (parent, parentAUI, $AW) {
+                var aweb, deps, _i, _item, js;
+
+                this.parent = parent;
+                this.AUI = parentAUI;
+                this.$AW = $AW;
+                aweb = global.aweb = this.aweb = parent.aweb;
+
+
+                aweb.stepTo = function (msg) {
+                    aweb._stepTo = msg;
+                };
+                aweb.exceptionHandler = function () {
+
+                    window.onerror = function () {
+                        aweb._stepTo && console.error('执行到"' + aweb._stepTo + '"报错。');
+
+                        if (window.parent.auiApp.mode in auiApp.WIDGET_EDITOR) {
+                            window.parent.onerror.apply(window.parent, arguments);
+                        } else {
+                            auiApp.log(arguments);
+                        }
+                    }
+                };
+
+                aweb.exceptionHandler();
+
+                define('index', function () {
+                    return parentAUI
+                });
+
+
+                this.nsl = dataModel.get('nslList');
+
+                deps = aweb.deps;
+
+                if (global.parent.auiApp.mode !== CONST.MODE.VIEWER && deps && (js = deps.js)) {
+                    for (_i = -1; _item = js[++_i];) {
+                        if (/^viewer\./.test(_item)) {
+                            js.splice(_i, 1);
+                            break;
+                        }
+                    }
+                } else {
+                    js = [];
+                }
+
+                this.dependence({
+                    js: ['jquery'].concat(js),
+                    css: (deps && deps.css) || []
+                }, function () {
+                    auiApp.listener();
+                    auiApp.eventOn();
+                });
+
+
+                require(['toolset'], function (toolset) {
+                    var context = auiApp;
+
+                    global.toolset = toolset;
+
+
+                    toolset.saveApiJs({
+                        load: {
+                            environment: true,
+                            fresher: false,
+                            apiConfig: true,
+                            api: true,
+                            dependence: true
+                        }
+                    }, false, dataModel, '', external, function (response) {
+
+                        context.ready = true;
+
+                        if (context.loadStack.length) {
+                            context.load.apply(context, context.loadStack.pop());
+
+                        }
+                        context.loadStack = [];
+
+
+                    }, true);
+
+
+                });
+
+
+            },
+            loadStack: [],
+            ready: false,
+
+            load: function (_html, _js, _deps) {
+                var context = this,
+                    html = _html,
+                    js = _js,
+                    deps = _deps;
+
+
+                if (context.ready) {
+                    var $body = $('body'),
+                        accumulator = ++this.accumulator,
+
+                        Controller = app.Controller,
+                        _domID = app.getUID(),
+                        _scope = {},
+                        _$el = $body.children('[data-role="pageModule"]').attr('id', _domID),
+                        _handler = new Controller.Model({
+                            conf: '',
+                            path: 'module/index/index/',
+                            $renderTo: _$el,
+                            id: _domID,
+                            domID: _domID,
+                            type: 'WINDOW'
+                        }),
+                        _bootstrap,
+
+                        awebCoreToolkit = 'awebCoreToolkit_' + app.getUID(),
+                        awebIndex = 'awebIndex_' + app.getUID(),
+
+                        $AW,
+                        stack, item, css, _i, _item,
+
+                        queue = [], cursor = -1,
+                        next = function () {
+                            var callback = queue[++cursor];
+                            if (callback) {
+                                callback();
+                            }
+                        },
+
+
+                        overrideApp = function () {
+                            app.open = function (response) {
+                                switch (response.type) {
+                                    case 'POPOVER':
+                                        app.alert('打开气泡页面');
+                                        break;
+                                    case 'WINDOW':
+                                        app.alert('打开新窗口');
+                                        break;
+                                    case 'BLANK':
+                                        app.alert('打开新页面');
+                                        break;
+                                    case 'SELF':
+                                        app.alert('在本标签页打开新标签页');
+                                        break;
+                                    case 'SUB':
+                                        app.alert('打开子页面');
+                                        break;
+                                }
+                            };
+                            app.tab = {
+                                close: function () {
+                                    app.alert('关闭页面');
+                                }
+                            };
+                            app.router = {
+                                getCurrentHandler: function () {
+                                    return _handler
+                                },
+                                on:function () {
+                                    
+                                },
+                                off:function () {
+                                    
+                                },
+                                trigger:function () {
+                                    
+                                }
+                            };
+                        },
+
+                        loadDepsCss = function (css) {
+
+                            if (css) {
+                                css.push(CONST.PAGE.PAGE_CSS);
+                                css = Array.from(new Set(css));
+                                for (_i = -1; _item = css[++_i];) {
+                                    if (!~auiApp.deps.css.indexOf(_item)) {
+                                        context.dependence({css: [_item]});
+                                    }
+                                }
+                                auiApp.deps.css = auiApp.deps.css.concat(css);
+                            }
+                        };
+                    _handler._data.$el = _$el;
+
+                    if (_$el) {
+
+
+                        queue.push(function () {
+                            require(['widget'], function (widget) {
+                                $AW = global.$AW = widget;
+                                $AW.viewer.nsl = context.nsl;
+
+                                if (aweb.fresher) {
+                                    global.toolset.saveApiJs({
+                                        load: {
+                                            fresher: true
+                                        }
+                                    }, false, dataModel, '', global.external, function (response) {
+                                        // console.log(response);
+                                        widget.fresher.theme = response.fresher.theme;
+                                        widget.fresher.variablesCopy = widget.transformThemeVariables(response.fresher.variables);
+                                        next();
+                                    }, true);
+
+                                } else {
+                                    next();
+                                }
+                            });
+                        });
+
+
+                        queue.push(function () {
+
+
+                            if (global && global.parent.auiApp.mode === CONST.MODE.VIEWER) {
+
+                                global.aweb.transformCssConfig = function (cssList) {
+//                                    AUI.dependence({
+//                                        css: cssList
+//                                    });
+                                    loadDepsCss(cssList);
+                                    return [];
+                                };
+
+                                js = js
+                                    .replace(/awebCoreToolkit/g, awebCoreToolkit)
+                                    .replace(/awebIndex/g, awebIndex);
+
+                                eval(js);
+                                context.requirePageLess(function () {
+                                    require([awebIndex], function (index) {
+                                        global.auiApp.hideWelcomeScreen();
+
+                                        _$el.off().empty().append(html);
+
+                                        if($.isFunction(index)){index=index();}
+                                        if($.isFunction(index)){index=index();}
+
+                                        _bootstrap = index;
+
+                                        //override
+                                        overrideApp();
+
+
+                                        auiApp.bootstrap = _bootstrap;
+
+                                        _handler._data.bootstrap = _bootstrap;
+
+                                        _handler.currentStep = 0;
+
+                                        _bootstrap.load.call(_handler, _$el, _scope, _handler);
+
+
+                                        stack = auiApp.stack;
+
+                                        while (item = stack.shift()) {
+                                            $AW.trigger.apply($AW, item);
+                                        }
+                                        global.app.performance.shortDelay(function () {
+                                            $body.scrollTop(Number($body.attr('data-scroll-top') || 0))
+                                        });
+
+                                        next();
+                                    });
+                                })
+
+
+
+                            } else {
+
+                                loadDepsCss(deps.css);
+
+                                deps.css = [];
+
+                                context.dependence(deps, function () {
+                                   context.requirePageLess(function () {
+                                       //override open
+                                       overrideApp();
+
+
+                                       global.auiApp.hideWelcomeScreen();
+
+                                       $body.children('.modal-backdrop').remove();
+
+                                       try {
+
+
+                                           _$el.off().empty().append(html);
+
+                                           _bootstrap = app.eval(js.substring(7, js.length - 2));
+
+                                           if($.isFunction(_bootstrap)){_bootstrap=_bootstrap();}
+                                           if($.isFunction(_bootstrap)){_bootstrap=_bootstrap();}
+
+
+
+                                           _handler._data.bootstrap = _bootstrap;
+
+                                           _handler.currentStep = 0;
+
+
+                                           _bootstrap.load.call(_handler, _$el, _scope, _handler);
+                                       } catch (e) {
+                                           console.error(e);
+                                       } finally {
+                                           auiApp.bootstrap = _bootstrap;
+
+                                           stack = auiApp.stack;
+                                           while (item = stack.shift()) {
+                                               $AW.trigger.apply($AW, item);
+                                           }
+                                           global.app.performance.shortDelay(function () {
+                                               $body.scrollTop(Number($body.attr('data-scroll-top') || 0))
+
+                                           })
+                                       }
+
+                                       next();
+                                    })
+
+                                });
+                            }
+
+
+                        });
+
+                        next();
+                    }
+                } else {
+                    context.loadStack.push(arguments);
+                }
+            },
+            loadCss: function () {
+                this.dependence({css: [CONST.PAGE.PAGE_CSS]})
+            },
+
+            dispatcher: function () {
+                this.stack.push(arguments);
+            },
+            listener: function () {
+                var parent$AW = auiApp.$AW,
+                    WIDGET_SELECTOR = '[data-widget-type]';
+
+                global.oncontextmenu = function () {
+                    return false;
+                };
+
+                $("body")
+                    .off('.preview')
+                    .on({
+                        //hover事件
+                        'mouseover.preview': function (e) {
+                            var $target = $(e.target || global.event.srcElement),
+                                $id = $target.closest('[id]'),
+                                $ctn = $target.closest(WIDGET_SELECTOR),
+
+                                widgetID,
+                                $widget;
+
+                            if ($ctn.length) {
+                                if ($ctn.find($id).length && (widgetID = parent$AW._idMap[$id.attr('id')])) {
+                                    $ctn = $id;
+                                } else {
+                                    widgetID = $ctn.attr('data-widget-id')
+                                }
+
+
+                                $widget = parent$AW(widgetID);
+
+                                if ($widget.length) {
+
+
+                                    $ctn.attr({
+
+                                        'title': $widget.name() + '[' + $widget[0].data.attr.id + ']'
+                                    });
+
+                                }
+
+                            }
+                        },
+
+                        "click.preview": function (e) {
+                            var $target = $(e.target || event.srcElement),
+                                $id = $target.closest('[id]'),
+                                $elem = $target.closest(WIDGET_SELECTOR),
+                                id, widgetID;
+
+                            if ($id.length || $elem.find($id).length) {
+                                widgetID = parent$AW._idMap[$id.attr('id')];
+                            }
+
+                            if (!widgetID) {
+                                widgetID = $elem.attr("data-widget-id");
+                            }
+
+                            if (widgetID) {
+                                parent$AW(widgetID).config();
+                                parent$AW.trigger(parent$AW._STATUS.CONTENT_FRAME.SCROLL, widgetID, true);
+                            }
+                        }
+                    })
+            },
+            eventOn: function () {
+                var win$AW = winParent.$AW,
+                    STATUS = win$AW.STATUS,
+                    $pageModule = $("[data-role=pageModule]"),
+                    $body = $("body"),
+                    bodyScrollTop;
+                win$AW.off(win$AW._STATUS.CONFIGURE_FRAME.CONFIG + '.virtualizer');
+                win$AW.on(win$AW._STATUS.CONFIGURE_FRAME.CONFIG + '.virtualizer', function (type, widgetID, isVirtualzer) {
+
+                    var $widget, $idWidget,
+                        data,
+                        offsetTop = 0;
+                    if (widgetID) {
+
+                        $widget = $('[data-widget-id=' + widgetID + ']');
+
+                        if (data = win$AW(widgetID)[0].data) {
+                            $idWidget = $('[id=' + data.attr.id + ']');
+                        }
+                        if ($idWidget && $idWidget.length) {
+                            $widget = $idWidget;
+                        }
+
+
+                        if ($widget.length) {
+//                            offsetTop =($widget.offset && $widget.offset().top)||0;
+//                            $body.scrollTop(offsetTop);
+
+                        }
+
+                    }
+
+                });
+
+//                win$AW.on([STATUS.WIDGET_UPDATE, STATUS.CSS_UPDATE].join(','), function (type) {
+//                    $body.attr("data-scroll-top", $body.scrollTop() || 0);
+//                });
+            },
+            stack: [],
+            deps: {
+                css: [],
+                js: []
+            },
+            io: {
+                projectName: winParent.auiApp.io.projectName
+            }
+
+        };
+
+
+    }(window));
+</script>
+
+</html>

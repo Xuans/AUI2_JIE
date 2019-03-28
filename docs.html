@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+    <meta content="minimal-ui" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <title>Developer Docs | The New AUI</title>
+
+
+    <link rel="stylesheet" type="text/css" href="css/aui-docs.css"/>
+    <link rel="stylesheet" type="text/css" href="css/aui-iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="script/lib/md/editormd.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/aweb-font.css"/>
+    <link rel="stylesheet" type="text/css" href="css/UI.ImageViewer.css"/>
+
+    <style>
+        .aui-start-screen {
+            position: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 5;
+            background: white;
+        }
+
+        .aui-start-screen-logo {
+            z-index: -1;
+            opacity: .2;
+            padding: 0;
+            color: #0a0a0a;
+            line-height: 2.5;
+            font-size: 50px;
+            font-family: "黑体" !important;
+            font-weight: 200;
+            text-rendering: optimizelegibility;
+            cursor: default;
+            display: flex; /*Flex布局*/
+            display: -webkit-flex; /* Safari */
+            align-items: center; /*指定垂直居中*/
+        }
+
+        .default-theme {
+            height: 100% !important;
+            overflow: auto !important;
+        }
+        pre[data-type] {
+            width: 100%;
+            max-height: 400px;
+            overflow: auto;
+            color: #5c5f66;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- 消息弹出 Start -->
+<ul id="alertList" data-role="alertList" class="alert-list unstyled"></ul>
+<!-- 消息弹出 End -->
+<!-- 遮罩 Start -->
+<div id="mask"></div>
+<!-- 遮罩 End -->
+
+<div id="awebLayoutCtn">
+    <!--<div class="aui-page-nav" id="auiNavBar">
+        <div class="aui-tabs-left-group">
+            <div class="docs-search-bar">
+                <i class="aui aui-sousuo"></i>
+                <input id="auiDocsSearch" type="text" placeholder="搜索支持文档，组件…"/>
+            </div>
+        </div>
+        <div class="aui-tabs-right-group">
+            &lt;!&ndash;	<span class="divider-vertical"></span>&ndash;&gt;
+            <button id="auiNavWidgetBtn" type="button" title="组件目录" class="btn">
+                <i class="iconfont icon-topbar-element"></i><span>  组件</span>
+            </button>
+            <button id="auiNavDocsBtn" type="button" title="文档目录" class="btn">
+                <i class="iconfont icon-topbar-file"></i><span> 文档</span>
+            </button>
+        </div>
+
+    </div>-->
+    <div data-role="container" class="aweb4-container default-theme">
+        <ul id="tabs" data-role="tab" class="nav nav-tabs aweb-tabs"></ul>
+        <div id="spa-page-main" class="aweb-main" data-role="content"></div>
+    </div>
+    <!--<div id="auiDocsSearchPanel" class="aui-docs-search-panel" style="display: none"></div>-->
+</div>
+
+
+<!--Start Screen Start-->
+<div id="auiStartScreen" class="aui-start-screen">
+    <h1 class="aui-start-screen-logo">开发者中心</h1>
+</div>
+<!--Start Screen End-->
+
+<!-- 模板 Start -->
+
+<!--搜索结果模板 Start-->
+<script id="searchTemp" type="text/html">
+    <div data-role="container" class="tabbable">
+        <!--	<span class="docs-search-result ">共{{length}}个结果，搜索用时{{time}}ms</span>-->
+        <ul data-role="tab" class="nav nav-tabs aweb-tabs docs-search-details" style="left: 5px;">
+            {{if length}}<li class="active" title="sAll"><a href="#sAll" data-toggle="tab">全部</a></li>{{/if}}
+            {{if docs.length}}<li class="" title="文档"><a href="#sDoc" data-toggle="tab">文档</a></li>{{/if}}
+            {{if widgets.length}}<li class="" title="组件"><a href="#sWidget" data-toggle="tab">组件</a></li>{{/if}}
+        </ul>
+
+        <div class="tab-content">
+            {{if length}}
+            <div class="tab-pane aui-edm-content active" id="sAll">
+                <div class="aui-edm-inner-content">
+                    {{each docs}}
+                    <div class="docs-search-ctn" data-file="{{$value.id}}" data-name="{{$value.id}}.{{$value.title}}">
+                        <h4 class="btn-link" title="{{$value.id}}.{{$value.title}}">{{$value.id}}.{{$value.title}}</h4>
+                        <div class="docs-search-ctt">{{#$value.searchResult}} … </div>
+                    </div>
+                    {{/each}}
+                    {{each widgets}}
+                    <div class="docs-search-ctn" data-href="{{$value.href}}" data-name="{{$value.name}}">
+                        <h4 class="btn-link" title="{{$value.name}}，{{$value.href}}">{{$value.name}}，{{$value.type}}</h4>
+                        <div class="docs-search-ctt">{{#$value.searchResult}} … </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+            {{if docs.length}}
+            <div class="tab-pane aui-edm-content" id="sDoc">
+                <div class="aui-edm-inner-content">
+                    {{each docs}}
+                    <div class="docs-search-ctn" data-file="{{$value.id}}" data-name="{{$value.id}}.{{$value.title}}">
+                        <h4 class="btn-link" title="{{$value.id}}.{{$value.title}}">{{$value.id}}.{{$value.title}}</h4>
+                        <div class="docs-search-ctt">{{#$value.searchResult}} … </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+
+            {{if widgets.length}}
+            <div class="tab-pane aui-edm-content" id="sWidget">
+                <div class="aui-edm-inner-content">
+                    {{each widgets}}
+                    <div class="docs-search-ctn" data-href="{{$value.href}}" data-name="{{$value.name}}">
+                        <h4 class="btn-link" title="{{$value.name}}，{{$value.href}}">{{$value.name}}，{{$value.type}}</h4>
+                        <div class="docs-search-ctt">{{#$value.searchResult}} … </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</script>
+<!--搜索结果模板 End-->
+<!--页内搜索模板 Start-->
+<script id="searchPageTemp" type="text/html">
+    {{if result.length}}
+    <div class="docs-search-item">共{{result.length}}结果，搜索用时{{time}}ms</div>
+    {{each result}}
+    <div class="docs-search-item" data-search-id="{{$value.uid}}" title="{{$value.title}}">{{#$value.text}}</div>
+    {{/each}}
+    {{else}}
+    <div class="docs-search-item">无搜索结果。</div>
+    {{/if}}
+</script>
+<!--页内搜索模板 End-->
+
+<!--帮助文档 Start-->
+<script type="text/html" id="docsIndexTemp">
+    {{each children}}
+    {{if $value.children&&$value.children.length}}
+    <div class="docs-index-ctt">
+        <h3 class="docs-index-header display-4" data-href="{{$value.id}}">{{$value.desp}}</h3>
+
+        <ul class="docs-index-list">
+            {{each $value.children as doc}}
+            <li class="docs-index-item" data-file="{{doc.id}}" title="{{doc.id}}. {{doc.title}}">{{doc.id}}. {{doc.title}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+    {{/each}}
+</script>
+<!--帮助文档 End-->
+<!--组件列表导航 Start-->
+<script id="docsIndexNav" type="text/html">
+    <ul>
+        {{each children}}
+        {{if $value.children&&$value.children.length}}
+        <li>
+            <a data-href="{{$value.id}}">{{$value.desp}}</a>
+        </li>
+        {{/if}}
+        {{/each}}
+    </ul>
+</script>
+<!--组件列表导航 End-->
+
+<!--帮助文档详情 Start-->
+<script type="text/html" id="tsTimeFormatTemp">
+    {{year}}/{{month}}/{{date}}
+</script>
+<script type="text/html" id="tsDetailsContentTemp">
+    {{if chain && chain.length}}
+    <ol class="breadcrumb">
+        {{each chain}}
+        <li class="breadcrumb-item">{{$value}}</li>
+        {{/each}}
+    </ol>
+    {{/if}}
+
+    <div class="ts-details-panel">
+        <div class="ts-details-nav-panel">
+            <div id="auiDocsIndexNavCtn" class="tabbable">
+                <ul class="nav nav-tabs">
+                    <li class="active" title="导航"><a href="#auiDocsIndexNav{{uid}}" data-toggle="tab"><i class="fa fa-bars"></i></a></li>
+                    <li title="搜索"><a href="#auiDocsIndexSearch{{uid}}" data-toggle="tab"><i class="fa fa-search"></i></a></li>
+                    <li title="信息"><a href="#auiDocsIndexInfo{{uid}}" data-toggle="tab"><i class="fa fa-info"></i></a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active ts-details-nav" id="auiDocsIndexNav{{uid}}">
+                        <div class="ts-details-nav" data-role="tsDetailsNavPanel"></div>
+                    </div>
+                    <div class="tab-pane" id="auiDocsIndexSearch{{uid}}">
+                        <!--代码搜索 Start-->
+                        <div class="docs-search-ctn">
+                            <input data-id="auiDocsPageSearch" type="text" placeholder="搜索当前页面内容"  class="docs-search-query"/>
+                        </div>
+                        <!--代码搜索 End-->
+                        <div data-id="auiDocsPageSearchList" class="docs-search-list"></div>
+                    </div>
+                    <div class="tab-pane" id="auiDocsIndexInfo{{uid}}">
+                        <blockquote class="blockquote">
+                            <p class="mb-0"><span class="badge badge-default">{{version}}</span></p>
+                            <p class="mb-0" title="{{author}}">{{#transformAuthor(author,true)}}</p>
+                            <p class="mb-0">{{lastModifiedTime}}</p>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ts-details-ctt-panel" data-role="content"></div>
+    </div>
+</script>
+<!--帮助文档详情 End-->
+
+<!--组件列表 Start-->
+<script type="text/html" id="widgetIndexTemp">
+    {{each cWidgets}}
+    {{if !$value.collapse && $value.cWidgets.length}}
+    <div class="widget-index-ctt">
+        {{if $value.name}}
+        <h{{$value.level}} class="widget-index-header" data-widget-href={{$value.href}} title="{{$value.name}}">{{$value.name}}</h{{$value.level}}>
+        {{/if}}
+        {{include 'widgetIndexTemp' $value}}
+    </div>
+    {{else if !$value.hidden}}
+    <div class="widget-index-block" data-widget-href="{{$value.href}}" title="{{$value.name}}">
+        <div class="widget-index-icon">
+            <i class="{{$value.icon||'fa fa-file'}}"></i>
+        </div>
+        <div class="widget-index-name">
+            <p>{{$value.name}}</p>
+            <small>{{$value.type}}</small>
+        </div>
+    </div>
+    {{/if}}
+    {{/each}}
+</script>
+<!--组件列表 End-->
+<!--组件列表导航 Start-->
+<script id="widgetIndexNav" type="text/html">
+    <ul>
+        {{each cWidgets}}
+        {{if !$value.collapse && $value.cWidgets.length}}
+        <li>
+            <a data-href="{{$value.href}}">{{$value.name}}</a>
+            <ul>
+                {{each $value.cWidgets}}
+                {{if !$value.collapse && $value.cWidgets.length}}
+                <li>
+                    <a data-href="{{$value.href}}">{{$value.name}}</a>
+                </li>
+                {{/if}}
+                {{/each}}
+            </ul>
+        </li>
+        {{/if}}
+        {{/each}}
+    </ul>
+</script>
+<!--组件列表导航 End-->
+
+<!--组件详情页模板 Start-->
+<script id="widgetDetails" type="text/html">
+
+    {{if widgetChain && widgetChain.length}}
+    <ol class="breadcrumb">
+        {{each widgetChain as item index}}
+        <li class="breadcrumb-item">{{item}}</li>
+        {{/each}}
+    </ol>
+    {{/if}}
+
+    <div style="margin:0 .5em;">
+        <h1 data-href="widget" class="display-4">
+            <i class="fa {{icon}}"></i>&nbsp;
+            {{name}}&nbsp;
+            <span class="badge badge-default">{{version}}</span>
+            <span class="badge badge-warning">{{#transformCompatibility(compatibility)}}</span>
+        </h1>
+        {{ if author}}
+        <blockquote class="blockquote">
+            <p class="mb-0">作者：{{#transformAuthor(author)}}</p>
+        </blockquote>
+        {{/if}}
+
+        {{if hidden || collapse}}
+        <i class="iconfont icon-danger_fill"></i> 弃用，该组件已不再支持或维护，请尽快改用其他组件。
+        {{/if}}
+
+        <p class="text-indent">
+            {{details}}
+        </p>
+        <p>&nbsp;</p>
+
+        <h2 class="m-2" data-href="info">信息</h2>
+        <div>
+            <h3 data-href="type" title="类型（type），组件短名称" class="m-3">
+                类型，type
+            </h3>
+            <p class="text-content">
+                <span class="badge badge-normal">{{type}}</span>
+            </p>
+            <p>&nbsp;</p>
+
+            <h3 data-href="href" title="文件名（href），组件长名称" class="m-3">
+                文件名，href
+            </h3>
+            <p class="text-content">
+                <span class="badge badge-normal">{{href}}</span>
+            </p>
+            <p>&nbsp;</p>
+            {{if belongTo}}
+            <h3 data-href="belongTo" title="级别（belongTo），按项目分类" class="m-3">
+                级别，belongTo
+            </h3>
+            <p class="text-content">
+                <span class="badge badge-normal">{{belongTo}}</span>
+            </p>
+            <p>&nbsp;</p>
+            {{/if}}
+        </div>
+
+        <h2 class="m-2" data-href="config">配置</h2>
+        <div>
+            {{if category}}
+            <h3 data-href="belongTo" title="类型（category）" class="m-3">
+                类型，category
+            </h3>
+            <p class="text-content">
+                <span class="badge badge-normal">{{category}}</span>
+            </p>
+            <p>&nbsp;</p>
+            {{/if}}
+
+            {{if baseName}}
+            <h3 data-href="base" title="布局模式继承于（base），组件的放置行为与继承组件一致，也就是说被继承组件可以放置什么组件，继承的组件也可以放置什么组件" class="m-3">
+                布局模式继承于，base
+            </h3>
+            <p class="text-content">
+                {{each baseName}}
+                <span class="badge badge-normal">{{$value}}</span>
+                {{/each}}
+            </p>
+            <p>&nbsp;</p>
+            {{/if}}
+            {{if accept}}
+            <h3 data-href="accept" title="可放置于（accept），组件放置于什么组件" class="m-3">
+                可放置于，accept
+            </h3>
+            <p class="text-content">
+                {{each acceptName}}
+                <span class="badge badge-normal">{{$value}}</span>
+                {{/each}}
+            </p>
+            <p>&nbsp;</p>
+            {{/if}}
+
+            {{if deps}}
+            <h3 data-href="deps" title="依赖" class="m-3">
+                依赖，deps
+            </h3>
+            <div class="text-content">
+                {{if deps.js}}
+                <h4 class="m-4">脚本文件</h4>
+
+                <ul>
+                    {{each deps.js as item index}}
+                    <li>{{item}}</li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+
+                {{if deps.css}}
+                <h4 class="m-4">样式文件</h4>
+
+                <ul>
+                    {{each deps.css as item index}}
+                    <li>{{item}}</li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+            </div>
+            <p>&nbsp;</p>
+            {{/if}}
+
+            {{if attr && attr.length}}
+            <h3 data-href="attr" title="属性" class="m-3">
+                属性，attr
+            </h3>
+            <div data-role="attr" class="example">
+                <pre data-type="json">{{attrCode}}</pre>
+                <div class="highlight">
+                    <ul>
+                        {{each attr}}
+                        <li {{if $value.hidden}} class="docs-option-item-hidden" {{/if}}>
+                        <code>{{$value.name}}</code>：
+                        {{#transformType($value.type)}}
+                        {{if $value.desp}}
+                        ，{{$value.desp}}
+                        {{/if}}
+                        {{if $value.defaultValue!==undefined }}
+                        ，默认值 <code>{{ $value.defaultValue +''}}</code>
+                        {{/if}}
+                        {{if $value.require }}
+                        ，当<code>{{ #transformRequire(attr,$value)}}</code>时，显示该选项
+                        {{/if}}
+                        ；
+
+                        {{if $value.attr}}
+                        <ul>
+                            {{include 'widgetDetailsObject' $value}}
+                        </ul>
+                        {{/if}}
+
+                        {{if $value.attrInEachElement}}
+                        <ul>
+                            {{include 'widgetDetailsArray' $value}}
+                        </ul>
+                        {{/if}}
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+            {{/if}}
+
+            {{if option && option.length}}
+            <h3 data-href="option" title="参数" class="m-3">
+                参数，option
+            </h3>
+            <div data-role="option" class="example">
+                <pre data-type="json">{{optionCode}}</pre>
+                <div class="highlight">
+                    <ul>
+                        {{each option}}
+                        <li {{if $value.hidden}} class="docs-option-item-hidden" {{/if}}>
+                        <code>{{$value.name}}</code>：
+                        {{#transformType($value.type)}}
+                        {{if $value.desp}}
+                        ，{{$value.desp}}
+                        {{/if}}
+                        {{if $value.defaultValue!==undefined }}
+                        ，默认值 <code>{{ $value.defaultValue +''}}</code>
+                        {{/if}}
+                        {{if $value.require }}
+                        ，当<code>{{ #transformRequire(option,$value)}}</code>时，显示该选项
+                        {{/if}}
+                        ；
+
+                        {{if $value.attr}}
+                        <ul>
+                            {{include 'widgetDetailsObject' $value}}
+                        </ul>
+                        {{/if}}
+
+                        {{if $value.attrInEachElement}}
+                        <ul>
+                            {{include 'widgetDetailsArray' $value}}
+                        </ul>
+                        {{/if}}
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+            {{/if}}
+
+            {{if css && css.length && (css[1].attr.length>0||css[0].attr.length>0)}}
+            <h3 data-href="css" title="样式" class="m-3">
+                样式，css
+            </h3>
+            <div data-role="css" class="example">
+                <pre data-type="json">{{cssCode}}</pre>
+                <div class="highlight">
+                    {{if css[0].attr.length>0}}
+                    <ul>
+                        <li>
+                            <span class="badge badge-themeName">{{css[0].name}}</span>:
+                            {{#transformType(css[0].type)}}
+                            {{css[0].desp}}
+                            {{if css[0].defaultValue!==undefined }}
+                            ，默认值 <code>{{ css[0].defaultValue +''}}</code>
+                            {{/if}}
+
+                            {{if css[0].attr}}
+                            <ul>
+                                {{include 'widgetThemeCofigObject' css[0]}}
+                            </ul>
+                            {{/if}}
+
+                        </li>
+                    </ul>
+                    {{/if}}
+                    {{if css[1].attr.length>0}}
+                    <ul>
+                        <li>
+                            <span class="badge badge-themeName">{{css[1].name}}</span>:
+                            {{#transformType(css[1].type)}}，{{css[1].desp}}
+                            {{if css[1].defaultValue!==undefined }}
+                            ，默认值 <code>{{ css[1].defaultValue +''}}</code>
+                            {{/if}}
+
+                            {{if css[1].attr}}
+                            <ul>
+                                {{include 'cssCofigObject' css[1]}}
+                            </ul>
+                            {{/if}}
+
+                        </li>
+
+                    </ul>
+                    {{/if}}
+                </div>
+            </div>
+            {{/if}}
+
+
+            {{if event &&(event.selector||event.type)}}
+            <h3 data-href="event" title="事件" class="m-3">
+                事件，event
+            </h3>
+            <div class="text-content">
+                {{if event.selector}}
+                <h4 class="m-4">可选触发范围</h4>
+
+                <ul>
+                    {{each event.selector as item index}}
+                    <li>{{item.desp}}：{{item.value}}</li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+
+                {{if event.type}}
+                <h4 class="m-4">可选触发条件</h4>
+
+                <ul>
+                    {{each event.type as item index}}
+                    <li>{{item.desp}}：{{item.value}}</li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+            </div>
+            <p>&nbsp;</p>
+            {{/if}}
+        </div>
+        <hr class="my-4">
+        {{if (api && api.length) || (methods && methods.app)}}
+        <h2 class="m-2" data-href="methods">接口</h2>
+        <div>
+            {{if  methods.universal && methods.universal.length}}
+            <h3 data-href="methods.universal" title="无参数接口" class="m-3">
+                无参数接口
+            </h3>
+            <div>
+                {{each methods.universal}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.getter && methods.getter.length}}
+            <h3 data-href="methods.getter" title="取值器" class="m-3">
+                取值器，Getter
+            </h3>
+            <div>
+                {{each methods.getter}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.setter && methods.setter.length}}
+            <h3 data-href="methods.setter" title="赋值器" class="m-3">
+                赋值器，Setter
+            </h3>
+            <div>
+                {{each methods.setter}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.successCallback && methods.successCallback.length}}
+            <h3 data-href="methods.successCallback" title="校验成功" class="m-3">
+                校验成功，Success Callback
+            </h3>
+            <div>
+                {{each methods.successCallback}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.errorCallback && methods.errorCallback.length}}
+            <h3 data-href="methods.errorCallback" title="校验错误" class="m-3">
+                校验错误，Error Callback
+            </h3>
+            <div>
+                {{each methods.errorCallback}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.cleanCallback && methods.cleanCallback.length}}
+            <h3 data-href="methods.cleanCallback" title="清除校验" class="m-3">
+                清除校验，Clean Callback
+            </h3>
+            <div>
+                {{each methods.cleanCallback}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.validateHandler && methods.validateHandler.length}}
+            <h3 data-href="methods.validateHandler" title="自定义校验方法" class="m-3">
+                自定义校验事件，Validate Handler
+            </h3>
+            <div>
+                {{each methods.validateHandler}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.event && methods.event.length}}
+            <h3 data-href="methods.event" title="事件接口" class="m-3">
+                事件接口，Event
+            </h3>
+            <div>
+                {{each methods.event}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.behavior && methods.behavior.length}}
+            <h3 data-href="methods.behavior" title="行为接口" class="m-3">
+                行为接口，Behavior
+            </h3>
+            <div>
+                {{each methods.behavior}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.dataFlow && methods.dataFlow.length}}
+            <h3 data-href="methods.dataFlow" title="上传接口（数据流接口）" class="m-3">
+                上传接口（数据流接口），Data Flow
+            </h3>
+            <div>
+                {{each methods.dataFlow}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+        </div>
+
+        {{if methods.app}}
+        <h2 class="m-2" data-href="appInterfaces">应用接口</h2>
+        <div>
+            {{each methods.app}}
+
+            <h3 data-href="{{$value.href}}" name ="{{$value.href}}" title="{{$value.desp}}" class="m-3">{{$value.desp}}</h3>
+            <div>
+                {{each $value.children}}
+                {{include 'appMethodDetails' $value}}
+                {{/each}}
+            </div>
+
+            {{/each}}
+        </div>
+        {{/if}}
+        {{/if}}
+        {{if appInterfacesConst}}
+        <h2 class="m-2" data-href="appInterfacesConst">应用接口常量</h2>
+        <div>
+            {{each appInterfacesConst}}
+            <h4 data-href="{{$value.valueArray[0]}}"  title="{{$value.category}}" class="m-2">{{$value.category}}</h4>
+            <div>
+                <table class='docs-table'>
+                    <thead><tr><th style="width:50%;">常量</th><th  style="width: 50%;">注释</th></tr></thead>
+                    <tbody>
+                    {{each $value.valueArray as singleValue index}}
+                    <tr><td>{{singleValue}}</td><td>{{$value.despArray[index]}}</td></tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+
+        {{if variables}}
+        <h2 class="m-2" data-href="variables">主题变量</h2>
+        <div class="doc-theme-variables-block">
+            {{each variables}}
+            <blockquote class="blockquote">
+                <p class="mb-0">{{$value.name}}：{{$value.desp}}</p>
+            </blockquote>
+            <!--<div class="doc-theme-variables-note"><span></span><span class="note-text"></span></div>-->
+            <div class="doc-variables-layout">
+                <h4 data-href="{{$value.desp}}" title="{{$value.desp}}" class="m-3">
+                    {{$value.defaultValue}} &nbsp &nbsp {{$value.desp}}
+                </h4>
+                <ul class="doc-theme-variables-ctt">
+                    {{if $value.defaultValue!==undefined }}
+                    <li>
+                        <div class="doc-theme-color-block">
+                            {{#transformVariablesTemp($value.showType,$value.defaultValue)}}
+                            <!--<span {{if $value.showType !== undefined }} style="background-color:{{$value.defaultValue}}"{{/if}}</span>-->
+                        </div>
+                    </li>
+                    {{/if}}
+                    {{if $value.cssAttrs}}
+                    <li><div class="doc-theme-variables-ctn">
+                        {{each $value.cssAttrs}}
+                        <span class="badge badge-normal">{{$value.desp}}</span>
+                        {{/each}}
+                    </div></li>
+                    {{/if}}
+                </ul>
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+        {{if themeArray && themeArray.length}}
+        <h2 class="m-2" data-href="themeConfig">组件主题配置</h2>
+        <div class="example">
+            {{each themeArray}}
+            <h3 data-href="{{$value.desp}}" title="{{$value.desp}}" class="m-3">
+                {{$value.desp}}
+            </h3>
+            <blockquote class="blockquote">
+                <p class="mb-0">{{$value.type}}</p>
+            </blockquote>
+            {{if $value.cssConfig.length}}
+            <div class="highlight">
+                <h4>主题可配模块</h4>
+                <ul>
+                    {{each $value.cssConfig}}
+                    <li>
+                        <code>{{$value.name}}</code>：
+                        <span class="badge badge-dackBlue">{{$value.desp}}</span>
+                        {{if $value.cssAttrs}}
+
+                        <ul>
+                            可配项：
+                            {{each $value.cssAttrs}}
+                            <code>{{$value.desp}}</code>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+            {{/if}}
+
+            {{if $value.despArray && $value.despArray.length}}
+            <div class="details">
+                <h4>各主题具体配值</h4>
+                <ul>
+                    {{each $value.despArray}}
+                    <li>
+                        {{if $value.themeName}}
+                        <span class="badge badge-themeName">{{$value.themeNameDsp}}主题</span>，对应类名：{{$value.themeName}}
+                        {{/if}}
+                        {{if $value.themeNameArray}}
+                        <ul>
+                            {{each $value.themeNameArray}}
+                            <li>
+                                <span class="badge badge-themeTitle">{{$value.configName}}{{$value.configNameDsp}}</span>
+                                {{if $value.configArray}}
+
+                                {{each $value.configArray}}
+                                <ul>
+                                    <li>
+                                        <code>{{$value.name}}</code>：
+                                        {{#transformType($value.type)}}，{{$value.desp}}
+
+                                        {{if $value.value }}
+                                        ，配值: <span class="type" style="color:#000000;background-color:#ffffff;border:1px solid #000000;{{$value.name}}:{{ $value.value}};">{{$value.value}}</span>
+                                        {{/if}}
+
+                                    </li>
+
+                                </ul>
+                                {{/each}}
+                                {{/if}}
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+            <hr/>
+            {{/if}}
+            {{/each}}
+        </div>
+        {{/if}}
+    </div>
+
+</script>
+<!--组件详情页模板 End-->
+
+<!-- 组件详情 对象类型 Start-->
+<script id="widgetDetailsObject" type="text/html">
+    {{each attr}}
+    <li {{if $value.hidden}} class="docs-option-item-hidden" {{/if}}>
+    <code>{{$value.name||$value.desp}}</code>：
+    {{#transformType($value.type)}}，{{$value.details || $value.desp}}
+    {{if $value.defaultValue!==undefined  && !$value.attr && !$value.attrInEachElement}}
+    ，示例值 <code>{{ $value.defaultValue +''}}</code>
+    {{/if}}
+    {{if $value.require }}
+    ，当<code>{{ #transformRequire(attr,$value)}}</code>时，显示该选项
+    {{/if}}
+    ；
+
+    {{if $value.attr}}
+    <ul>
+        {{include 'widgetDetailsObject' $value}}
+    </ul>
+    {{/if}}
+
+    {{if $value.attrInEachElement}}
+    <ul>
+        {{include 'widgetDetailsArray' $value}}
+    </ul>
+    {{/if}}
+    </li>
+    {{/each}}
+</script>
+<!-- 组件详情 对象类型 End-->
+
+<!-- 样式配置详情 数组类型 Start-->
+<script id="cssCofigObject" type="text/html">
+    {{each attr}}
+    <li>
+        {{if $value.attr}}
+        <span class="badge  badge-themeTitle">{{$value.name||$value.desp}}</span>:
+        {{else}}
+        <code>{{$value.name||$value.desp}}</code>
+        {{/if}}
+        {{#transformType($value.type)}}，{{$value.desp}}
+        {{if $value.defaultValue!==undefined }}
+        ，默认值 <code>{{ $value.defaultValue +''}}</code>
+        {{/if}}
+
+        {{if $value.attr}}
+        <ul>
+            {{include 'cssCofigObject' $value}}
+        </ul>
+        {{/if}}
+    </li>
+    {{/each}}
+</script>
+<!-- 组件详情 对象类型 End-->
+
+<!-- 组件主题配置详情 对象类型 Start-->
+<script id="widgetThemeCofigObject" type="text/html">
+    {{each attr}}
+    <li>
+        <code>{{$value.name||$value.desp}}</code>：
+        {{#transformType($value.type)}}，{{$value.desp}}
+        {{if $value.defaultValue!==undefined }}
+        ，默认值 <code>{{ $value.defaultValue +''}}</code>
+        {{/if}}
+        {{if $value.template }}
+        ，组件模板 <code>{{ $value.template +''}}</code>
+        {{/if}}
+        {{if $value.zoom }}
+        ，缩放值 <code> zoom:{{$value.zoom +''}}</code>
+        {{/if}}
+
+        <ul>风格种类：{{if $value.valueArray}}
+            {{each $value.valueArray as item index}}
+            <span title="类名：{{item}}">{{$value.despArray[index]}}</span>、
+            {{/each}}
+            {{/if}}
+        </ul>
+    </li>
+    {{/each}}
+</script>
+<!-- 组件主题详情 对象类型 End-->
+
+<!-- 组件详情 数组类型 Start-->
+<script id="widgetDetailsArray" type="text/html">
+    {{each attrInEachElement}}
+    <li {{if $value.hidden}} class="docs-option-item-hidden" {{/if}}>
+    <code>{{$value.name||$value.desp}}</code>：
+    {{#transformType($value.type)}}，{{$value.details || $value.desp}}
+    {{if $value.defaultValue!==undefined  && !$value.attr && !$value.attrInEachElement}}
+    ，示例值 <code>{{ $value.defaultValue +''}}</code>
+    {{/if}}
+    {{if $value.require }}
+    ，当<code>{{ #transformRequire(attrInEachElement,$value)}}</code>时，显示该选项
+    {{/if}}
+    ；
+
+    {{if $value.attr}}
+    <ul>
+        {{include 'widgetDetailsObject' $value}}
+    </ul>
+    {{/if}}
+
+    {{if $value.attrInEachElement}}
+    <ul>
+        {{include 'widgetDetailsArray' $value}}
+    </ul>
+    {{/if}}
+    </li>
+    {{/each}}
+</script>
+<!-- 组件详情 数组类型 End-->
+
+<!--组件详情导航 Start-->
+<script id="widgetDetailsNav" type="text/html">
+    <ul>
+        {{each subItems}}
+        <li>
+            {{if $value.id}}
+            <a data-file="{{$value.id}}">{{$value.id}}.{{$value.name||$value.title}}</a>
+            {{else}}
+            <a data-href="{{$value.href}}">{{$value.name||$value.title}}</a>
+            {{/if}}
+            {{if $value.subItems && $value.subItems.length}}
+            {{include 'widgetDetailsNav' $value}}
+            {{/if}}
+        </li>
+        {{/each}}
+    </ul>
+</script>
+<!--组件详情导航 End-->
+
+<!--组件接口详情 Start-->
+<script id="methodDetails" type="text/html">
+    <h4 data-href="methods_{{name}}" class="m-2">{{desp}}，{{name.substr(1)}}</h4>
+
+    {{if details}}
+    <p class="text-indent">
+        {{details}}
+    </p>
+    {{/if}}
+
+    <ul class="docs-method-feature-list">
+        {{if deps}}
+        <li>调用接口可能需要发起异步请求：<span class="type type-boolean">需要</span> </li>
+
+        {{if order}}
+        <li> 发起异步请求顺序：<span class="type type-boolean">接口处理参数后再主动发起请求</span>  </li>
+        {{else}}
+        <li> 发起异步请求顺序：<span class="type type-boolean">在成功回调中调用接口</span>  </li>
+        {{/if}}
+        {{/if}}
+        {{if lifecycle}}
+        <li> 调用接口可以在：{{ #transformMethodLifecycle(lifecycle) }} </li>
+        {{/if}}
+    </ul>
+
+    <div class="example">
+        <div class="highlight-top">
+            <p class="text-content">
+                前台代码
+            </p>
+        </div>
+        <pre data-type="javascript">{{jsCode}}</pre>
+
+        {{if params && params.length || returnValue}}
+        <div class="highlight">
+            {{if params && params.length}}
+            <p class="text-content">
+                入参
+            </p>
+            <ul>
+                {{each params}}
+                <li>
+                    <code>{{$value.name||$value.desp}}</code>：
+                    {{#transformType($value.type)}}，{{$value.desp}}
+                    {{if $value.details }}
+                    ，{{$value.details}}
+                    {{/if}}
+                    {{if $value.defaultValue!==undefined  && !$value.attr && !$value.attrInEachElement}}
+                    ，示例值 <code>{{ $value.defaultValue +''}}</code>；
+                    {{/if}}
+
+                    {{if $value.attr}}
+                    <ul>
+                        {{include 'widgetDetailsObject' $value}}
+                    </ul>
+                    {{/if}}
+
+                    {{if $value.attrInEachElement}}
+                    <ul>
+                        {{include 'widgetDetailsArray' $value}}
+                    </ul>
+                    {{/if}}
+                </li>
+                {{/each}}
+            </ul>
+            {{/if}}
+
+            {{if hasReturn!==false && returnValue}}
+            <p class="text-content">
+                出参
+            </p>
+            <ul>
+                <li>
+                    <code>{{returnValue.name}}</code>：
+                    {{#transformType(returnValue.type)}}，{{returnValue.desp}}
+                    {{if returnValue.details }}
+                    ，{{returnValue.details}}
+                    {{/if}}
+                    {{if returnValue.defaultValue!==undefined  && !returnValue.attr && !returnValue.attrInEachElement}}
+                    ，示例值 <code>{{ returnValue.defaultValue +''}}</code>；
+                    {{/if}}
+
+                    {{if returnValue.attr}}
+                    <ul>
+                        {{include 'widgetDetailsObject' returnValue}}
+                    </ul>
+                    {{/if}}
+
+                    {{if returnValue.attrInEachElement}}
+                    <ul>
+                        {{include 'widgetDetailsArray' returnValue}}
+                    </ul>
+                    {{/if}}
+                </li>
+            </ul>
+            {{/if}}
+        </div>
+        {{/if}}
+    </div>
+    {{if code}}
+    <div class="example">
+        <div class="highlight-top">
+            <p class="text-content">
+                后台代码
+            </p>
+        </div>
+        <div data-type="java">{{code}}</div>
+    </div>
+    {{/if}}
+    <p>&nbsp;</p>
+</script>
+<!--组件接口详情 End-->
+<!--应用接口详情 Start-->
+<script id="appMethodDetails" type="text/html">
+    <h4 data-href="app{{name}}()" class="m-2">{{desp}}，{{name.substr(1)}}</h4>
+
+    {{if details}}
+    <p class="text-indent">
+        {{details}}
+    </p>
+    {{/if}}
+
+    <ul class="docs-method-feature-list">
+        {{if deps}}
+        <li>调用接口可能需要发起异步请求：<span class="type type-boolean">需要</span> </li>
+
+        {{if order}}
+        <li> 发起异步请求顺序：<span class="type type-boolean">接口处理参数后再主动发起请求</span>  </li>
+        {{else}}
+        <li> 发起异步请求顺序：<span class="type type-boolean">在成功回调中调用接口</span>  </li>
+        {{/if}}
+        {{/if}}
+        {{if lifecycle}}
+        <li> 调用接口可以在：{{ #transformMethodLifecycle(lifecycle) }} </li>
+        {{/if}}
+    </ul>
+
+    <div class="example">
+        {{if jsCode}}
+        <div class="highlight-top">
+            <p class="text-content">
+                前台代码
+            </p>
+        </div>
+        <pre data-type="javascript">{{jsCode}}</pre>
+        {{/if}}
+
+        {{if params && params.length || returnValue}}
+        <div class="highlight">
+            {{if params && params.length}}
+            <p class="text-content">
+                入参
+            </p>
+            <ul>
+                {{each params}}
+                <li>
+                    <code>{{$value.name||$value.desp}}</code>：
+                    {{#transformType($value.type)}}，{{$value.desp}}
+                    {{if $value.details }}
+                    ，{{$value.details}}
+                    {{/if}}
+                    {{if $value.defaultValue!==undefined  && !$value.attr && !$value.attrInEachElement}}
+                    ，示例值 <code>{{ $value.defaultValue +''}}</code>；
+                    {{/if}}
+
+                    {{if $value.attr}}
+                    <ul>
+                        {{include 'widgetDetailsObject' $value}}
+                    </ul>
+                    {{/if}}
+
+                    {{if $value.attrInEachElement}}
+                    <ul>
+                        {{include 'widgetDetailsArray' $value}}
+                    </ul>
+                    {{/if}}
+                </li>
+                {{/each}}
+            </ul>
+            {{/if}}
+
+            {{if hasReturn!==false && returnValue}}
+            <p class="text-content">
+                出参
+            </p>
+            <ul>
+                <li>
+                    <code>{{returnValue.name}}</code>：
+                    {{#transformType(returnValue.type)}}，{{returnValue.desp}}
+                    {{if returnValue.details }}
+                    ，{{returnValue.details}}
+                    {{/if}}
+                    {{if returnValue.defaultValue!==undefined  && !returnValue.attr && !returnValue.attrInEachElement}}
+                    ，示例值 <code>{{ returnValue.defaultValue +''}}</code>；
+                    {{/if}}
+
+                    {{if returnValue.attr}}
+                    <ul>
+                        {{include 'widgetDetailsObject' returnValue}}
+                    </ul>
+                    {{/if}}
+
+                    {{if returnValue.attrInEachElement}}
+                    <ul>
+                        {{include 'widgetDetailsArray' returnValue}}
+                    </ul>
+                    {{/if}}
+                </li>
+            </ul>
+            {{/if}}
+        </div>
+        {{/if}}
+    </div>
+    {{if code}}
+    <div class="example">
+        <div class="highlight-top">
+            <p class="text-content">
+                后台代码
+            </p>
+        </div>
+        <div data-type="java">{{code}}</div>
+    </div>
+    {{/if}}
+    <p>&nbsp;</p>
+</script>
+<!--应用接口详情 End-->
+
+
+<!--脚本 Start-->
+<script>
+    window.aweb={
+        debug:false
+    };
+    window.auiApp = {
+        mode: 'docs',
+        version: 510000,
+        debug: true,
+        init: function () {
+            window.app={
+                taffy:window.parent.app.taffy
+            };
+
+            require.config({
+                //依赖定义
+                shim: {
+                    'underscore': {
+                        'exports': '_'
+                    },
+                    jQueryFlowchart: {
+                        deps: [
+                            'flowchart'
+                        ]
+                    },
+                    Raphael: {
+                        exports: 'Raphael'
+                    },
+                    sequenceDiagram: {
+                        deps: [
+                            'Raphael',
+                            'underscore'
+                        ]
+                    },
+
+                    docs: {
+                        deps: ['api']
+                    },
+                    aweb:{
+                        deps:['docs']
+                    }
+                },
+                paths: {
+
+                    //此处为开发外部库文件
+                    'docs': './script/spa/docs',
+                    'api':'./script/spa/api.app',
+                    'index':'./script/spa/index',
+                    'template':'script/lib/template/template',
+                    'htmlclean': './script/lib/jquery.htmlClean',
+
+//                    //markdown 插件
+                    'underscore': 'script/lib/md/underscore.min',
+                    'marked': 'script/lib/md/marked.min',
+                    'prettify': 'script/lib/md/prettify.min',
+                    'Raphael': 'script/lib/md/raphael.min',
+                    'sequenceDiagram': 'script/lib/md/sequence-diagram.min',
+                    'flowchart': 'script/lib/md/flowchart.min',
+                    'jQueryFlowchart': 'script/lib/md/jquery.flowchart.min',
+                    'editormd': 'script/lib/md/editormd.min',
+
+
+                    //图片查看器
+                    'UI.ImageViewer':'./script/lib/UI.ImageViewer'
+                }
+            });
+
+            require(['api'],function(){
+                var siteName = document.title,
+                    openPage = function () {
+                        var hash = decodeURI(window.location.hash),
+                            hashArr = hash&&hash.split('?'),
+                            i,hashItem,path,querys,j,queryItem,title,
+                            pages = app.router.pages,
+                            option = {},
+                            content = {},
+                            flag = false,
+                            domID,key;
+                        if (hash && hash.match('#/')) {
+                            path = hashArr[0].slice(2);
+
+                            if (hashArr[1]) {
+                                hashItem = hashArr[1];
+                                querys = hashItem.split('&');
+
+                                for (j = 0; j < querys.length; j++) {
+                                    queryItem = querys[j].split('=');
+
+                                    if (queryItem[0] === 'title' && queryItem[1]) {
+                                        title = queryItem[1];
+
+                                    } else if (queryItem[0] === 'pageId' && queryItem[1]) {
+                                        pageId = queryItem[1];
+
+                                    } else if (queryItem[0] && queryItem[1]) {
+                                        content[queryItem[0]] = queryItem[1];
+                                    }
+                                }
+                            }
+
+                            if (path && path.match(/^\S+\/\S+\/\S+$/)) {
+
+                                if (!$.isEmptyObject(pages)) {
+                                    for (key in pages) {
+                                        if (pages.hasOwnProperty(key) && pages[key]) {
+                                            if (pageId && pages[key].id === pageId && path && path === pages[key].page.replace(/#/g, '/')) {
+                                                flag = true;
+                                                domID = key;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (flag) {
+                                    app.open(pages[domID]);
+                                } else {
+                                    option.page = path.replace(/\//g, '#');
+                                    option.status = true;
+                                    option.id = pageId;
+                                    option.title = title;
+                                    option.content = content;
+                                    option.page && app.open(option);
+                                }
+                            }
+                        } else {
+                            //是否默认打开首页，如果需要打开首页，则在此处调用 app.open();
+                            /*
+                             app.open({
+                             page: 'versionDetail#test#versionDetail',
+                             status: true,
+                             id: 'home',
+                             })
+                             */
+                        }
+                    };
+
+                app.shelter.hide();
+                app.router = new app.Controller({
+                    View: aweb.View,
+                    view: {
+                        isGlobal: true,
+                        contextMenuOption: {
+                            FIRST: ['middle'],
+                            CURRENT: ['refresh', 'middle'],
+                            LAST: ['middle' ],
+                            ONLY: ['middle'],
+                            _DEFAULT: ['middle'],
+                            middle: {
+                                name: '关闭此窗口',
+                                filter: ':eq(_index_)'
+                            },
+                            others: {
+                                name: '关闭其他窗口',
+                                filter: ':not(:eq(_index_))'
+                            },
+                            all: {
+                                name: '关闭所有窗口',
+                                filter: ''
+                            },
+                            refresh: {
+                                name: '刷新此窗口',
+                                action: 'refresh'
+                            },
+                            ctnTemp: '<ul class="aui-dropdown-menu" style="position:fixed;"></ul>',
+                            lineTemp: '<li data-action="_action_" data-filter="_filter_">_name_</li>'
+                        },
+                        contextMenuCallback: {
+                            doAction: function ($target, action) {
+                                switch (action) {
+                                    case 'refresh':
+                                        var handler = this.controller.getCurrentHandler();
+
+                                        if (handler) {
+                                            handler.stepTo(handler.currentStep);
+                                        }
+
+                                        break;
+                                }
+                            },
+                            closeTab: function (filter) {
+                                if (typeof filter === 'string') {
+                                    app.shelter.show('正在关闭标签页，请稍候…');
+
+                                    var $children = this.$tabs.children(filter),
+                                        domIDMap = {},
+                                        stack = this.stack,
+                                        i, domID;
+
+
+                                    $children.each(function () {
+                                        domIDMap[$(this).attr('data-dom-id')] = true;
+                                    });
+
+                                    for (i = -1; domID = stack[++i];) {
+                                        if (domIDMap[domID]) {
+                                            this.close(domID);
+                                        }
+                                    }
+
+                                    app.shelter.hide();
+                                }
+                            }
+                        }
+                    }
+                });
+                app.open = function () {
+                    app.router.open.apply(app.router, arguments);
+
+                };
+                app.close = function () {
+                    app.router.tab.close.apply(app.router.tab, arguments);
+                };
+                //绑定 URL 改变事件
+                app.router.on(app.router.STATUS.AFTER_RESUME + ".seo," + app.router.STATUS.AFTER_LOAD+".seo", function (type, handler) {
+
+                    var option = handler.option,
+                        title = option.title,
+                        content = option.content,
+                        hash = decodeURI(window.location.hash),
+                        page = '#/' + handler.option.page.replace(/#/g, '/'),
+                        queryStrings = '',
+                        key;
+                    if(!$.isEmptyObject(content)){
+                        for (key in content) {
+                            if(content.hasOwnProperty(key)&&content[key]){
+                                queryStrings += '&' + key + '=' + content[key];
+                            }
+                        }
+                    }
+                    if (title) {
+
+                        if (queryStrings) {
+
+                            if (option.id) {
+                                page = page + '?' + 'title=' + title + '&pageId=' + option.id + queryStrings;
+                            } else {
+                                page = page + '?' + 'title=' + title + queryStrings;
+                            }
+                        } else {
+
+                            if (option.id) {
+                                page = page + '?' + 'title=' + title + '&pageId=' + option.id;
+                            } else {
+                                page = page + '?' + 'title=' + title;
+                            }
+                        }
+                        document.title = title + '-' + siteName;
+
+                    } else {
+                        if (queryStrings) {
+
+                            if (option.id) {
+                                page = page + '?' + 'pageId=' + option.id + queryStrings;
+                            } else {
+                                page = page + '?' + queryStrings;
+                            }
+                        } else {
+
+                            if (option.id) {
+                                page = page + '?' + 'pageId=' + option.id;
+                            }
+                        }
+                        document.title = siteName;
+                    }
+                    //判断是否需要改变 URL，如果默认打开首页，判断条件代码如下，‘mainPage’应与默认打开的首页的 id 一致。
+                    if ((option.id !== 'mainPage' && hash !== page)||(option.id === 'mainPage' && hash !== page&&hash!=='')) {
+                        if (window.history.pushState) {
+                            window.history.pushState(null, null, page);
+                        } else {
+                            window.location.hash = page;
+                        }
+
+                    }
+                    //如果不需要打开首页，判断条件如下
+                    if (hash !== page) {
+                        if (window.history.pushState) {
+                            window.history.pushState(null, null, page);
+                        } else {
+                            window.location.hash = page;
+                        }
+                    }
+                });
+                //判断页面是否是WINDOW类型
+                if (!app.getQueryStringMap().windowId) {
+                    openPage();
+                    //页面是否显示全屏，需要则去掉以下注释
+                    //  app.router.tab.fullscreen(true);
+                    //  app.router.tab.displayNav(false);
+
+                } else {
+                    //WINDOW类型页面是否需要显示全屏，需要则去掉以下注释
+                    //app.router.tab.fullscreen(true);
+                    //app.router.tab.displayNav(false);
+                }
+
+                window.addEventListener('hashchange', function () {
+                    openPage();
+                });
+                require(['docs'], function (docs) {
+                    if (auiApp.debug) {
+                        window.Docs = docs;
+                    }
+
+                    require(['marked', 'prettify', 'Raphael', 'sequenceDiagram', 'flowchart', 'jQueryFlowchart', 'editormd'], function (marked, preffify, Raphael, sequenceDiagram, flowchart, jQueryFlowchart, editormd) {
+                        window.marked = marked;
+                        window.editormd = editormd;
+                        docs.init();
+                    });
+                });
+            });
+
+
+        },
+        css: false
+    };
+</script>
+<script type="text/javascript" src="script/lib/require.js" data-main="bootloader"></script>
+<!--脚本 End-->
+</body>
+</html>

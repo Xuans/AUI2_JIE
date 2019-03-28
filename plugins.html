@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+    <meta content="minimal-ui" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <title>APP | The New AUI</title>
+    <style>
+        .hide {
+            display: none
+        }
+
+        .aui-start-screen {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 5;
+            background: white;
+        }
+
+        .aui-start-screen-logo {
+            position: absolute;
+            top: calc(50% - 50px);
+            display: block;
+            z-index: -1;
+            transform: translateY(-50%);
+            opacity: .2;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            font-family: "黑体" !important;
+            font-size: 150px;
+            font-weight: 200;
+            color: #0a0a0a;
+        }
+        .aui-code-title{
+            overflow: hidden;
+            height: auto;
+        }
+        .aui-overview-merge-custom,.aui-overview-merge-platform {
+            width: 50%;
+            float: left;
+            padding: .3em 0.6em;
+            height: 2em;
+            box-sizing: border-box;
+        }
+        .aui-btn{
+            float: right;
+            padding: 0.2em 0.4em
+        }
+        .aui-overview-clean-api-title{
+            padding: 0.4em;
+            width: 68%;
+            float: left;
+        }
+        .aui-btn-ctn{
+            float: right;
+            padding-right:0.6em;
+        }
+
+        .aui-api-content-title .aui-btn{
+            margin-top: -0.4em;
+            margin-right: -0.4em;
+        }
+
+
+    </style>
+    <style id="bodyHidden">
+        body > div:not(.aui-start-screen) {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+
+<!--主容器 Start-->
+<div id="auiApiCtn" class="aui-new-api">
+
+</div>
+
+<!--Start Screen Start-->
+<div id="auiStartScreen" class="aui-start-screen">
+    <h1 class="aui-start-screen-logo">APP 插件</h1>
+</div>
+<!--Start Screen End-->
+<!--脚本 Start-->
+<script>
+    window.auiApp = {
+        mode: 'plugins',
+        version: 520000,
+        debug: true,
+        css: ['css/aui-viewer.css'],
+
+        init: function () {
+
+            require(['jquery', 'vue', 'base', 'config.widget', 'external', 'vs/loader', 'vs/editor/editor.main'], function ($, Vue, base, WidgetConfig, external) {
+                var interfaceConfig = [{
+                    name: 'desp',
+                    type: 'string_input',
+                    desp: '中文名'
+                }, {
+                    name: 'name',
+                    type: 'string_input',
+                    desp: '接口名'
+                },
+                    // {
+                    //     name: 'details',
+                    //     type: 'string_input',
+                    //     desp: '详情'
+                    // },
+                    {
+                        name: 'belongTo',
+                        type: 'string_select',
+                        desp: '类型',
+                        valueArray: ['function', 'class', 'closure'],
+                        despArray: ['方法', '类', '闭包']
+                    },
+                    {
+                        name: 'params',
+                        desp: '入参',
+                        type: 'array',
+                        attrInEachElement: [{
+                            name: 'name',
+                            desp: '英文名',
+                            type: 'string_input'
+                        },
+                            {
+                                name: 'desp',
+                                desp: '描述',
+                                type: 'string_input'
+                            },
+                            WidgetConfig.paramType,
+                            {
+                                name: 'necessary',
+                                desp: '是否必填',
+                                type: 'boolean',
+                                defaultValue: true
+                            },
+                            {
+                                name: 'defaultValue',
+                                type: 'string_simpleHtml',
+                                desp: '默认值',
+
+                            },
+                            {
+                                name: 'children',
+                                desp: '子参数',
+                                type: 'array',
+                                attrInEachElement: 'self',
+                                require: {
+                                    type: ['object', 'array']
+                                }
+                            }
+                        ],
+                        require: {
+                            belongTo: ['function', 'closure']
+                        }
+                    }, {
+                        name: 'hasReturn',
+                        desp: '是否有出参',
+                        type: 'boolean',
+                        defaultValue: false,
+                        require: {
+                            belongTo: ['function', 'closure']
+                        }
+                    },
+                    {
+                        name: 'returnValue',
+                        desp: '出参',
+                        type: 'object',
+                        attr: [{
+                            name: 'name',
+                            desp: '英文名',
+                            type: 'string_input'
+                        },
+                            {
+                                name: 'desp',
+                                desp: '描述',
+                                type: 'string_input'
+                            }, {
+                                name: 'details',
+                                desp: '详情',
+                                type: 'string_input'
+                            },
+                            WidgetConfig.paramType,
+                            {
+                                name: 'children',
+                                desp: '子元素',
+                                type: 'array',
+                                attrInEachElement: 'self',
+                                require: {
+                                    type: ['object', 'array']
+                                }
+                            },
+                            {
+                                name: 'defaultValue',
+                                type: 'string_simpleHtml',
+                                desp: '默认值',
+                            }
+
+                        ],
+                        require: {
+                            hasReturn: [true]
+                        }
+                    },
+                    {
+                        name: 'cInterfaces',
+                        type: 'array',
+                        desp: '子方法',
+                        attrInEachElement: [{
+                            name: 'desp',
+                            type: 'string_input',
+                            desp: '中文名'
+                        }, {
+                            name: 'name',
+                            type: 'string_input',
+                            desp: '接口名'
+                        },
+
+                            {
+                                name: 'details',
+                                type: 'string_input',
+                                desp: '详情'
+                            },
+                            {
+                                name: 'params',
+                                desp: '入参',
+                                type: 'array',
+                                attrInEachElement: [{
+                                    name: 'name',
+                                    desp: '名称',
+                                    type: 'string_input'
+                                },
+                                    {
+                                        name: 'desp',
+                                        desp: '描述',
+                                        type: 'string_input'
+                                    },
+                                    {
+                                        desp: '在逻辑概览中的默认配置类型',
+                                        name: 'overviewType',
+                                        type: 'string_select',
+                                        valueArray: ['default', 'interface', 'request', 'response'],
+                                        despArray: ['默认', '接口', '传输数据', '返回数据']
+                                    },
+                                    WidgetConfig.paramType,
+                                    {
+                                        name: 'defaultValue',
+                                        desp: '默认值',
+                                        type: 'string_input',
+                                        require: {
+                                            type: ['string', 'number', 'boolean']
+                                        }
+                                    },
+                                    {
+                                        name: 'children',
+                                        desp: '子参数',
+                                        type: 'array',
+                                        attrInEachElement: 'self',
+                                        require: {
+                                            type: ['object', 'array', 'handler']
+                                        }
+                                    }
+                                ]
+                            }, {
+                                name: 'hasReturn',
+                                desp: '是否有出参',
+                                type: 'boolean',
+                                defaultValue: true
+                            },
+                            {
+                                name: 'returnValue',
+                                desp: '出参',
+                                type: 'object',
+                                attr: [{
+                                    name: 'name',
+                                    desp: '名称',
+                                    type: 'string_input'
+                                },
+                                    {
+                                        name: 'desp',
+                                        desp: '描述',
+                                        type: 'string_input'
+                                    },
+                                    WidgetConfig.paramType,
+                                    {
+                                        name: 'defaultValue',
+                                        desp: '默认值',
+                                        type: 'string_input',
+                                        require: {
+                                            type: ['string', 'number', 'boolean']
+                                        }
+                                    },
+                                    {
+                                        name: 'children',
+                                        desp: '子元素',
+                                        type: 'array',
+                                        attrInEachElement: 'self',
+                                        require: {
+                                            type: ['object', 'array']
+                                        }
+                                    }
+                                ],
+                                require: {
+                                    hasReturn: [true]
+                                }
+                            }
+                        ],
+                        require: {
+                            belongTo: ['class']
+                        },
+
+                    },
+                    // {
+                    //     name: 'defaultValue',
+                    //     type: 'string_simpleHtml',
+                    //     desp: '默认值'
+                    // }
+                ];
+
+                external.getPlugin(function (data) {
+
+                    var SET_CONFIG_ITEM_ID='apiConfigItem',
+                        pluginData = JSON.parse(data),
+                        platformData = pluginData.platform,
+                        platformConfig = platformData.config,
+                        platformCode = platformData.code,
+                        projectData = pluginData.project,
+                        projectConfig = projectData.config,
+                        projectCode = projectData.code,
+                        title=projectConfig.desp||platformConfig.desp,
+                        name=projectConfig.name||platformConfig.name,
+                        diffEditorInstance;
+
+
+                    new Vue({
+                        el: '#auiApiCtn',
+                        template: [
+                            '<div class="aui-api-container">' +
+
+                            '<div class="aui-api-main">' +
+
+                            '<div class="aui-api-content newApi" >' +
+                            '<div class="aui-api-config">' +
+                            '<div data-role="wrapper">' +
+                            '<div class="aui-api-content-title">配置' +
+                            '<button  class="aui-btn" @click="updateJs(1)" v-show="configUpdate"><i title="更新配置" class="aui aui-fanbianyi" ></i></button>' +
+
+                            '</div>'+
+
+                            '<div id="'+SET_CONFIG_ITEM_ID+'"></div>' +
+                            '</div>' +
+                            '</div>' +
+
+                            '<div class="aui-api-code" style="height:100%;width:100%">' +
+                            '<div class="aui-api-content-title">接口代码 ' +
+                            '<button  class="aui-btn" @click="updateJs(2)" v-show="codeUpdate"><i title="更新代码" class="aui aui-fanbianyi" ></i></button>' +
+                            '</div>' +
+                            '<div class="aui-code-title">'+
+                            '<div class="aui-overview-merge-platform">' +
+                            '<label>平台</label>' +
+                            // '<i-select  v-model="version" v-if="showVersion"><i-option v-for="item in versionSources" :value="item">{{sourcesMap[item]}}</i-option></i-select>' +
+                            '</div>' +
+                            '<div class="aui-overview-merge-custom"><label>项目</label></div>' +
+                            '</div>'+
+
+                            '<div style="width: 100%; height: 100%" v-code=""></div>' +
+                            '</div>' +
+
+                            '</div>' +
+
+                            '</div>' +
+                            '<div class="aui-overview-clean-tool-panel">' +
+                            '<div  class="aui-overview-clean-api-title">{{currentTitle}}{{diffTip}}</div>' +
+                            '<div class="aui-btn-ctn">' +
+                            '<button  class="aui-btn" @click.stop="saveJs"><i title="保存" class="aui aui-baocun" ></i></button>' +
+                            '<button  class="aui-btn" @click.stop="reload"><i title="刷新" class="aui aui-shuaxin" ></i></button>' +
+                            '<button  class="aui-btn" @click="updateJs(0)" v-show="configUpdate||codeUpdate"><i title="一键更新" class="aui aui-fanbianyi" ></i></button>' +
+
+                            '</div>' +
+                            '</div>' +
+
+                            '</div>'
+                        ].join(''),
+
+                        created: function () {
+
+                        },
+
+
+                        mounted: function () {
+                            this.updateStatus();
+                            this.setCode();
+                            this.setConfig();
+
+
+
+                        },
+
+
+                        directives: {
+                            code: {
+                                inserted: function (el) {
+                                    diffEditorInstance = monaco.editor.createDiffEditor(el, {
+                                        enableSplitViewResizing: false
+                                    });
+                                    diffEditorInstance.setModel({
+                                        original: monaco.editor.createModel('', 'text/javascript'),
+                                        modified: monaco.editor.createModel('', 'text/javascript')
+                                    });
+
+                                },
+
+                                update: function (el, binding) {
+                                    // diffEditorInstance.setValue(binding.value.value);
+                                }
+                            }
+                        },
+
+                        data: function () {
+
+                            return {
+                                currentTitle: title + ',app.' + name ,
+                                diffTip: '',
+                                configUpdate:false,
+                                codeUpdate:false,
+                                showRevert: false
+                            }
+
+                        },
+
+
+                        methods: {
+                            reload:function () {
+                                document.location.reload(true);
+                            },
+                            updateStatus:function () {
+                                var diff=this.setDiff();
+                                this.configUpdate=diff.configDiff && platformConfig;
+                                this.codeUpdate=diff.codeDiff && platformCode;
+                            },
+                            setCode: function () {
+
+                                var originalEditor = diffEditorInstance.getOriginalEditor(),
+                                    modifiedEditor = diffEditorInstance.getModifiedEditor();
+
+                                originalEditor.setValue(platformCode);
+                                modifiedEditor.setValue(projectCode || platformCode);
+
+                            },
+
+
+                            setDiff: function () {
+
+
+                                    var diffText = '',
+
+                                      configDiff,
+                                      codeDiff;
+
+                                if (projectCode && platformCode) {
+                                  //  projectConfig = base.getCleanedOption(projectConfig, interfaceConfig);
+                                    if (configDiff = this.isConfigDiff(projectConfig, platformConfig)) {
+                                        diffText += '(配置项不一致)';
+
+                                    }
+                                    if (codeDiff = this.isCodeDiff(projectCode, platformCode)) {
+                                        diffText += '(代码不一致)';
+                                    }
+                                }
+
+                                this.diffTip = diffText;
+
+                                return {
+                                    configDiff: configDiff,
+                                    codeDiff: codeDiff
+                                }
+
+
+                            },
+
+                            isConfigDiff: function (project, platform) {
+                                var key,
+                                    result = false,
+                                    seed = [{platform: platform, project: project}],
+                                    cursor = -1,
+                                    project, platform,
+                                    noCompareAttrMap = {
+                                        appJsCode: true,
+                                        edition: true,
+                                        _belongTo: true,
+                                        compareVer: true,
+                                        isModify: true,
+                                        parent: true
+                                    },
+                                    defaultValue={
+
+                                        false:false,
+                                        true:true
+                                    },
+                                    projectItem, platformItem,
+                                    item,hasInProject={};
+
+                                while ((item = seed[++cursor])) {
+                                    project = item.project;
+                                    platform = item.platform;
+                                    hasInProject={};
+                                    if (typeof project !== 'object' || typeof platform!=='object') {
+                                        return true;
+                                    } else {
+                                        for (key in project) { //
+                                            projectItem = project[key];
+                                            platformItem = platform[key];
+                                            hasInProject[key]=true;
+                                            if (!(key in noCompareAttrMap)) {
+                                                if (!(key in platform) ) {
+                                                    if(platformItem===undefined){
+
+                                                    }else{
+                                                        console.log('平台', key, platformItem);
+                                                        console.log('项目', key, projectItem);
+                                                        return true;
+                                                    }
+
+                                                } else if (projectItem !== platformItem) {
+
+                                                    if (typeof projectItem === 'object') {
+                                                        if (JSON.stringify(projectItem) === JSON.stringify(platformItem)) {
+                                                            //   break;
+                                                        } else {
+                                                            //深度比较
+                                                            if (Array.isArray(projectItem)) {
+                                                                if (projectItem.length !== platformItem.length) {
+                                                                    console.log('平台', key, platformItem);
+                                                                    console.log('项目', key, projectItem);
+                                                                    return true;
+                                                                }
+                                                                projectItem.forEach(function (item, index) {
+                                                                    if(item.name){
+                                                                        seed.push({
+                                                                            project: item,
+                                                                            platform: platformItem[index]
+                                                                        });
+                                                                    }
+
+                                                                });
+                                                            } else{
+                                                                if(projectItem.name){
+                                                                    seed.push({
+                                                                        project: projectItem,
+                                                                        platform: platformItem
+                                                                    })
+                                                                }
+
+                                                            }
+                                                        }
+
+
+                                                    } else {
+                                                        if(key==='defaultValue'){
+                                                            if(defaultValue.hasOwnProperty(platformItem) && defaultValue.hasOwnProperty(projectItem)){
+                                                                if(defaultValue[projectItem]!==defaultValue[platformItem]){
+                                                                    console.log('平台', key, platformItem);
+                                                                    console.log('项目', key, projectItem);
+                                                                    return true;
+                                                                }
+                                                            }else{
+                                                                if(projectItem!=platformItem){
+                                                                    console.log('平台', key, platformItem);
+                                                                    console.log('项目', key, projectItem);
+                                                                    return true;
+                                                                }
+                                                            }
+                                                        }else{
+                                                            if(platformItem==projectItem){
+
+                                                            }else {
+                                                                console.log('平台', key, platformItem);
+                                                                console.log('项目', key, projectItem);
+                                                                return true;
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+                                        }
+
+                                        $.extend(hasInProject,noCompareAttrMap);
+                                        for(key in platform){
+                                            if(!(key in hasInProject)){
+                                                console.log('平台不存在', key, platform[key]);
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                return result;
+                            },
+                            isCodeDiff: function (str1, str2) {
+                                str1 = str1 && str1.replace(/[\n\r\t]/g, '').replace(/\s{4}/g, '');
+                                str2 = str2 && str2.replace(/[\n\r\t]/g, '').replace(/\s{4}/g, '');
+                                return str1 !== str2;
+                            },
+
+                            setConfig: function () {
+
+                                base.baseConfig(SET_CONFIG_ITEM_ID, projectConfig, interfaceConfig);
+
+                            //    projectConfig = base.getCleanedOption(projectConfig, interfaceConfig);
+
+
+                            },
+
+
+                            saveJs: function () {
+                                var modifiedEditor = diffEditorInstance.getModifiedEditor(),
+                                    context=this;
+
+                                projectConfig=base.getCleanedOption(projectConfig, interfaceConfig);
+                                projectCode = modifiedEditor.getValue();
+
+                                external.savePlugin({code:projectCode,config:projectConfig},function () {
+                                    context.updateStatus();
+                                    app.alert('修改接口成功', app.alert.SUCCESS);
+
+                                })
+
+
+
+                            },
+
+                            updateJs(flag){
+                                switch (flag){
+                                    case 0: //代码配置更新
+                                        projectConfig=JSON.parse(JSON.stringify(platformConfig));
+                                        projectCode=platformCode;
+                                        this.updateStatus();
+                                        this.setCode();
+                                        this.setConfig();
+
+                                        break;
+                                    case 1: //更新配置
+                                        projectConfig=JSON.parse(JSON.stringify(platformConfig));
+                                        this.updateStatus();
+                                        this.setConfig();
+                                        break;
+                                    case 2: //更新代码
+                                        projectCode = platformCode;
+
+                                        this.updateStatus();
+                                        this.setCode();
+
+                                        break;
+
+
+                                }
+                            }
+
+
+                        }
+                    });
+                })
+            });
+        }
+    };
+</script>
+<script type="text/javascript" src="script/lib/require.js" data-main="bootloader"></script>
+<!--脚本 End-->
+</body>
+</html>

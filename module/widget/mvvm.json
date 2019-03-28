@@ -1,0 +1,19 @@
+{
+    "views": {
+        "widget": {
+            "template": "widget.html",
+            "js": "widget.js"
+        }
+    }, 
+    
+    "models": {
+    }, 
+    
+    "flows": [
+        {
+            "id": "widget"
+        }
+    ],
+
+    "stepBar": false
+}

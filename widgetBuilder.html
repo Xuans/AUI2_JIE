@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+    <meta content="minimal-ui" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <title>Widget Builder | The New AUI</title>
+    <style>
+        .aui-start-screen {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 5;
+            background: white;
+        }
+
+        .aui-start-screen-logo {
+            position: absolute;
+            top: 20%;
+            left: calc(50% - 220px);
+            z-index: -1;
+            opacity: .2;
+            padding: 0;
+            margin: 0;
+            color: #0a0a0a;
+            line-height: 2.5;
+            font-size: 120px;
+            font-family: Arial;
+            font-weight: 200;
+            text-shadow: 3px 6px 5px #000;
+            text-rendering: optimizelegibility;
+            transition: all linear .3s;
+        }
+    </style>
+    <style id="bodyHidden">
+        body > div:not(.aui-start-screen) {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!--导航栏 Start-->
+<div id="auiNavBar" class="aui-page-nav bottom">
+    <div class="aui-tabs-left-group">
+    </div>
+    <div class="aui-tabs-right-group" id="auiNavTabsRightGroup">
+        <span class="divider-vertical"></span>
+        <button id="auiNavRefreshModeBtn" type="button" title="刷新" class="aui-btn">
+            <i class="aui aui-shuaxin"></i>
+        </button>
+        <!--<span class="divider-vertical"></span>
+        <button id="auiDeBugModeBtn" type="button" title="调试" class="aui-btn">
+            <i class="aui aui-tiaoshi"></i>
+        </button>-->
+        <span class="divider-vertical"></span>
+        <button id="auiNavHelpModeBtn" type="button" title="关闭帮助模式" class="aui-btn">
+            <i class="aui aui-kaiguan-kai"></i>
+        </button>
+
+        <span class="divider-vertical"></span>
+        <button id="auiNavHelpBtn" type="button" title="开发者中心（Alt+Q）" class="aui-btn">
+            <i class="aui aui-kaifazhezhongxin1"></i>
+        </button>
+
+        <!--<span class="divider-vertical"></span>-->
+        <!--<button id="auiNavReferenceLineBtn" type="button" title="参考线（Alt+L）" class="aui-btn">-->
+            <!--<i class="aui aui-cankaoxian"></i>-->
+        <!--</button>-->
+        <span class="divider-vertical"></span>
+        <button id="auiNavResetLayoutBtn" type="button" title="重置AWEB IDE前端编辑器面板布局" class="aui-btn">
+            <i class="aui aui-zhongzhimianbanbuju"></i>
+        </button>
+        <span class="divider-vertical"></span>
+        <button id="auiNavResetBtn" type="button" title="清除内容（Alt+R）" class="aui-btn">
+            <i class="aui aui-neirongqingkong"></i>
+        </button>
+        <span class="divider-vertical"></span>
+        <button id="auiNavSaveCodeBtn" type="button" title="保存并更新代码（Alt+S）" class="aui-btn">
+            <i class="aui aui-gengxinbingbaocun"></i>
+        </button>
+        <span class="divider-vertical"></span>
+        <button id="auiNavSaveBtn" type="button" title="保存（Ctrl+S）" class="aui-btn">
+            <i class="aui aui-baocun"></i>
+        </button>
+        <span class="divider-vertical"></span>
+        <!--<button id="auiNavPreviewBtn" type="button" class="aui-btn" title="预览模式（Alt+P）">-->
+        <!--<i class="aui aui-dingbuyulan"></i>-->
+        <!--</button>-->
+    </div>
+</div>
+<!--导航栏 End-->
+<!--主容器 Start-->
+<div id="auiPageCtn" class="aui-window-ctn hidden">
+</div>
+<div id="auiPagePanels" class="hide">
+    <!--内容 Start-->
+    <div id="auiPageCtt">
+        <div id="auiFrameCtn" data-role="content" class="aui-main-page">
+            <div id="auiEditFrame" class="aui-editor-ctn default-theme"></div>
+        </div>
+    </div>
+    <!--内容 End-->
+    <!--逻辑概览面板 Start-->
+    <div id="auiYuQCtn" class="aui-tab-pane aui-overview-code-menu">
+        <!--代码搜索 Start-->
+        <div class="aui-aside-left-search-bar">
+            <input id="auiYuQSearch" type="text" class="aui-search-query"/>
+        </div>
+        <!--代码搜索 End-->
+        <div id="auiYuQList" class="aui-overview-code-list"></div>
+    </div>
+    <!--逻辑概览面板 End-->
+    <!--菜单 Start-->
+    <div data-role="leftAside" id="auiAside">
+        <!--组件搜索 Start-->
+        <div class="aui-aside-left-search-bar">
+            <input id="auiAsideSearch" type="text" class="aui-search-query" placeholder="搜索组件（Alt+M）"/>
+        </div>
+        <!--组件搜索 End-->
+
+        <div id="asideTabCtn" class="aui-tabbable">
+            <ul id="asideNav" class="aui-nav aui-nav-tabs">
+                <li class="active" title="平台组件"><a data-href="#auiAsidePlatformMenu"><i
+                        class="aui  aui-pingtaizujian "></i></a></li>
+                <li title="银行组件"><a data-href="#auiAsideBankMenu"><i class="aui aui-yinhangzujian"></i></a></li>
+                <li title="项目组件"><a data-href="#auiAsideAppMenu"><i class="aui aui-xiangmuzujian"></i></a></li>
+                <li title="收藏组件"><a data-href="#auiAsideCollectionMenu"><i class="aui aui-shoucangzujian"></i></a></li>
+            </ul>
+            <div class="aui-tab-content">
+                <div class="aui-aside-menu-ctn" id="auiAsidePlatformMenu"></div>
+                <div class="aui-aside-menu-ctn" id="auiAsideBankMenu"></div>
+                <div class="aui-aside-menu-ctn" id="auiAsideAppMenu"></div>
+                <div class="aui-aside-menu-ctn" id="auiAsideCollectionMenu">
+                    <ul class="aui-custom-menu-sortable"></ul>
+                </div>
+            </div>
+        </div>
+        <div id="auiAsideSearchMenuCtn" class="aside-search-menu-ctn hide">
+            <div class="aui-aside-menu-ctn" id="auiAsideSearchMenu"></div>
+        </div>
+    </div>
+    <!--菜单 End-->
+    <!--配置 Start-->
+    <div data-role="auiConfigureCtn" id="auiConfigureCtn" class="aui-configure-ctn aui-hide-title">
+        <!--<label>-->
+        <!--<input type="text" id="auiConfigureTtl"/>-->
+        <!--</label>-->
+        <span class="aui-config-widget-name" data-role="configWidgetName">
+		</span>
+        <div class="aui-configure-ctt aui-tabbable">
+            <ul id="auiConfigureLinks" class="aui-nav aui-nav-tabs">
+                <li class="active hide" title="参数">
+                    <a href="#auiBasicConfig" data-toggle="tab"><i class="aui aui-shuxingyucanshu"></i></a>
+                </li>
+                <li class="hide" title="校验配置">
+                    <a href="#auiEdmRegexConfig" data-toggle="tab"><i class="aui aui-xiaoyan"></i></a>
+                </li>
+                <li class="hide" title="事件绑定">
+                    <a href="#auiEventConfig" data-toggle="tab"><i class="aui aui-shijian"></i></a>
+                </li>
+                <li class="hide" title="生命周期">
+                    <a href="#auiLifecycleConfig" data-toggle="tab"><i class="aui aui-shengmingzhouqi"></i></a>
+                </li>
+                <li class="hide" title="样式">
+                    <a href="#auiCssConfig" data-toggle="tab"><i class="aui aui-yangshi"></i></a>
+                </li>
+                <li class="hide" title="国际化配置">
+                    <a href="#auiTranslatorConfig" data-toggle="tab"><i class="aui aui-guojihua"></i></a>
+                </li>
+            </ul>
+            <div class="aui-tab-content aui-config-ctn">
+                <div class="aui-tab-pane active" id="auiBasicConfig">
+                    <div id="auiBasicConfigEditor" class="aui-css-editor"></div>
+                </div>
+                <div class="aui-tab-pane aui-event-config" id="auiEdmRegexConfig"></div>
+                <div class="aui-tab-pane aui-config-ctn" id="auiEventConfig"></div>
+                <div class="aui-tab-pane aui-lifecycle-config" id="auiLifecycleConfig"></div>
+                <div class="aui-tab-pane aui-css-config" id="auiCssConfig"></div>
+                <div class="aui-tab-pane aui-translator-config" id="auiTranslatorConfig"></div>
+            </div>
+        </div>
+        <div id="auiConfigOprCtn" class="aui-config-opration-ctn">
+            <i data-role="copy" class="aui aui-fuzhi" title="复制"></i>
+            <i data-role="cut" class="aui aui-jianqie" title="剪切"></i>
+            <i data-role="paste" class="aui aui-niantie" title="粘贴"></i>
+            <i data-role="del" class="aui aui-shanchu" title="删除"></i>
+        </div>
+    </div>
+    <!--配置 End-->
+
+    <!--代码 Start-->
+    <div id="auiCodeCtn" class="aui-wc-code-ctt">
+        <div id="auiWCCodeEditor" class="aui-wc-code-editor"></div>
+    </div>
+    <!--代码 End-->
+
+    <!--配置定义 Start-->
+    <div id="auiConfigureDefCtn" data-role="content" class="aui-main-page aui-config-ctn"></div>
+    <!--配置定义 End-->
+
+
+    <!--预览面板 Start-->
+    <div id="auiPreviewFrame" data-role="preview" class="aui-preview-frame-ctn"></div>
+    <!--预览面板 End-->
+</div>
+<!--<div id="auiPreviewFrame" class="hide aui-preview-ctn"></div>-->
+<!--主容器 End-->
+
+
+<!--Start Screen Start-->
+<div id="auiStartScreen" class="aui-start-screen">
+    <h1 class="aui-start-screen-logo">业务组件</h1>
+</div>
+<!--Start Screen End-->
+
+<!--脚本 Start-->
+<script>
+    window.auiApp = {
+        mode: 'widgetBuilder',
+        version: 510000,
+        debug: true,
+        css: ['css/aui-builder.css'],
+        layout: {
+            panels: {
+                auiPageCtt: {
+                    desp: '内容',
+                    display: 'block',
+                    icon: 'aui-neirongshu',
+                    role: 'page'
+                },
+                auiAside: {
+                    desp: '菜单',
+                    display: 'block',
+                    icon: 'aui-caidan',
+                    role: 'menu'
+                },
+                auiConfigureCtn: {
+                    desp: '配置',
+                    display: 'block',
+                    icon: 'aui-shilipeizhi',
+                    role: 'config'
+                },
+                auiYuQCtn: {
+                    desp: '逻辑概览',
+                    display: 'block',
+                    icon: 'aui-luojigailan',
+                    role: 'yuq'
+                },
+                auiCodeCtn: {
+                    desp: '代码',
+                    display: 'block',
+                    icon: 'aui-daima',
+                    role: 'code'
+                },
+                auiConfigureDefCtn: {
+                    desp: '配置定义',
+                    display: 'block',
+                    icon: 'aui-peizhidingyi',
+                    role: 'configDef'
+                },
+                auiPreviewFrame: {"desp": "预览", "display": "block", "icon": "aui-dingbuyulan", "role": "preview"}
+            },
+            groups: [{
+                css: {
+                    top: '0%',
+                    left: '17%',
+                    height: '100%',
+                    width: '55%',
+                    zIndex: 0,
+                    display: 'block'
+                },
+                content: ['auiPageCtt', 'auiConfigureDefCtn', 'auiCodeCtn'],
+                active: 'auiPageCtt'
+            },
+                {
+                    "css": {"top": 0, "left": "38.874%", "height": "100%", "width": "28.266%", "zIndex": 2},
+                    "content": ["auiPreviewFrame"],
+                    "active": "auiPreviewFrame",
+                    "id": "E85D2F36927FE0D4F9EF-B037",
+                    "index": 2
+                },
+                {
+                    css: {
+                        top: '0',
+                        left: '72%',
+                        height: '100%',
+                        width: '28%',
+                        zIndex: 0,
+                        display: 'block'
+                    },
+                    content: ['auiConfigureCtn'],
+                    active: 'auiConfigureCtn'
+                }, {
+                    css: {
+                        top: '0%',
+                        left: '0',
+                        height: '100%',
+                        width: '17%',
+                        zIndex: 0,
+                        display: 'block'
+                    },
+                    content: ['auiAside', 'auiYuQCtn'],
+                    active: 'auiAside'
+                }],
+            classes: {
+                auiAside: 'aui-aside-left',
+                auiPageCtt: 'aui-page-ctt'
+            },
+            version: 510000
+        },
+        init: function () {
+            require.config({
+                //依赖定义
+                shim: {
+                    widgetBuilder: {
+                        deps: ["index"]
+                    },
+                    overview: {
+                        deps: ["index"]
+                    },
+                    textExt: {
+                        deps: ["jquery"]
+                    },
+                    textExtTags: {
+                        deps: ['textExt']
+                    }
+                },
+                paths: {
+                    //此处为开发外部库文件
+                    widgetBuilder: './script/spa/widgetBuilder',
+
+                    widgetConfig: './config/widgetConfig',
+
+                    overview: './script/spa/overview2',
+
+                    textExt: "./script/lib/textext.core",
+                    textExtTags: "./script/lib/textext.plugin.tags"
+                }
+            });
+
+
+            require(['index', 'widgetConfig', 'widgetBuilder', 'textExt', 'textExtTags'], function (global, widgetConfig, widgetBuilder) {
+
+                if (auiApp.debug) {
+                    window.A = global.AUI;
+                    window.C = global.CONST;
+                    window.WB = widgetBuilder;
+                }
+
+                widgetBuilder.init();
+            });
+        }
+    }
+</script>
+<script type="text/javascript" src="script/lib/require.js" data-main="bootloader"></script>
+<!--脚本 End-->
+</body>
+</html>

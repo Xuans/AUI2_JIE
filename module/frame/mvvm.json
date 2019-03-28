@@ -1,0 +1,19 @@
+{
+    "views": {
+        "index": {
+            "template": "index.html",
+            "js": "index.js"
+        }
+    }, 
+    
+    "models": {
+    }, 
+    
+    "flows": [
+        {
+            "id": "index"
+        }
+    ],
+
+    "stepBar": false
+}

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="msapplication-tap-highlight" content="no"/>
+	<meta content="minimal-ui" name="viewport"/>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<title>Inspiration | The New AUI</title>
+	<style>
+		.aui-start-screen {
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			z-index: 5;
+			background: white;
+		}
+
+		.aui-start-screen-logo {
+			position: absolute;
+			top: calc(50% - 50px);
+			display: block;
+			z-index: -1;
+			transform: translateY(-50%);
+			opacity: .2;
+			width: 100%;
+			padding: 0;
+			margin:0;
+			text-align: center;
+			font-family: "黑体"!important;
+			font-size:150px;
+			font-weight: 200;
+			color: #0a0a0a;
+		}
+	</style>
+	<style id="bodyHidden">
+		body > div:not(.aui-start-screen) {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+
+<!--导航栏 Start-->
+<div id="auiNavBar" class="aui-page-nav bottom">
+	<div class="aui-tabs-left-group">
+	</div>
+	<div class="aui-tabs-right-group" id="auiNavTabsRightGroup">
+		<span class="divider-vertical"></span>
+		<button id="auiNavRefreshModeBtn" type="button" title="刷新" class="aui-btn">
+			<i class="aui aui-shuaxin"></i>
+		</button>
+		<!--<span class="divider-vertical"></span>
+		<button id="auiDeBugModeBtn" type="button" title="调试" class="aui-btn">
+			<i class="aui aui-tiaoshi"></i>
+		</button>-->
+		<span class="divider-vertical"></span>
+		<button id="auiNavHelpModeBtn" type="button" title="关闭帮助模式" class="aui-btn">
+			<i class="aui aui-kaiguan-kai"></i>
+		</button>
+		<span class="divider-vertical"></span>
+		<button id="auiNavHelpBtn" type="button" title="开发者中心（Alt+Q）" class="aui-btn">
+			<i class="aui aui-kaifazhezhongxin1"></i>
+		</button>
+
+		<!--<span class="divider-vertical"></span>-->
+		<!--<button id="auiNavReferenceLineBtn" type="button" title="参考线（Alt+L）" class="aui-btn">-->
+			<!--<i class="aui aui-cankaoxian"></i>-->
+		<!--</button>-->
+
+		<span class="divider-vertical"></span>
+		<button id="auiNavResetLayoutBtn" type="button" title="重置AWEB IDE前端编辑器面板布局" class="aui-btn">
+			<i class="aui aui-zhongzhimianbanbuju"></i>
+		</button>
+		<span class="divider-vertical"></span>
+		<button id="auiNavResetBtn" type="button" title="清除內容（Alt+R）" class="aui-btn">
+			<i class="aui aui-neirongqingkong"></i>
+		</button>
+		<span class="divider-vertical"></span>
+		<button id="auiNavSaveBtn" type="button" title="保存（Ctrl+S）" class="aui-btn">
+			<i class="aui aui-baocun"></i>
+		</button>
+		<span class="divider-vertical"></span>
+		<button id="auiNavPreviewBtn" type="button" class="aui-btn" title="预览模式（Alt+P）">
+			<i class="aui aui-dingbuyulan"></i>
+		</button>
+	</div>
+</div>
+<!--导航栏 End-->
+
+<!--主容器 Start-->
+<div id="auiPageCtn" class="aui-window-ctn"></div>
+<div id="auiPagePanels" class="hide">
+	<!--内容 Start-->
+	<div id="auiPageCtt">
+		<div id="auiFrameCtn" data-role="content" class="aui-main-page">
+			<div id="auiEditFrame" class="aui-editor-ctn default-theme"></div>
+		</div>
+	</div>
+	<!--内容 End-->
+
+	<!--模板信息面板 Start-->
+	<div id="auiPackageInfo">
+
+	</div>
+	<!--模板信息面板 End-->
+
+	<!--逻辑概览面板 Start-->
+	<div id="auiYuQCtn" class="aui-tab-pane aui-overview-code-menu">
+		<!--代码搜索 Start-->
+		<div class="aui-aside-left-search-bar">
+			<input id="auiYuQSearch" type="text" class="aui-search-query"/>
+		</div>
+		<!--代码搜索 End-->
+		<div id="auiYuQList" class="aui-overview-code-list"></div>
+	</div>
+	<!--逻辑概览面板 End-->
+	<!--菜单 Start-->
+	<div data-role="leftAside" id="auiAside">
+		<!--组件搜索 Start-->
+		<div class="aui-aside-left-search-bar">
+			<input id="auiAsideSearch" type="text" class="aui-search-query" placeholder="搜索组件（Alt+M）"/>
+		</div>
+		<!--组件搜索 End-->
+
+		<div id="asideTabCtn" class="aui-tabbable">
+			<ul id="asideNav" class="aui-nav aui-nav-tabs">
+				<li class="active" title="平台组件"><a data-href="#auiAsidePlatformMenu"><i class="aui  aui-pingtaizujian"></i></a></li>
+				<li title="银行组件"><a data-href="#auiAsideBankMenu"><i class="aui aui-yinhangzujian"></i></a></li>
+				<li title="项目组件"><a data-href="#auiAsideAppMenu"><i class="aui aui-xiangmuzujian"></i></a></li>
+				<li title="收藏组件"><a data-href="#auiAsideCollectionMenu"><i class="aui aui-shoucangzujian"></i></a></li>
+			</ul>
+			<div class="aui-tab-content">
+				<div class="aui-aside-menu-ctn" id="auiAsidePlatformMenu"></div>
+				<div class="aui-aside-menu-ctn" id="auiAsideBankMenu"></div>
+				<div class="aui-aside-menu-ctn" id="auiAsideAppMenu"></div>
+				<div class="aui-aside-menu-ctn" id="auiAsideCollectionMenu">
+					<ul class="aui-custom-menu-sortable"></ul>
+				</div>
+			</div>
+		</div>
+		<div id="auiAsideSearchMenuCtn" class="aside-search-menu-ctn hide">
+			<div class="aui-aside-menu-ctn" id="auiAsideSearchMenu"></div>
+		</div>
+	</div>
+	<!--菜单 End-->
+
+	<!--配置 Start-->
+	<div data-role="auiConfigureCtn" id="auiConfigureCtn" class="aui-configure-ctn aui-hide-title">
+		<!--<label>-->
+			<!--<input type="text" id="auiConfigureTtl"/>-->
+		<!--</label>-->
+		<span class="aui-config-widget-name" data-role="configWidgetName">
+		</span>
+		<div class="aui-configure-ctt aui-tabbable">
+			<ul id="auiConfigureLinks" class="aui-nav aui-nav-tabs">
+				<li class="active hide" title="参数">
+					<a href="#auiBasicConfig" data-toggle="tab"><i class="aui aui-shuxingyucanshu"></i></a>
+				</li>
+				<li class="hide" title="校验配置">
+					<a href="#auiEdmRegexConfig" data-toggle="tab"><i class="aui aui-xiaoyan"></i></a>
+				</li>
+				<li class="hide" title="事件绑定">
+					<a href="#auiEventConfig" data-toggle="tab"><i class="aui aui-shijian"></i></a>
+				</li>
+				<li class="hide" title="生命周期">
+					<a href="#auiLifecycleConfig" data-toggle="tab"><i class="aui aui-shengmingzhouqi"></i></a>
+				</li>
+				<li class="hide" title="样式">
+					<a href="#auiCssConfig" data-toggle="tab"><i class="aui aui-yangshi"></i></a>
+				</li>
+				<li class="hide" title="国际化配置">
+					<a href="#auiTranslatorConfig" data-toggle="tab"><i class="aui aui-guojihua"></i></a>
+				</li>
+			</ul>
+			<div class="aui-tab-content aui-config-ctn">
+				<div class="aui-tab-pane active" id="auiBasicConfig">
+					<div id="auiBasicConfigEditor" class="aui-css-editor"></div>
+				</div>
+				<div class="aui-tab-pane aui-event-config" id="auiEdmRegexConfig"></div>
+				<div class="aui-tab-pane aui-config-ctn" id="auiEventConfig"></div>
+				<div class="aui-tab-pane aui-lifecycle-config" id="auiLifecycleConfig"></div>
+				<div class="aui-tab-pane aui-css-config" id="auiCssConfig"></div>
+				<div class="aui-tab-pane aui-translator-config" id="auiTranslatorConfig"></div>
+			</div>
+		</div>
+		<div id="auiConfigOprCtn" class="aui-config-opration-ctn">
+			<i data-role="copy" class="aui aui-fuzhi" title="复制"></i>
+			<i data-role="cut" class="aui aui-jianqie" title="剪切"></i>
+			<i data-role="paste" class="aui aui-niantie" title="粘贴"></i>
+			<!--<i data-role="package" class="fa fa-cube" title="另存为页面模板"></i>-->
+			<i data-role="del" class="aui aui-shanchu" title="删除"></i>
+		</div>
+	</div>
+	<!--配置 End-->
+
+	<!--代码 Start-->
+	<div id="auiCodeCtn" class="aui-wc-code-ctt">
+		<div id="auiWCCodeEditor" class="aui-wc-code-editor"></div>
+	</div>
+	<!--代码 End-->
+
+	<!--配置定义 Start-->
+	<div id="auiConfigureDefCtn" data-role="content" class="aui-main-page aui-config-ctn"></div>
+	<!--配置定义 End-->
+</div>
+<div id="auiPreviewFrame" class="hide aui-preview-ctn"></div>
+<!--主容器 End-->
+
+<!--Start Screen Start-->
+<div id="auiStartScreen" class="aui-start-screen">
+	<h1 class="aui-start-screen-logo">页面模板</h1>
+</div>
+<!--Start Screen End-->
+
+<!--脚本 Start-->
+<script>
+	window.auiApp = {
+		mode: 'inspiration',
+		version: 510000,
+		debug: true,
+		css: ['css/aui-editor.css'],
+		layout: {
+            panels: {
+                auiPageCtt: {
+                    desp: '内容',
+                    display: 'block',
+                    icon: 'aui-neirongshu',
+                    role: 'page'
+                },
+                auiAside: {
+                    desp: '菜单',
+                    display: 'block',
+                    icon: 'aui-caidan',
+                    role: 'menu'
+                },
+                auiConfigureCtn: {
+                    desp: '配置',
+                    display: 'block',
+                    icon: 'aui-shilipeizhi',
+                    role: 'config'
+                },
+                auiYuQCtn: {
+                    desp: '逻辑概览',
+                    display: 'block',
+                    icon: 'aui-luojigailan',
+                    role: 'yuq'
+                },
+                auiPackageInfo: {
+                    desp: '模板信息',
+                    display: 'block',
+                    icon: 'aui-shuxingyucanshu',
+                    role: 'info'
+                }
+            },
+            groups: [{
+                css: {
+                    top: '0%',
+                    left: '16%',
+                    height: '100%',
+                    width: '61%',
+                    zIndex: 0,
+                    display: 'block'
+                },
+                content: ['auiPageCtt', 'auiPackageInfo'],
+                active: 'auiPageCtt'
+            },
+                {
+                    css: {
+                        top: '0%',
+                        left: '0',
+                        height: '100%',
+                        width: '16%',
+                        zIndex: 0,
+                        display: 'block'
+                    },
+                    content: ['auiAside', 'auiYuQCtn'],
+                    active: 'auiAside'
+                },
+                {
+                    css: {
+                        top: '0',
+                        left: '77%',
+                        height: '100%',
+                        width: '23%',
+                        zIndex: 0,
+                        display: 'block'
+                    },
+                    content: ['auiConfigureCtn'],
+                    active: 'auiConfigureCtn'
+                }],
+            classes: {
+                auiAside: 'aui-aside-left',
+                auiPageCtt: 'aui-page-ctt'
+            },
+			version:510000
+        },
+		init: function () {
+			require(['index', 'ui', 'widget', 'base'], function (global, _, $AW, base) {
+				var AUI = global.AUI,
+					CONST = global.CONST,
+					PAGE_TYPE = CONST.WIDGET.PAGE_TYPE,
+					PACKAGE_TYPE = CONST.WIDGET.TYPE.PACKAGE,
+					WIDGET_TYPE, WIDGET_HREF,
+					PACKAGE_INFO = 'auiPackageInfo',
+					newestPackageInfo = {};
+
+
+				//初始化权限角色
+				external.getRole(function (data) {
+					AUI.data.role.insert(data);
+				});
+
+				//初始化数据实体列表
+				external.getEDM(function (data) {
+					AUI.data.edmModel = app.taffy(data);
+				});
+
+
+				//获取页面路径
+				external.getWebContentPath(function (path) {
+					AUI.configuration.webContentPath = path;
+				});
+
+
+				//获取AUI的配置并初始化菜单
+				AUI.getPageConfig(function () {
+					AUI.renderMenu();
+
+					AUI.resumeDataModel($(CONST.PAGE.FRAME.EDITOR_CTN), CONST.WIDGET.PAGE_TYPE, CONST.WIDGET.PAGE_HREF, function (pageWidget) {
+						var treeMap={},
+							i,ins,id,
+							j,item,items,
+							pageWidgetList,
+							_resumeWidget = function () {
+								var widget;
+								++i;
+								if (i < pageWidgetList.length) {
+									ins = pageWidgetList[i];
+
+									if(treeMap[ins.pID]){
+										widget = $AW(ins.pID);
+
+										if (widget.length && treeMap[ins.cID]) {
+											widget.append(null, _resumeWidget, ins.cID);
+										} else {
+											debugger;
+											_resumeWidget();
+										}
+									}else{
+										_resumeWidget();
+									}
+
+								}
+							};
+
+
+						AUI.data.structure({active: true}).each(function (instance) {
+							treeMap[instance.widgetID]={
+								children:[].concat(instance.children)
+							};
+						});
+
+
+						pageWidgetList=[{
+							pID:'',
+							cID:pageWidget.id()
+						}];
+						i=-1;
+						while (ins=pageWidgetList[++i]){
+							id=ins.cID;
+
+							if(ins=treeMap[id]){
+								items=ins.children;
+								for(j=-1;item=items[++j];){
+									if(treeMap[item]){
+										pageWidgetList.push({
+											pID:id,
+											cID:item
+										});
+									}else{
+										debugger;
+									}
+								}
+							}else{
+								debugger;
+							}
+						}
+
+						pageWidgetList.shift();
+						i = -1;
+						_resumeWidget();
+
+						AUI.panel(pageWidget);
+
+						AUI.hideWelcomeScreen();
+					}, function (config, data, $auiFrame) {
+						var list = CONST.DATA.list,
+							taffyList = CONST.DATA.taffyList,
+							i, item,
+							$auiEditFrame = $auiFrame,
+							updateCallback = function (args) {
+								var newObj = args.newObj;
+								newestPackageInfo = newObj;
+
+							},
+							page, packageInfo = {},
+							packageInfoConfig = [
+								{
+									name: 'author',
+									desp: '组件作者',
+									type: 'string_input',
+									placeholder: '请填入邮箱地址'
+								},
+								{
+									name: 'name',
+									desp: '组件中文名',
+									type: 'string_input'
+								},
+								{
+									name: 'desp',
+									desp: '描述',
+									type: 'string_input'
+								},
+								{
+									name: "details",
+									desp: "详情",
+									type: 'string_input'
+								},
+								{
+									name: 'icon',
+									desp: '图标',
+									type: 'icon'
+								}];
+
+
+						WIDGET_TYPE = config.type;
+						WIDGET_HREF = config.href;
+
+
+						//恢复模板信息
+
+						packageInfo.author = config.author;
+						packageInfo.name = config.name;
+						packageInfo.desp = config.desp;
+						packageInfo.details = config.details;
+						packageInfo.icon = config.icon;
+
+						base.baseConfig(PACKAGE_INFO, JSON.parse(JSON.stringify(packageInfo)), packageInfoConfig, updateCallback);
+
+
+						//恢复数据模型
+						for (i = list.length; item = list[--i];) {
+							config[item] && (data[item] = config[item]);
+						}
+
+						for (i = taffyList.length; item = taffyList[--i];) {
+							config[item] && (data[item] = app.taffy(config[item]));
+						}
+
+						config.structure && (data.structure = app.taffy(config.structure));
+
+						config.widget && (data.widget = app.taffy(config.widget));
+
+                        config.frame && (data.frame = config.frame);
+
+
+						page = data.structure({type: CONST.WIDGET.PAGE_TYPE}).first();
+
+						if (page && page.widgetID && page.widgetID !== AUI.data.uuid) {
+							config = JSON.parse(JSON.stringify(config).replace(new RegExp(page.widgetID, 'gi'), AUI.data.uuid));
+							config.uuid = AUI.data.uuid;
+
+							external.saveConfigure(config, function () {
+								document.location.reload(true);
+							});
+						}
+
+						return data;
+					});
+
+                    AUI.editorLayout=AUI.Layout.Editor();
+
+
+
+					AUI.save = function () {
+						var data;
+
+						if (!AUI.savingLock) {
+							try {
+								AUI.savingLock = true;
+
+								data = this.preSave();
+
+
+								data.type = WIDGET_TYPE;
+								data.pType = PACKAGE_TYPE;
+								data.href = WIDGET_HREF;
+								data.icon = 'fa fa-file';
+								data.accept = PAGE_TYPE;
+
+
+								data.author = newestPackageInfo.author;
+								data.name = newestPackageInfo.name;
+								data.desp = newestPackageInfo.desp;
+								data.details = newestPackageInfo.details;
+								data.icon = newestPackageInfo.icon;
+
+								data.frame = $AW._copy($AW(AUI.data.uuid), false, false);
+
+
+								//删除冗余属性
+								/*['widget', 'structure', 'code', 'url', 'response', 'request', 'event', 'lifecycle', 'request', 'pageEdm'].forEach(function (elem) {
+									data[elem] && (delete data[elem]);
+								});*/
+
+								AUI.validateInput(data.author, {
+									type: 'email',
+									errorMessage: '请填入正确格式的作者邮箱地址'
+								}, function () {
+									external.saveConfigure(data, function (response) {
+										response ? app.alert('保存成功！', app.alert.SUCCESS) : app.alert('保存失败！', app.alert.ERROR);
+
+										AUI.savingLock = false;
+									}, function () {
+										AUI.savingLock = false;
+									});
+								}, function (errorMessage) {
+									app.alert(errorMessage, app.alert.ERROR);
+
+									AUI.savingLock = false;
+								}, function () {
+									AUI.savingLock = false;
+								});
+							} catch (e) {
+								AUI.savingLock = false;
+								throw e;
+							}
+						} else {
+							app.alert('页面保存中，请稍候…', app.alert.WARNING);
+						}
+					};
+				});
+
+			});
+		}
+	};
+</script>
+<script type="text/javascript" src="script/lib/require.js" data-main="bootloader"></script>
+<!--脚本 End-->
+</body>
+</html>

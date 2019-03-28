@@ -1,0 +1,14 @@
+{
+  "author": "wubingyu",
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "AUI2源码",
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "@aweb-template/aui2code",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "6.0.7"
+}

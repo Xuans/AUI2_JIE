@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+    <meta content="minimal-ui" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <title>Compiler | The New AUI</title>
+    <link type="text/css" rel="stylesheet" href="./css/aui-compiler.css"/>
+    <style id="bodyHidden">
+        body > div:not(.aui-start-screen) {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!--Start Screen Start-->
+<div id="auiStartScreen" class="aui-start-screen">
+    <h1 class="aui-start-screen-logo">前端编译</h1>
+</div>
+<!--Start Screen End-->
+<!--主容器 Start-->
+<div class="aui-cpl-ctn">
+    <ul id="auiCplNav" class="aui-cpl-nav">
+        <li class="active">消息</li>
+        <li>调试</li>
+        <li>工具</li>
+    </ul>
+    <div class="aui-cpl-ctt">
+        <div class="active aui-cpl-console-ctt" data-role="auiCplConsoleCtt">
+            <button type="button" id="clean">清空</button>
+            <div class="aui-cpl-console-list" data-role="auiCplConsoleList">
+
+            </div>
+        </div>
+        <div class="aui-cpl-deubg-ctt" data-role="auiCplDebugCtt">
+            <textarea id="console" rows="5" placeholder="调试数据"></textarea>
+            <button type="button" id="execute">调试</button>
+            <button type="button" id="auiCplDebugCleanInputBtn">清空调试数据</button>
+            <button type="button" id="auiCplDebugCleanOutputBtn">清空调试结果</button>
+            <textarea id="result" rows="100" placeholder="调试结果"></textarea>
+        </div>
+        <div class="aui-cpl-deubg-ctt" data-role="auiCplToolCtt">
+            <button type="button" onclick="document.location.reload(true)">编译器报错，刷新</button>
+        </div>
+    </div>
+</div>
+<!--主容器 End-->
+
+<!--错误信息模板 Start-->
+<script id="auiErrorTemp" type="text/html">
+    <div class="aui-cpl-console-item error aui-error-ctn">
+        <h4 class="aui-error-ttl">{{pageModule}}-{{pageName}}编译失败：</h4>
+        <div class="aui-error-ctt">{{#errorMsg}}</div>
+        <h4 class="aui-error-ttl">出错文件</h4>
+        <div class="aui-error-ctt">{{scriptURI}}</div>
+        <h4 class="aui-error-ttl">出错位置</h4>
+        <div class="aui-error-ctt">
+            第{{lineNumber}}行，第{{columnNumber}}列。
+        </div>
+        {{if errorObj&&errorObj.stack}}
+        <h4 class="aui-error-ttl">错误详情</h4>
+        <div class="aui-error-ctt">
+            {{#errorObj.stack}}
+        </div>
+        {{/if}}
+        <h4 class="aui-error-ttl">更多</h4>
+        <div class="aui-error-ctt">
+            <a target="_blank" href="http://www.stackoverflow.com/search?q=[js]{{errorMsg}}">联机查看错误原因</a>，或打开调试工具，查看更多。
+        </div>
+    </div>
+</script>
+<!--错误信息模板 End-->
+
+<!--首页布局模板 End-->
+<script type="text/javascript" src="script/lib/require.js"></script>
+<script>
+    window.auiApp = {
+        mode: 'compiler',
+        version: 'AWOS 4.4.3.0_201801071200',
+        debug: true
+    };
+
+    require.config({
+        //依赖定义
+        shim: {
+            uglifyjs: {},
+            jquery: {
+                exports: '$'
+            },
+        },
+
+        //文件路径定义
+        paths: {
+            jquery: 'script/lib/jquery-1.9.1',
+            uglifyjs: 'script/lib/uglifyjs',
+            'socket.io': 'script/lib/socket.io',
+            compile: 'script/compile/compile'
+        },
+
+        waitSeconds: 0
+    });
+
+    require(['socket.io', 'jquery', 'uglifyjs'], function (socketIo, $, Uglifyjs) {
+        window.io = socketIo;
+        window.$ = window.jQuery = $;
+        window.Uglifyjs = Uglifyjs;
+        require(['compile'], function (compile) {
+            window.auiApp = new compile(false);
+        })
+    })
+
+</script>
+<!--<script type="text/javascript" src="script/lib/jquery-1.9.1.js"></script>-->
+<!--<script type="text/javascript" src="script/lib/socket.io.js"></script>-->
+<!--<script type="text/javascript" src="script/lib/uglifyjs.js"></script>-->
+
+<!--<script type="text/javascript" src="script/compile/compile.js"></script>-->
+</body>
+</html>

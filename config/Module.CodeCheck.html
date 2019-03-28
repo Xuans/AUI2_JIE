@@ -1,0 +1,42 @@
+<style>
+    .aui-module-code-check-block{
+
+    }
+    .aui-module-code-check-ctt{
+        padding: .125em 1em .125em 2em;
+        color: #AAA;
+    }
+    .aui-module-code-check-code{
+        display: flex;
+    }
+    .aui-module-code-check-code>span{
+        padding:.125em .5em;
+    }
+    .aui-module-code-check-code-inside{
+        padding:.125em .5em;
+    }
+    .aui-module-code-check-code-inside>em{
+        background-color: #ececec;
+        font-style: normal;
+    }
+
+</style>
+<script id="Module_CodeCheck" type="text/html">
+    <div class="aui-module-code-check-ctn">
+        {{each line}}
+            {{include 'Module_CodeCheck_Block' $value}}
+        {{/each}}
+    </div>
+</script>
+
+<script id="Module_CodeCheck_Block" type="text/html">
+    <div class="aui-module-code-check-block">
+        <div class="aui-module-code-check-code {{type}}">
+            <span> [ 行 {{line}} ] </span>
+            <div class="aui-module-code-check-code-inside">
+                {{# code}}
+            </div>
+        </div>
+        <div class="aui-module-code-check-ctt">{{# errorMsg}}</div>
+    </div>
+</script>

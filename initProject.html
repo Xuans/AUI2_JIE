@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>创建项目</title>
+    <link rel="stylesheet" href="css/bundle.css">
+    <style>
+        .aui-create-pro-ctn {
+            width: 50%;
+            margin: 300px auto 0;
+        }
+
+        .aui-row-ctt {
+            padding-left: 1em;
+            min-height: 20px;
+            line-height: 2;
+            overflow: hidden;
+            box-sizing: border-box;
+            width: 100%;
+            margin-bottom: 10px;
+
+        }
+
+        .ctt-col {
+            width: 50%;
+            float: left;
+
+        }
+
+        .ivu-input {
+            box-sizing: border-box;
+            height: 28px;
+        }
+
+        .aui-pro-checkbox {
+            display: inline-block;
+            vertical-align: middle;
+            cursor: pointer;
+            padding: 0 4px;
+        }
+
+        .aui-pro-checkbox input {
+            cursor: pointer;
+        }
+
+        .aui-pro-checkbox label {
+            cursor: pointer;
+        }
+
+        .aui-pro-btn-ctn {
+            width: 60%;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            cursor: pointer;
+
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 30px auto 0;
+
+        }
+    </style>
+    <!--<script src="../../test/test1/gulpfile.js"></script>-->
+</head>
+<body>
+<div id="auiCreateProject">
+    <div class="aui-create-pro-ctn">
+        <div class="aui-row-ctt">
+            <div class="ctt-col">
+                是否开启国际化
+            </div>
+            <div class="ctt-col">
+                <i-switch v-model="nsl">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </i-switch>
+            </div>
+        </div>
+        <div class="aui-row-ctt">
+            <div class="ctt-col">
+                组件类型
+            </div>
+            <div class="ctt-col">
+
+                <div v-for="(item,index) in componentsData" class="aui-pro-checkbox">
+                    <input type="checkbox" :id="item.name" :value="item.name" v-model="components"/>
+                    <label :for="item.name">{{item.desp}}</label>
+                </div>
+
+                <div v-if="componentsError">{{componentsError}}</div>
+            </div>
+        </div>
+        <div class="aui-pro-btn-ctn" @click="submit">
+            确定
+        </div>
+        <div style="color:red;text-align: center"> {{msg}}</div>
+    </div>
+
+</div>
+</body>
+<script src="script/lib/Vue/js/vue.js"></script>
+<script src="script/spa/bundle.js"></script>
+
+<script type="text/javascript">
+    var vueIns = new Vue({
+        el: '#auiCreateProject',
+        data: function () {
+            return {
+                nsl: false,
+                components: ['manage'],
+                projectError:'',
+                componentsError:'',
+                msg:'',
+                componentsData: [{
+                    name: 'manage',
+                    desp: '管理端'
+                },
+                    {
+                        name: 'mobile',
+                        desp: '移动端'
+                    },
+                    {
+                        name: 'monitor',
+                        desp: '监控端'
+                    }]
+
+            }
+
+        },
+        methods: {
+            getParams: function (search, name) {
+                search = decodeURIComponent(search);
+                var array = search.match(new RegExp('(^|&)' + name + '=([^&]*)(&|$)'));
+                if (array) {
+                    return array[2].replace(/'|"/g, "");
+                }
+
+            },
+            submit: function () {
+                var context=this,
+                    search = document.location.search,
+                    projectPath,content,port,isVscode;
+
+                search = search.substr(1);
+                projectPath = this.getParams(search, 'projectPath');
+                port=this.getParams(search, 'port') || 7350;
+                isVscode=this.getParams(search, 'isVscode') || false;
+
+
+                if(!this.components.length){
+                    this.componentsError="请选择组件类型！";
+                    return;
+                }
+                content = {
+                    projectPath: projectPath,
+                    nsl: this.nsl,
+                    components: this.components,
+                    isVscode:isVscode
+                };
+
+                context.msg="正在初始化项目，请稍后...";
+                fetch(`http://127.0.0.1:${port}/initProject`, {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(content)
+                }).then(res => {
+                   return res.json();
+                })
+                    .then((data)=>{
+
+                        if (data.error) {
+                            if (data.error.statusCode == 401) {
+                            }
+                            context.msg=JSON.stringify(data.error);
+                        }
+                        context.msg=data.msg;
+
+                    })
+
+            }
+        }
+    });
+
+</script>
+
+</html>

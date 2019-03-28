@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+    <meta content="minimal-ui" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <title>Theme | The New AUI</title>
+    <style>
+        .aui-start-screen {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 5;
+            background: white;
+        }
+
+        .aui-start-screen-logo {
+            position: absolute;
+            top: calc(50% - 50px);
+            display: block;
+            z-index: -1;
+            transform: translateY(-50%);
+            opacity: .2;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            font-family: "黑体" !important;
+            font-size: 150px;
+            font-weight: 200;
+            color: #0a0a0a;
+        }
+    </style>
+
+    <style id="bodyHidden">
+        body > div:not(.aui-start-screen) {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!--导航栏 Start-->
+<div id="auiNavBar" class="aui-page-nav bottom">
+    <div class="aui-tabs-left-group"  id="auiPageNav">
+    </div>
+    <div class="aui-tabs-right-group" id="auiNavTabsRightGroup">
+
+    </div>
+</div>
+<!--导航栏 End-->
+
+<div id="auiPageCtn" class="aui-window-ctn">
+</div>
+
+<!--主容器 Start-->
+<div id="auiPagePanels" class="hide">
+
+    <!--配置面板 Start-->
+
+    <!--配置面板 End-->
+    <!--菜单树 Start-->
+    <!--<div id="auiNavMenuTreeFrame">-->
+
+    <!--</div>-->
+    <!--菜单树 End-->
+
+    <!--&lt;!&ndash;sql代码 Start&ndash;&gt;-->
+    <!--<div id="auiNavSqlFrame" class="aui-wc-code-ctt">-->
+        <!--<div id="auiWCCodeEditorSql" class="aui-wc-code-editor"></div>-->
+    <!--</div>-->
+    <!--sql代码 End-->
+
+    <!--JSON代码 Start-->
+    <!--<div id="auiNavJsonFrame" class="aui-wc-code-ctt">-->
+        <!--<div id="auiWCCodeEditorJson" class="aui-wc-code-editor"></div>-->
+    <!--</div>-->
+    <!--JSON代码 End-->
+
+    <!--JSON代码 Start-->
+    <!--<div id="auiCodeCtnCsv" class="aui-wc-code-ctt">-->
+        <!--<div id="auiWCCodeEditorCsv" class="aui-wc-code-editor"></div>-->
+    <!--</div>-->
+    <!--JSON代码 End-->
+
+    <!--开发者中心面板 Start-->
+    <!--<div id="auiDevelopmentFrame" data-role="develop" class="aui-preview-frame-ctn"></div>-->
+    <!--开发者中心面板 End-->
+
+</div>
+<!--主容器 End-->
+
+<!--Start Screen Start-->
+<div id="auiStartScreen" class="aui-start-screen">
+    <h1 class="aui-start-screen-logo">菜单</h1>
+</div>
+<!--Start Screen End-->
+
+
+<script id="tree_menu" type="text/html">
+    <ul>
+        {{each children}}
+        <li class="aui-search-tree-node">
+            {{if $value.children && $value.children.length}}
+            <a href="#{{$value.href}}" data-toggle="collapse">{{if $value.icon}}<i class="fa {{$value.icon}}" style="margin-right: 2px;"></i>{{/if}}
+                <span data-role="folder">{{$value.name}}</span></a>
+
+            {{include 'tree_menu' $value}}
+            {{else}}
+            <a href="#{{$value.href}}" data-toggle="collapse">
+                <i class="fa {{$value.icon}}" style="margin-right: 2px;"></i><span data-role="node">{{$value.name}}</span></a>
+            {{/if}}
+        </li>
+        {{/each}}
+    </ul>
+</script>
+
+<!--Start Screen Start-->
+<!--<div id="auiStartScreen" class="aui-start-screen">
+	<h1 class="aui-start-screen-logo">AUI2 4.3</h1>
+</div>-->
+<!--Start Screen End-->
+
+<!--脚本 Start-->
+<script>
+    window.auiApp = {
+        mode: 'navigator',
+        version: 520001,
+        debug: true,
+        css: [
+            'css/aui-navigator.css',
+            'script/lib/jQuery.zTree/css/awesome.css',
+
+        ],
+        nav: {
+            attr: [
+                {
+                    id: "auiNavRefreshModeBtn",
+                    title: '刷新',
+                    iconClass: 'aui-shuaxin'
+                },
+                {
+                    id: "auiNavHelpModeBtn",
+                    title: '关闭帮助模式',
+                    iconClass: 'aui-kaiguan-kai'
+                },
+                {
+                    id: "auiNavUnterminalBtn",
+                    title: "反编译",
+                    iconClass: 'aui-fanbianyi'
+                }, {
+                    id: "auiNavTerminalBtn",
+                    title: "运行",
+                    iconClass: 'aui-yunhang'
+                },
+                {
+                    id: "auiNavResetLayoutBtn",
+                    title: '重置AWEB IDE前端编辑器面板布局',
+                    iconClass: 'aui-zhongzhimianbanbuju'
+                },
+                {
+                    id: "auiNavResetBtn",
+                    title: '清除內容（Alt+R）',
+                    iconClass: 'aui-neirongqingkong'
+                },
+                {
+                    id: "auiNavSaveBtn",
+                    title: '保存（Ctrl+S）',
+                    iconClass: 'aui-baocun'
+                }
+            ]
+        },
+        layout: {
+            "classes": {"auiAside": "aui-aside-left", "auiPageCtt": "aui-page-ctt"},
+            "panels": {
+                "auiNavConfigureFrame": {
+                    "icon": "aui-caidan",
+                    "role": "menuConfig",
+                    "display": "block",
+                    "desp": "菜单配置",
+                    "iconList": [{
+                        "role": "maximization",
+                        "icon": "aui-quanping",
+                        "desp": "切换全屏"
+                    },{"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}]
+                },
+                "auiNavSqlFrame": {
+                    "icon": "aui-SQLyuju",
+                    "role": "code",
+                    "display": "block",
+                    "desp": "sql语句",
+                    "iconList": [ {
+                        "role": "maximization",
+                        "icon": "aui-quanping",
+                        "desp": "切换全屏"
+                    },{"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}]
+                },
+                "auiNavMenuTreeFrame": {
+                    "icon": "aui-neirongshu",
+                    "role": "menuTree",
+                    "display": "block",
+                    "desp": "菜单树预览",
+                    "iconList": [ {
+                        "role": "maximization",
+                        "icon": "aui-quanping",
+                        "desp": "切换全屏"
+                    },{"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}]
+                },
+                "auiNavJsonFrame": {
+                    "icon": "aui-json",
+                    "role": "code",
+                    "display": "block",
+                    "desp": "JSON格式",
+                    "iconList": [{
+                        "role": "maximization",
+                        "icon": "aui-quanping",
+                        "desp": "切换全屏"
+                    },{"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}]
+                },
+                "auiNavCsvFrame":{
+                    "icon": "aui-daima",
+                    "role":"code",
+                    "display": "block",
+                    "desp": "Excel-CSV 格式",
+                    "iconList": [ {
+                        "role": "maximization",
+                        "icon": "aui-quanping",
+                        "desp": "切换全屏"
+                    }, {"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}]
+                },
+                "auiDevelopmentFrame": {
+                    "desp": "开发者中心",
+                    "display": "block",
+                    "icon": "aui-kaifazhezhongxin1",
+                    "role": "develop",
+                    "iconList": [ {
+                        "role": "maximization",
+                        "icon": "aui-quanping",
+                        "desp": "切换全屏"
+                    },{"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}]
+                }
+            },
+            "groups": [{
+                "active": "auiNavMenuTreeFrame",
+                "content": ["auiNavMenuTreeFrame", "auiDevelopmentFrame"],
+                "css": {"top": "54.241%", "left": "33.419%", "height": "44.324%", "width": "66.58%", "zIndex": 0},
+                "id": "F2771C06C3A71E140F6E-C96D",
+                "index": 0
+            }, {
+                "content": ["auiNavSqlFrame", "auiNavJsonFrame","auiNavCsvFrame"],
+                "css": {"top": 0, "left": "33.547%", "height": "53.882%", "width": "66.257%", "zIndex": 1},
+                "active": "auiNavSqlFrame",
+                "id": "D7D941BF3F277D07BF42-B2DF",
+                "index": 1
+            }, {
+                "content": ["auiNavConfigureFrame"],
+                "css": {"top": 0, "left": 0, "height": "99.283%", "width": "33.354%", "zIndex": 2},
+                "active": "auiNavConfigureFrame",
+                "id": "12A0A5A8EA750C6E8799-5258",
+                "index": 2
+            }],
+            "version": 520003
+        },
+        init: function () {
+            require.config({
+                //依赖定义
+                shim: {
+                    navigator: {
+                        deps: ["index"]
+                    }
+                },
+                paths: {
+                    //此处为开发外部库文件
+                    navigator: './script/spa/navigator'
+
+                }
+            });
+
+
+            require(['navigator'], function (navigator) {
+
+                navigator.init();
+            });
+        }
+    }
+</script>
+<script type="text/javascript" src="script/lib/require.js" data-main="bootloader"></script>
+<!--脚本 End-->
+</body>
+</html>

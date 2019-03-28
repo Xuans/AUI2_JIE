@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+    <meta content="minimal-ui" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+
+    <title>Theme | The New AUI</title>
+    <style>
+
+        .aui-start-screen {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 5;
+            background: white;
+        }
+
+        .aui-start-screen-logo {
+            position: absolute;
+            top: calc(50% - 50px);
+            display: block;
+            z-index: -1;
+            transform: translateY(-50%);
+            opacity: .2;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            font-family: "黑体" !important;
+            font-size: 150px;
+            font-weight: 200;
+            color: #0a0a0a;
+        }
+    </style>
+    <style id="bodyHidden">
+        body > div:not(.aui-start-screen) {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!--导航栏 Start-->
+<div id="auiNavBar" class="aui-page-nav bottom">
+    <div class="aui-tabs-left-group" id="auiPageNav"></div>
+    <div class="aui-tabs-right-group" id="auiNavTabsRightGroup"></div>
+</div>
+<!--导航栏 End-->
+
+<!--主容器 Start-->
+<div id="auiPageCtn" class="aui-window-ctn"></div>
+
+
+<!--主容器 End-->
+
+<div id="auiInterfaceReset" class="aui-mask-panel hide">
+    <div class="aui-page-nav">
+        <div class="aui-tabs-left-group"><button>重置接口和常量</button></div>
+        <div class="aui-tabs-right-group">
+            <button id="auiOverviewCloseBtn" type="button" title="关闭" class="btn" data-role="close">
+                <i class="aui aui-guanbi"></i>
+            </button>
+        </div>
+    </div>
+    <div class="aui-overview-panel-body">
+    </div>
+</div>
+
+
+<!--Start Screen Start-->
+<div id="auiStartScreen" class="aui-start-screen">
+    <h1 class="aui-start-screen-logo">Web框架布局</h1>
+</div>
+<!--Start Screen End-->
+
+<!--脚本 Start-->
+<script>
+    window.auiApp = {
+        mode: 'viewer',
+        version: 520000,
+        debug: true,
+        css: ['css/aui-viewer.css'],
+        nav: {
+            attr: [
+                {
+                    id: "auiNavRefreshModeBtn",
+                    title: '刷新',
+                    iconClass: 'aui-shuaxin'
+                },
+                /*{
+                 id: "auiDeBugModeBtn",
+                 title: '调试',
+                 iconClass: 'aui-tiaoshi'
+                 },*/
+                {
+                    id: "auiNavHelpModeBtn",
+                    title: '关闭帮助模式',
+                    iconClass: 'aui-kaiguan-kai'
+                },
+                {
+                    id: "auiNavResetLayoutBtn",
+                    title: '重置AWEB IDE前端编辑器面板布局',
+                    iconClass: 'aui-zhongzhimianbanbuju'
+                },
+                {
+                    id: "auiNavResetAppBtn",
+                    title: "重置SPA应用接口和应用接口常量",
+                    iconClass: "aui-APIguanli"
+                },
+                {
+                    id: "auiNavResetBtn",
+                    title: '清除內容（Alt+R）',
+                    iconClass: 'aui-neirongqingkong'
+                },
+                {
+                    id: "auiNavSaveBtn",
+                    title: '保存（Ctrl+S）',
+                    iconClass: 'aui-baocun'
+                }
+            ]
+        },
+        layout: {
+            "panels": {
+                "auiMenuFrame": {
+                    "desp": "菜单",
+                    "role": "menu",
+                    "display": "block",
+                    "iconList": [ {
+                        "desp": "切换全屏",
+                        "role": "maximization",
+                        "icon": "aui-quanping"
+                    }, {"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-caidan"
+                },
+                "auiConfigureDefFrame": {
+                    "desp": "配置定义",
+                    "role": "configDef",
+                    "display": "block",
+                    "iconList": [ {
+                        "desp": "切换全屏",
+                        "role": "maximization",
+                        "icon": "aui-quanping"
+                    }, {"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-peizhidingyi"
+                },
+                "auiPreviewFrame": {
+                    "desp": "预览",
+                    "role": "preview",
+                    "display": "block",
+                    "iconList": [{
+                        "desp": "预览页面脚本代码",
+                        "role": "auiPreviewCompile",
+                        "icon": "aui aui-daima"
+                    },  {
+                        "desp": "切换全屏",
+                        "role": "maximization",
+                        "icon": "aui-quanping"
+                    }, {"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-dingbuyulan"
+                },
+                "auiContentFrame": {
+                    "desp": "内容",
+                    "role": "page",
+                    "display": "block",
+                    "iconList": [{
+                        "desp": "切换全屏",
+                        "role": "maximization",
+                        "icon": "aui-quanping"
+                    }, {"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-neirongshu"
+                },
+                "auiCodeFrame": {
+                    "desp": "代码",
+                    "role": "code",
+                    "display": "block",
+                    "iconList": [ {
+                        "desp": "切换全屏",
+                        "role": "maximization",
+                        "icon": "aui-quanping"
+                    }, {"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-daima"
+                },
+                "auiCssFrame": {
+                    "desp": "样式",
+                    "role": "cssCode",
+                    "display": "block",
+                    "iconList": [ {
+                        "desp": "切换全屏",
+                        "role": "maximization",
+                        "icon": "aui-quanping"
+                    }, {"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-yangshi"
+                },
+                "auiConfigureFrame": {
+                    "desp": "配置",
+                    "role": "config",
+                    "display": "block",
+                    "iconList": [ {
+                        "desp": "切换全屏",
+                        "role": "maximization",
+                        "icon": "aui-quanping"
+                    }, {"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-shilipeizhi"
+                },
+                "auiDevelopmentFrame": {
+                    "desp": "开发者中心",
+                    "role": "develop",
+                    "display": "block",
+                    "iconList": [ {
+                        "desp": "切换全屏",
+                        "role": "maximization",
+                        "icon": "aui-quanping"
+                    }, {"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-kaifazhezhongxin1"
+                },
+                "auiOverviewFrame": {
+                    "desp": "逻辑概览",
+                    "role": "overview",
+                    "display": "none",
+                    "iconList": [{"desp": "逻辑概览页面脚本代码", "role": "auiRunOverview", "icon": "aui-daima"}, {"desp": "切换全屏", "role": "maximization", "icon": "aui-quanping"}, {"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-luojifenxi"
+                },
+                "auiCustomCodeFrame":{
+                    "desp": "自定义代码",
+                    "role": "customCodeFrame",
+                    "display": "none",
+                    "iconList": [
+                        {"desp": "切换全屏", "role": "maximization", "icon": "aui-quanping"},{"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-zidingyidaima"
+                }
+            },
+            "classes": {"auiMenuFrame": "aui-aside-left", "auiContentFrame": "aui-page-ctt"},
+            "groups": [{
+                "css": {
+                    "top": "0%",
+                    "left": "0%",
+                    "display": "block",
+                    "width": "18.921%",
+                    "height": "100%",
+                    "zIndex": 0
+                }, "active": "auiMenuFrame", "index": 0, "id": "9A853964593CF76E121D-F43A", "content": ["auiMenuFrame"]
+            }, {
+                "css": {"top": "54.337%", "left": "18.921%", "height": "45.662%", "width": "52.601%", "zIndex": 1},
+                "active": "auiPreviewFrame",
+                "index": 1,
+                "id": "E85D2F36927FE0D4F9EF-B037",
+                "content": ["auiPreviewFrame", "auiDevelopmentFrame"]
+            }, {
+                "css": {"top": 0, "left": "18.921%", "height": "54.033%", "width": "52.696%", "zIndex": 2},
+                "active": "auiConfigureDefFrame",
+                "index": 2,
+                "id": "12445D90A3D0D5F355BE-1E97",
+                "content": ["auiContentFrame", "auiConfigureDefFrame", "auiCodeFrame", "auiCssFrame", "auiOverviewFrame","auiCustomCodeFrame"]
+            }, {
+                "css": {
+                    "top": "0%",
+                    "left": "71.998%",
+                    "display": "block",
+                    "width": "28%",
+                    "height": "100%",
+                    "zIndex": 3
+                },
+                "active": "auiConfigureFrame",
+                "index": 3,
+                "id": "59CCDB162B18E0721F14-7605",
+                "content": ["auiConfigureFrame"]
+            }],
+            "version": 520008
+        },
+        init: function () {
+            require.config({
+                //依赖定义
+                shim: {
+                    viewer: {
+                        deps: ["index"]
+                    },
+                    textExt: {
+                        deps: ["jquery"]
+                    },
+                    textExtTags: {
+                        deps: ['textExt']
+                    }
+                },
+                paths: {
+                    //此处为开发外部库文件
+                    viewer: './script/spa/viewer',
+                    textExt: "./script/lib/textext.core",
+                    textExtTags: "./script/lib/textext.plugin.tags"
+                }
+            });
+
+            require(['viewer'], function ( viewer) {
+
+                if (auiApp.debug) {
+                    window.WB = viewer;
+                }
+                viewer.init();
+            });
+        }
+    }
+</script>
+<script type="text/javascript" src="script/lib/require.js" data-main="bootloader"></script>
+<!--脚本 End-->
+</body>
+</html>

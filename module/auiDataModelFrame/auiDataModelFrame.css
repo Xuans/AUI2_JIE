@@ -1,0 +1,20 @@
+.aui-data-model-frame{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;  
+}
+.aui-data-model-ctn{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+.aui-data-modal-aside{
+    width:200px;
+    overflow: auto;
+    background-color: #eeeef2;
+}
+.aui-data-modal-ctn{
+    flex:1;
+}

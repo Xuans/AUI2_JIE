@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+    <meta content="minimal-ui" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <title>widgetCreator | The New AUI</title>
+    <style>
+        .aui-start-screen {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 5;
+            background: white;
+        }
+
+        .aui-start-screen-logo {
+            position: absolute;
+            top: calc(50% - 50px);
+            display: block;
+            z-index: -1;
+            transform: translateY(-50%);
+            opacity: .2;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            font-family: "黑体" !important;
+            font-size: 150px;
+            font-weight: 200;
+            color: #0a0a0a;
+        }
+    </style>
+    <style id="bodyHidden">
+        body > div:not(.aui-start-screen) {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<!--页面前缀 widgetCreator-->
+
+<!-- 顶部banner Start -->
+<div id="auiNavBar" class="aui-page-nav bottom">
+    <div class="aui-tabs-left-group"  id="auiPageNav"></div>
+    <div class="aui-tabs-right-group" id="auiNavTabsRightGroup"></div>
+</div>
+<!-- 顶部banner End -->
+<!--主容器 Start-->
+<div id="auiPageCtn" class="aui-window-ctn"></div>
+
+<!--Start Screen Start-->
+<div id="auiStartScreen" class="aui-start-screen">
+    <h1 class="aui-start-screen-logo">技术组件</h1>
+</div>
+<!--Start Screen End-->
+
+<!--脚本 Start-->
+<script>
+
+    window.auiApp = {
+        mode: 'widgetCreator',
+        version: 520000,
+        debug: true,
+        css: ['css/aui-creator.css'],
+        layout: {
+            "panels": {
+                "auiConfigureDefFrame": {
+                    "desp": "配置定义",
+                    "role": "configDef",
+                    "display": "block",
+                    "iconList": [ {
+                        "desp": "切换全屏",
+                        "role": "maximization",
+                        "icon": "aui-quanping"
+                    },{"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-peizhidingyi"
+                },
+                "auiPreviewFrame": {
+                    "desp": "预览",
+                    "role": "preview",
+                    "display": "block",
+                    "iconList": [{"desp": "预览页面脚本代码", "role": "auiPreviewCompile", "icon": "aui aui-daima"},{"desp": "切换全屏", "role": "maximization", "icon": "aui-quanping"},
+                        {"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-dingbuyulan"
+                },
+                "auiCodeFrame": {
+                    "desp": "代码",
+                    "role": "code",
+                    "display": "block",
+                    "iconList": [ {
+                        "desp": "切换全屏",
+                        "role": "maximization",
+                        "icon": "aui-quanping"
+                    },{"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-daima"
+                },
+                "auiCssFrame": {
+                    "desp": "样式",
+                    "role": "cssCode",
+                    "display": "none",
+                    "iconList": [ {
+                        "desp": "切换全屏",
+                        "role": "maximization",
+                        "icon": "aui-quanping"
+                    },{"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-yangshi"
+                },
+                "auiConfigureFrame": {
+                    "desp": "配置",
+                    "role": "config",
+                    "display": "block",
+                    "iconList": [{
+                        "desp": "切换全屏",
+                        "role": "maximization",
+                        "icon": "aui-quanping"
+                    },{"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-shilipeizhi"
+                },
+                "auiDevelopmentFrame": {
+                    "desp": "开发者中心",
+                    "role": "develop",
+                    "display": "none",
+                    "iconList": [{
+                        "desp": "切换全屏",
+                        "role": "maximization",
+                        "icon": "aui-quanping"
+                    },{"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-kaifazhezhongxin1"
+                },
+                "auiOverviewFrame": {
+                    "desp": "逻辑概览",
+                    "role": "overview",
+                    "display": "none",
+                    "iconList": [{"desp": "逻辑概览页面脚本代码", "role": "auiRunOverview", "icon": "aui-daima"}, {"desp": "切换全屏", "role": "maximization", "icon": "aui-quanping"},
+                        {"desp": "关闭", "role": "frameClose", "icon": "aui-guanbi"}],
+                    "icon": "aui-luojifenxi"
+                }
+            },
+            "classes": {"auiAside": "aui-aside-left", "auiPreviewFrame": "aui-preview-frame-ctn"},
+            "groups": [{
+                "css": {
+                    "top": "51.254%",
+                    "left": "19.896%",
+                    "height": "48.745%",
+                    "width": "49.517%",
+                    "zIndex": 0
+                },
+                "active": "auiConfigureDefFrame",
+                "index": 0,
+                "id": "017958B05F9BFAC62ACB-A6E9",
+                "content": ["auiConfigureDefFrame", "auiCodeFrame", "auiCssFrame"]
+            }, {
+                "css": {"top": 0, "left": "69.542%", "height": "99.641%", "width": "29.813%", "zIndex": 1},
+                "active": "auiDevelopmentFrame",
+                "index": 1,
+                "id": "5F78F85BD16E2C036E03-D888",
+                "content": ["auiDevelopmentFrame"]
+            }, {
+                "css": {"top": 0, "left": "19.961%", "height": "51.015%", "width": "49.452%", "zIndex": 2},
+                "active": "auiPreviewFrame",
+                "index": 2,
+                "id": "E85D2F36927FE0D4F9EF-B037",
+                "content": ["auiPreviewFrame", "auiOverviewFrame"]
+            }, {
+                "css": {"top": "0%", "left": "0%", "display": "block", "width": "20%", "height": "100%", "zIndex": 3},
+                "active": "auiConfigureFrame",
+                "index": 3,
+                "id": "C8A356C1ECBD8487273A-1236",
+                "content": ["auiConfigureFrame"]
+            }],
+            "version": 520001
+        },
+        nav: {
+            attr: [
+                {
+                    id: "auiNavRefreshModeBtn",
+                    title: '刷新',
+                    iconClass: 'aui-shuaxin'
+                },
+                {
+                    id: "auiNavCodeCheckBtn",
+                    title: '代码检查',
+                    iconClass: 'aui-daima'
+                },
+                {
+                    id: "auiNavHelpModeBtn",
+                    title: '关闭帮助模式',
+                    iconClass: 'aui-kaiguan-kai'
+                },
+                {
+                    id: "auiNavResetLayoutBtn",
+                    title: '重置AWEB IDE前端编辑器面板布局',
+                    iconClass: 'aui-zhongzhimianbanbuju'
+                },
+                {
+                    id: "auiNavResetBtn",
+                    title: '清除內容（Alt+R）',
+                    iconClass: 'aui-neirongqingkong'
+                },
+                {
+                    id: "auiNavSaveBtn",
+                    title: '保存（Ctrl+S）',
+                    iconClass: 'aui-baocun'
+                }
+            ]
+        },
+        init: function () {
+
+            require.config({
+                paths: {
+                    //此处为开发外部库文件
+                    widgetCreator: './script/spa/widgetCreator'
+                }
+            });
+
+            require(['widgetCreator'], function (widgetCreator) {
+               // window.widgetCreator = widgetCreator;
+                //初始化页面
+                widgetCreator.init();
+            });
+        }
+    }
+</script>
+<script type="text/javascript" src="script/lib/require.js" data-main="bootloader"></script>
+<!--脚本 End-->
+
+</body>
+</html>

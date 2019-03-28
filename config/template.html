@@ -1,0 +1,2315 @@
+
+<!--菜单组模板 Start-->
+<script id="auiAsideMenu" type="text/html">
+    <div class="aui-widget-set">
+        <div class="aui-widget-set-body">
+            {{each data as value index}}
+            <div class="aui-widget-menu-group">
+                <div class="aui-widget-menu-group-header" data-role="menuAngleUpTitle">
+                    <i class="aui aui-jiantou-xia aui-menu-angle {{value.angleUp}}"></i><span>{{value.name}}</span>
+                </div>
+
+                <div class="aui-widget-menu-inner">
+                    <div class="aui-widget-menu-block" data-type="{{value.type}}">
+                        <div class="aui-widget-menu-body" style="display:{{value.collapse}}"></div>
+                    </div>
+
+                    {{if value.children}}
+                    {{each value.children as subValue i}}
+                    <div class="aui-widget-menu-block" data-type="{{subValue.type}}">
+                        <div class="aui-widget-menu-group-header" data-role="menuAngleUpTitle">
+                            <i class="aui aui-jiantou-xia aui-menu-angle {{subValue.angleUp}}"></i><span>{{subValue.name}}</span>
+                        </div>
+                        <div class="aui-widget-menu-body" style="display:{{subValue.collapse}}"></div>
+                    </div>
+                    {{/each}}
+                    {{/if}}
+
+                </div>
+            </div>
+            {{/each }}
+        </div>
+    </div>
+</script>
+<!--菜单组模板 End-->
+
+<!--菜单模板 Start-->
+<script id="auiAsideMenuBlock" type="text/html">
+    <div data-href="{{href}}" data-type="{{type}}" data-accept="{{accept}}" class="aui-widget-menu-item {{accept}} {{if hidden}} aui-widget-menu-outdate-item {{/if}} ">
+        <small class="{{icon}}"></small>
+        <span>{{name}}</span>
+        <i class="aui aui-questions2  aui-look-doc" data-role="auiMenuDevelopment" title="开发者中心" data-layout-active="no"></i>
+        {{if isCollected === true}}
+        <i data-status="CHOSEN" class="aui aui-shoucangzujian aside-choose" data-role="menuCollection" title="取消收藏" ></i>
+        {{else}}
+        <i class="aui aui-quxiaoshoucang aside-choose" data-role="menuCollection" title="添加收藏"></i>
+        {{/if}}
+    </div>
+</script>
+<!--菜单模板 End-->
+<!--默认收藏组件 start-->
+<script id="auiMenuDefaultGroup" type="text/html">
+    {{each data}}
+    <li data-collection-type="{{$value}}">
+        <div class="aui-widget-menu-block" data-collection-type="{{$value}}">
+            <div class="aui-widget-menu-header">
+                <i class="aui aui-jiantou-xia aui-menu-angle" data-role="collapse"></i>
+                {{if $value==="默认"}}
+                <span>{{$value}}</span>
+                {{else}}
+                <span data-role="modifyTitle">{{$value}}</span>
+                <i class="aui aui-shanchu pull-right" data-role="delCollectionGroup" title="删除分组"></i>
+                {{/if}}
+            </div>
+            <div class="aui-widget-menu-body"></div>
+        </div>
+    </li>
+    {{/each}}
+</script>
+<!--默认收藏组件 end-->
+
+
+<!--菜单项提示 Start-->
+<script id="auiAsideMenuTooltip" type="text/html">
+    <div class="aui-config-ctn" style="overflow: visible">
+        <div class="aui-row"><div class="col-2">名称</div><div class="col-2"><small class="{{icon}}"></small>&nbsp;&nbsp;<span>{{name}}</span></div></div>
+        <!--<div class="aui-row" ><div class="col-2">类型</div><div class="col-2">{{type}}</div></div>-->
+        <!--<div class="aui-row" ><dv class="col-2">版本</div><div class="col-2">{{version}}</div></div>-->
+        <!--<div class="aui-row" ><div class="col-2">兼容性</div><div class="col-2">{{compatibility}}</div></div>-->
+        <div class="aui-row" ><div class="col-2">路径</div><div class="col-2">{{href}}</div></div>
+        <!--<div class="aui-row" ><div class="col-2">级别</div><div class="col-2">{{belongTo}}</div></div>-->
+        {{if category}}<div class="aui-row" ><div class="col-2">类型</div><div class="col-2">{{category}}</div></div>{{/if}}
+        {{if baseName}}<div class="aui-row" ><div class="col-2">继承于</div><div class="col-2">{{baseName}}</div></div>{{/if}}
+        <div class="aui-row" ><div class="col-2">可放置于</div><div class="col-2">{{acceptName}}</div></div>
+        {{if details}}<div class="aui-row" ><div class="col-2">详情</div><div class="col-2">{{details}}</div></div>{{/if}}
+        {{if hidden}} <div class="aui-row text-warning" ><div class="col-2">弃用</div><div class="col-2">该组件已不再支持或维护，请尽快改用其他组件。</div></div>{{/if}}
+    </div>
+</script>
+<!--菜单项提示 End-->
+
+
+
+
+
+<script id="baseTooltip" type="text/html">
+    <div class="aui-config-ctn" style="overflow: visible">
+        <div class="aui-row" ><div class="col-2">英文名</div><div class="col-2">{{name}}</div></div>
+        <div class="aui-row" ><div class="col-2">中文名</div><div class="col-2">{{desp}}</div></div>
+        <div class="aui-row" ><div class="col-2">详情</div><div class="col-2">{{details || desp}}</div></div>
+        {{if dataType}}<div class="aui-row"><div class="col-2">类型</div><div class="col-2">{{dataType}}</div></div>{{/if}}
+    </div>
+</script>
+
+<!--右侧配置栏模板代码 Start-->
+<!--请忽略IDE显示的报错-->
+
+<script id="string_with_placeholder" type="text/html">
+    <div class="tags-outer-wrapper">
+        <input class="tags-ctn-input" type="text" value="{{value}}" autofocus="autofocus">
+
+        <div  class="placeholder-select">
+
+            <div class="aui-tags-wrapper">
+                {{each valueArray as singleValue index}}
+                <button type="button" value="{{singleValue}}" class="text-tag-item"
+                        title="{{singleValue}}"
+                        {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}}
+                data-desp="{{moreDesp}}"
+                data-tag-value="{{singleValue}}"
+                data-tag-desp="{{despArray[index]}}"
+                >{{despArray[index]}}</button>
+                {{/each}}
+            </div>
+            <div class="placeholder-desp">
+                <p>说明：</p>
+                {{each despArray as singleDesp index}}
+                <ul>
+                    <li>{{singleDesp}}: {{#detailsArray[index]}}</li>
+                </ul>
+                {{/each}}
+            </div>
+            <div class="placeholder-desp">
+                <p>模板：</p>
+                <span>{{template}}</span>
+            </div>
+
+        </div>
+    </div>
+</script>
+
+<!-- 其他复用 -->
+<script id="string_select" type="text/html">
+    {{if !hidden}}
+    <div class="aui-row" id="ctn_{{domSelector}}">
+        <div class="col-2" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">{{desp}}
+
+        </div>
+        <select id="{{domSelector}}" class="col-2"
+                data-desp="{{moreDesp}}"
+                data-value="{{value}}"
+                {{if replaceTemp}} data-replace-temp="{{replaceTemp}}" {{/if}}
+        {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}}
+        {{if widgetSelector}} data-widget-selector="{{widgetSelector}}" {{/if}}
+        >
+
+        {{each valueArray as singleValue index}}
+
+        <option {{if singleValue.toString() === value }} selected {{/if}} value="{{singleValue}}">{{despArray[index]}}</option>
+
+        {{/each}}
+
+        {{if group}}
+        {{each group as option index}}
+        <optgroup label="{{option.label}}">
+            {{each option.valueArray as singleValue index}}
+            <option {{if singleValue.value.toString() === value }} selected {{/if}} value="{{singleValue.value}}">{{singleValue.desp}}</option>
+            {{/each}}
+        </optgroup>
+        {{/each}}
+
+        {{/if}}
+
+
+        </select>
+    </div>
+    {{/if}}
+</script>
+
+<script id="overviewInterfaceTemplate" type="text/html">
+    <span> {{#transformType(dataType)}}{{#desp}} {{if code}} ({{code}}) {{/if}} </span>
+</script>
+
+<script id="string_simpleHtml" type="text/html">
+    {{if !hidden}}
+    <div class="aui-row {{if isTab}} tab-pane {{/if}}" id="ctn_{{domSelector}}">
+        <!--<div class="col-2" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">{{desp}}</div>-->
+        <div id="{{domSelector}}" class="<!--col-2--> string-simpleHtml" style="height: 400px"
+             data-vscode-language="{{language}}"
+             data-desp="{{moreDesp}}"
+             data-value="{{value}}"
+             data-name = "{{name}}"
+             {{if replaceTemp}} data-replace-temp="{{replaceTemp}}" {{/if}}
+        {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}}
+        {{if widgetSelector}} data-widget-selector="{{widgetSelector}}" {{/if}}
+        ></div>
+    {{if explanation}}<p class="aui-row-alert">{{explanation}}</p>{{/if}}
+    </div>
+    {{/if}}
+</script>
+
+
+
+<script id="boolean" type="text/html">
+    {{if !hidden}}
+    <div class="aui-row" id="ctn_{{domSelector}}">
+        <div class="col-2" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">{{desp}}</div>
+        <input class="aui-switch-input"
+               id="{{domSelector}}"
+               data-model-selector="{{modelSelector}}"
+               data-desp="{{moreDesp}}"
+               data-value="{{value}}"
+               type="checkbox"
+               {{if value==="true"}} checked {{/if}}
+        {{if widgetSelector}} data-widget-selector="{{widgetSelector}}" {{/if}}
+        >
+    </div>
+    {{/if}}
+</script>
+
+<script id="string_input" type="text/html">
+    {{if !hidden}}
+    <div class="aui-row" id="ctn_{{domSelector}}" {{ if backgroundColor}} style=" background-color:{{backgroundColor}};"{{/if}}>
+    <div class="col-2" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">
+        {{desp}}
+        {{if change}}<span class="aui-exchange-btn" data-event-role="exchange" title="切换" ><i class="aui aui-qiehuan"></i></span>{{/if}}
+    </div>
+    <input id="{{domSelector}}" class="col-2 aui-custom-select" type="text" value="{{value}}"
+           data-desp="{{moreDesp}}"
+           data-value="{{value}}"
+           name="{{domSelector}}"
+           {{if readonly}} readonly="readonly" {{/if}}
+    {{if pattern}} pattern="{{pattern}}"{{/if}}
+    {{if validate}} data-validate="{{validate}}" {{/if}}
+    {{if placeholder}} placeholder="{{placeholder}}"{{/if}}
+    {{if title}} title="{{title}} " {{/if}}
+    {{if replaceTemp}} data-replace-temp="{{replaceTemp}}" {{/if}}
+    {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}}
+    {{if widgetSelector}} data-widget-selector="{{widgetSelector}}" {{/if}}
+    {{if hasEvent}} data-has-event="{{hasEvent}}"{{/if}}
+    />
+    {{if dataList}}
+    <!--<datalist id="{{domSelector}}s">-->
+    <!--{{each dataList as singleValue index}}-->
+    <!--<option>{{singleValue}}</option>-->
+    <!--{{/each}}-->
+    <!--</datalist>-->
+    {{/if}}
+    </div>
+    {{/if}}
+</script>
+<script id="string_input_html" type="text/html">
+    {{if !hidden}}
+    <div class="aui-row" id="ctn_{{domSelector}}" {{ if backgroundColor}} style=" background-color:{{backgroundColor}};"{{/if}}>
+    <div class="col-2" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">
+        {{desp}}
+    </div>
+    <div class="col-2 aui-custom-select"
+
+         {{if title}} title="{{title}}" {{/if}}
+    {{if desp}} data-desp="{{desp}}" {{/if}}
+
+    >
+    <input id="{{domSelector}}" name="{{domSelector}}" data-value="{{value}}" value="{{value}}" readonly title="{{value}}"/>
+    <i class="aui-code-icon aui aui-peizhidingyi" data-role="edmCode"></i>
+    </div>
+
+    </div>
+    {{/if}}
+</script>
+
+<script id="string_select_editable" type="text/html">
+    {{if !hidden}}
+    <div class="aui-row" id="ctn_{{domSelector}}">
+        <div class="col-2" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">
+            {{desp}}
+        </div>
+        <select id="{{domSelector}}" class="col-2 editableSelect" type="text" value="{{value}}"
+                data-desp="{{moreDesp}}"
+                data-value="{{value}}"
+                name="{{domSelector}}"
+                {{if readonly}} readonly="readonly" {{/if}}
+        {{if pattern}} pattern="{{pattern}}"{{/if}}
+        {{if validate}} data-validate="{{validate}}" {{/if}}
+        {{if placeholder}} placeholder="{{placeholder}}"{{/if}}
+        {{if title}} title="{{title}} " {{/if}}
+        {{if replaceTemp}} data-replace-temp="{{replaceTemp}}" {{/if}}
+        {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}}
+        {{if hasEvent}} data-has-event="{{hasEvent}}"{{/if}}>
+
+        {{each dataList as singleValue index}}
+        <option>{{singleValue}}</option>
+        {{/each}}
+
+        </select>
+    </div>
+    {{/if}}
+</script>
+
+<script id="string_html" type="text/html">
+    {{if !hidden}}
+    <div class="aui-row" id="ctn_{{domSelector}}"><!--<div class="col-2" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">{{desp}}</div>-->
+        <div id="{{domSelector}}" class="string-html"
+             data-desp = "{{moreDesp}}"
+             data-value="{{value}}"
+             {{if readonly}} readonly="readonly" {{/if}}
+        {{if pattern}} pattern="{{pattern}}"{{/if}}
+        {{if validate}} data-validate="{{validate}}" {{/if}}
+        {{if placeholder}} placeholder="{{placeholder}}"{{/if}}
+        {{if title}} title="{{title}} " {{/if}}
+        {{if replaceTemp}} data-replace-temp="{{replaceTemp}}" {{/if}}
+        {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}}
+        {{if hasEvent}} data-has-event="{{hasEvent}}"{{/if}}
+        ><p>请按全屏键以输入内容...</p></div>
+
+    <button type="button" class="btn string-html-confirm">确定</button>
+    </div>
+    {{/if}}
+</script>
+
+<script id="number" type="text/html">
+    {{if !hidden}}
+    <div class="aui-row" id="ctn_{{domSelector}}" {{ if backgroundColor}} style=" background-color:{{backgroundColor}};"{{/if}}>
+    <div class="col-2" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">{{desp}}</div>
+    <input id="{{domSelector}}" class="col-2" type="number" value="{{value}}"
+           data-desp="{{moreDesp}}"
+           data-value="{{value}}"
+           {{if replaceTemp}} data-replace-temp="{{replaceTemp}}" {{/if}}
+    {{if min}} min="{{min}}" {{/if}}
+    {{if max}} max="{{max}}" {{/if}}
+    {{if validate}} data-validate="{{validate}}" {{/if}}
+    {{if widgetSelector}} data-widget-selector="{{widgetSelector}}" {{/if}}
+    {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}} />
+    </div>
+    {{/if}}
+</script>
+
+<script id="tags_input" type="text/html">
+    {{if !hidden}}
+    <div class="aui-row" id="ctn_{{domSelector}}">
+        <div class="col-2" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">
+            {{desp}}
+            {{if optionArray}}
+            <div class="aui-tags-wrapper">
+                <input type="text" class="aui-search-query aui-tag-searcher" placeholder="搜索选项">
+
+                {{each optionArray as singleValue index}}
+                <button type="button" value="{{singleValue}}" class="text-tag-item"
+                        title="{{singleValue}}"
+                        {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}}
+                {{if frameAcceptModelSelector}} data-frame-accept-model-selector="{{frameAcceptModelSelector}}" {{/if}}
+                data-desp="{{moreDesp}}"
+                data-tag-value="{{singleValue}}"
+                >{{singleValue}}</button>
+                {{/each}}
+            </div>
+            {{/if}}
+        </div>
+        <input type="text" id="{{domSelector}}" class="tags-input col-2" multiple data-role="tagsinput"
+               data-desp="{{moreDesp}}"
+               value="{{value}}"
+               data-option-array = "{{optionArrayString}}"
+               {{if pattern}} pattern="{{pattern}}" {{/if}}
+        {{if placeholder}} placeholder="{{placeholder}}"{{/if}}
+        {{if isArray}} data-is-array="{{isArray}}"{{/if}}
+        {{if title}} title="{{title}} " {{/if}}
+        {{if optionArray}} readonly="true" {{/if}}
+        {{if replaceTemp}} data-replace-temp="{{replaceTemp}}" {{/if}}
+        {{if separator}} data-separator="{{separator}}" {{/if}}
+        {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}}
+        {{if frameAcceptModelSelector}} data-frame-accept-model-selector="{{frameAcceptModelSelector}}" {{/if}}
+        {{if hasEvent}} data-has-event="{{hasEvent}}"{{/if}}
+        />
+
+    </div>
+    {{/if}}
+</script>
+
+<script id="multiple_select" type="text/html">
+    {{if !hidden}}
+    <div class="aui-row" id="ctn_{{domSelector}}">
+        <div class="col-2" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">
+            {{desp}}
+        </div>
+        <select id="{{domSelector}}" class="selectpicker show-menu-arrow col-2" multiple data-live-search="true" data-size="5" title="请选择"
+                data-desp="{{moreDesp}}"
+                data-value="{{value}}"
+                {{if pattern}} pattern="{{pattern}}" {{/if}}
+        {{if placeholder}} placeholder="{{placeholder}}"{{/if}}
+        {{if isArray}} data-is-array="{{isArray}}"{{/if}}
+        {{if title}} title="{{title}} " {{/if}}
+        {{if readonly}} readonly="{{readonly}} " {{/if}}
+        {{if replaceTemp}} data-replace-temp="{{replaceTemp}}" {{/if}}
+        {{if separator}} data-separator="{{separator}}" {{/if}}
+        {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}}
+        {{if frameAcceptModelSelector}} data-frame-accept-model-selector="{{frameAcceptModelSelector}}" {{/if}}
+        {{if hasEvent}} data-has-event="{{hasEvent}}"{{/if}}
+        >
+        {{each valueArray as singleValue index}}
+        <option value="{{singleValue}}">{{despArray[index]}}</option>
+        {{/each}}
+        </select>
+
+    </div>
+    {{/if}}
+</script>
+
+<script id="object" type="text/html"`>
+    {{if !hidden}}
+    <div class=" {{if auiConfigBlock}}{{auiConfigBlock}}{{else}}aui-row refresh-point{{/if}} {{if isTab}} aui-tab-pane {{/if}}"data-refesh-model-selector="{{modelSelector}}" data-widget-selector="{{widgetSelector}}" id="ctn_{{domSelector}}">
+        <a href="#collapse_{{domSelector}}"
+           title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}"
+           data-toggle="collapse"
+           data-event-role="change_status"
+           class="aui-collapse {{if collapse!==false}}collapsed{{/if}}"><i class="aui aui-jiantou-xia"></i>{{desp}}</a>
+        <ul id="collapse_{{domSelector}}" class="{{if collapse===false}}in{{/if}} collapse"  style="height: {{if collapse===false}}auto{{else}}0{{/if}};">
+            {{/if}}
+</script>
+
+<script id="array" type="text/html">
+    {{if !hidden}}
+    <div class="aui-row refresh-point aui-config-second-group {{if isTab}} aui-tab-pane {{/if}}" data-dom-selector="{{refreshDomSelector}}" data-desp="{{refreshDesp}}" data-model-selector="{{refreshModelSelector}}" data-widget-selector="{{refreshWidgetSelector}}" id="ctn_{{domSelector}}">
+        {{if alert}}<p class="aui-row-alert">提示：{{alert}}</p>{{/if}}
+        <div class="aui-row-margin">
+            <div class="col-2 no-border" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">
+                <a href="#collapse_{{domSelector}}"
+                   data-toggle="collapse"
+                   data-event-role="change_status"
+                   class="aui-collapse {{if collapse!==false}}collapsed{{/if}}"><i class="aui aui-jiantou-xia"></i>{{desp}}</a>
+            </div>
+            {{if !isEdmConfig}}
+            <button id="{{domSelector}}" class= "aui-row-btn" type="button" title="添加"
+                    data-desp="{{moreDesp}}"
+                    data-event-role="add_block"
+                    {{if replaceTemp}} data-replace-temp="{{replaceTemp}}" {{/if}}
+            {{if disabled}} disabled="{{disabled}}" {{/if}}
+            {{if hasEvent}} data-has-event="{{hasEvent.toString()}}"{{/if}}
+            {{if widgetSelector}} data-widget-selector="{{widgetSelector}}" {{/if}}
+            {{if selfAttrInEachElement}} data-self-attrInEachElement="{{selfAttrInEachElement}}" {{/if}}
+            {{if parent_widgetSelector}} data-parent-widget-selector="{{parent_widgetSelector}}" {{/if}}
+            {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}} >
+
+            <i class="aui aui-tianjia" ></i>
+
+            {{/if}}
+        </div>
+        <div id="aui_{{domSelector}}_body"
+             {{if edmID}} data-edm-id={{edmID}} {{/if}}
+        data-model-selector="{{modelSelector}}"
+        data-model-collection-selector="{{collectionSelector}}"
+        class="aui-config-block-body col-clear">
+        <ul id="collapse_{{domSelector}}" class="sortable {{if collapse===false}}in{{/if}} collapse" style="height: {{if collapse===false}}auto{{else}}0{{/if}};"
+            data-model-selector="{{modelSelector}}"
+            data-desp="{{moreDesp}}"
+            {{if hasEvent}} data-has-event="{{hasEvent}}" {{/if}} >
+        {{/if}}
+
+</script>
+
+<script id="comboTree" type="text/html">
+    {{if !hidden}}
+    <div class="aui-row" id="ctn_{{domSelector}}">
+        <div class="col-2" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}} {{if dataType}}&#10;类型：{{dataType}} {{/if}}">
+            {{desp}}{{#transformType(dataType)}}
+        </div>
+        <input id="{{domSelector}}" class="col-2 custom-combo-tree" type="text" value="{{value}}"
+               data-desp="{{moreDesp}}"
+               data-simple-desp="{{desp}}"
+               data-value="{{value}}"
+               data-type = "{{dataType}}"
+               name="{{domSelector}}"
+               data-name = "{{name}}"
+               {{if readonly}} readonly="readonly" {{/if}}
+        {{if pattern}} pattern="{{pattern}}"{{/if}}
+        {{if widgetPreStepSelector}} data-widget-pre-step-selector="{{widgetPreStepSelector}}" {{/if}}
+        data-widget-index="{{widgetIndex}}"
+        {{if validate}} data-validate="{{validate}}" {{/if}}
+        {{if placeholder}} placeholder="{{placeholder}}"{{/if}}
+        {{if title}} title="{{title}} " {{/if}}
+        {{if replaceTemp}} data-replace-temp="{{replaceTemp}}" {{/if}}
+        {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}}
+        {{if widgetSelector}} data-widget-selector="{{widgetSelector}}" {{/if}}
+        {{if hasEvent}} data-has-event="{{hasEvent}}"{{/if}}
+        />
+        {{if dataList}}
+        <!--<datalist id="{{domSelector}}s">-->
+        <!--{{each dataList as singleValue index}}-->
+        <!--<option>{{singleValue}}</option>-->
+        <!--{{/each}}-->
+        <!--</datalist>-->
+        {{/if}}
+    </div>
+    {{/if}}
+</script>
+
+<script id="configure_modal" type="text/html">
+    {{if !hidden}}
+    <div data-role="auiPath" class="aui-row aui-flex aui-up-path aui-row-icon">
+        <div class="col-2" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">{{desp}}</div>
+        <div id="{{name}}"
+             data-value="{{value}}"
+             title="{{value}}"
+             data-desp="{{desp}}"
+             class="col-2">&nbsp&nbsp&nbsp&nbsp&nbsp {{if type !== 'icon'}} {{value}} {{/if}}<span><i class="{{value}}" aria-hidden="true"></i></span></div>
+        <input type="button"
+               value="配置"
+               class="ivu-btn ivu-btn-primary ivu-btn-small aui-edm-config-btn"
+               data-desp="{{moreDesp}}"
+               {{if replaceTemp}} data-replace-temp="{{replaceTemp}}" {{/if}}
+        data-event-role="{{type}}"
+        data-value="{{value}}"
+        {{if disabled}} disabled="{{disabled}}" {{/if}}
+        {{if hasEvent}} data-has-event="{{hasEvent}}"{{/if}}
+        {{if widgetSelector}} data-widget-selector="{{widgetSelector}}" {{/if}}
+        {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}} />
+
+        <!--占位符模板专用-->
+        {{if type==='string_with_placeholder'}}
+        <div class="tags-outer-wrapper" style=" display:none;">
+            <p class="tags-title"><span>模板：</span>{{template}}</p>
+            <input class="tags-ctn-input" type="text" value="{{value}}" >
+            <div  class="placeholder-select">
+                <div class="aui-tags-wrapper">
+                    {{each valueArray as singleValue index}}
+                    <button type="button" value="{{singleValue}}" class="text-tag-item"
+                            title="{{singleValue}}"
+                            {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}}
+                    data-desp="{{moreDesp}}"
+                    data-tag-value="{{singleValue}}"
+                    data-tag-desp="{{despArray[index]}}"
+                    >{{despArray[index]}}</button>
+                    {{/each}}
+                </div>
+
+                <div class="placeholder-desp">
+                    <p>说明：</p>
+                    {{each despArray as singleDesp index}}
+                    <ul>
+                        <li>{{singleDesp}}: {{detailsArray[index]}}</li>
+                    </ul>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        {{/if}}
+    </div>
+    {{/if}}
+</script>
+
+<script id="slider" type="text/html">
+    {{if display !== 'hidden'}}
+    <li class="aui-row">
+        <div class="col-2" title="({{name}}) {{details || desp}}">{{desp}}</div>
+        <div class="col-1 slider" data-role="slider"></div>
+    </li>
+    {{/if}}
+</script>
+
+<script id="edmBlock" type="text/html">
+    <div class="aui-config-block">
+        <div class="aui-ttl" title="{{title}}">
+            {{title}}&nbsp&nbsp&nbsp&nbsp&nbsp{{value}}
+            <div title="配置" class="config-modal-btn aui-edm-config-btn {{if isEvent===true}}in-event{{/if}} "
+                 {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}}
+            {{if isResponseData}} data-is-response-data="{{isResponseData}}"{{/if}}
+            data-direction="{{direction}}"
+            data-role="edm">
+            <i class="aui aui-peizhidingyi"></i>
+        </div>
+    </div>
+    <div class="aui-edm-list-ctn">
+        <ul {{if edmID}} data-edm-id="{{edmID}}" {{/if}} {{if isResponseData}} data-is-response-data="{{isResponseData}}"{{/if}} data-role="edmList" data-direction="{{direction}}"></ul>
+    </div>
+    </div>
+</script>
+
+
+<script id="edmItem" type="text/html">
+    {{each list as item index}}
+    {{if item.active}}
+    <li class="aui-row" title="{{item.comment||item.name}}（{{item.name}}）" data-field-index="{{item.index}}">
+        <div class="col-2">{{item.alias||item.name}}</div>
+        <div class="col-2">{{item.comment||item.name||item.alias}}</div>
+    </li>
+    {{/if}}
+    {{/each}}
+</script>
+
+<script id="file" type="text/html">
+    {{if !hidden}}
+    <div data-role="auiPath" class="aui-row aui-up-path aui-row-icon">
+        <div class="col-3" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">{{desp}}</div>
+        <div id="{{name}}"
+             data-value="{{value}}"
+             title="{{value}}"
+             data-desp="{{desp}}"
+             class="col-3"
+             {{if replaceTemp}} data-replace-temp="{{replaceTemp}}" {{/if}}
+        >{{value}}</div>
+    <input type="file" title="选择文件"
+           data-desp="{{moreDesp}}"
+           {{if replaceTemp}} data-replace-temp="{{replaceTemp}}" {{/if}}
+    {{if disabled}} disabled="{{disabled}}" {{/if}}
+    {{if hasEvent}} data-has-event="{{hasEvent}}"{{/if}}
+    {{if widgetSelector}} data-widget-selector="{{widgetSelector}}" {{/if}}
+    {{if selfAttrInEachElement}} data-self-attrInEachElement={{selfAttrInEachElement}} {{/if}}
+    {{if parent_widgetSelector}} data-parent-widget-selector="{{parent_widgetSelector}}" {{/if}}
+    {{if modelSelector}} data-model-selector="{{modelSelector}}" {{/if}} />
+    <button class="btn" type="button"><i class="fa fa-picture-o"></i></button>
+    </div>
+    {{/if}}
+</script>
+
+<script id="input_select" type="text/html">
+    {{if display !=='hidden'}}
+    <div class="aui-row" >
+        <div class="col-2" title="英文名：{{name}}&#10;中文名：{{desp}}&#10;详情：{{details || desp}}">
+            {{desp}}
+        </div>
+        <input {{if input.name }} id="{{input.name}}" {{/if}} type="text" class="col-2 aui-css-input" data-desp="{{input.desp}}"
+        {{if input.value}}value="{{input.value}}"{{/if}}
+        {{if input.placeholder}}placeholder="{{input.placeholder}}"{{/if}}
+        {{if input.readonly}} readonly="readonly" {{/if}}
+        >
+        <select {{if select.name }} id="select.name" {{/if}} class="aui-css-unit-select" data-desp="{{select.desp}}">
+        {{each select.valueArray as singleValue index}}
+        <option {{if singleValue.toString() === select.value}} selected {{/if}} value="{{singleValue}}">{{select.despArray[index]}}</option>
+        {{/each}}
+        </select>
+    </div>
+
+    {{/if}}
+</script>
+
+<script id="accordion_group" type="text/html">
+    <div class="aui-accordion-group">
+        <div class="aweb-accordion-heading">
+            <a class="aweb-accordion-toggle" class="aui-collapse {{if collapse!==false}}collapsed{{/if}}" data-toggle="collapse" href="#{{id}}">{{desp}}</a>
+        </div>
+        <div id="{{id}}" class="aweb-accordion-body {{if collapse===false}}in{{/if}} collapse" style="height:{{if collapse===false}}auto{{else}}0{{/if}};">
+            <div class="aweb-accordion-inner"></div>
+        </div>
+    </div>
+</script>
+
+<!--样式配置模版代码Start-->
+<script id="css_theme_select" type="text/html">
+    {{if !hidden}}
+    <div class="aui-css-theme-ctn" id="ctn_{{domSelector}}"
+         data-role="auiCssThemeChoose" data-event-role="theme_select">
+        {{if templateArray}}
+        {{each templateArray}}
+        <div class="ivu-collapse-content-box aui-css-template {{if $value.selected}}aui-theme-select-borderColor{{/if}}" title="中文名：{{$value.desp}}&#10;类名：{{$value.value}}" data-value="{{$value.value}}">
+            <div class="aui-widget-title"><span style="font-size:0.9em">{{$value.desp}}</span></div>
+            {{#transformThemeTemp($value.template,$value.value,$value.zoom)}}
+        </div>
+        {{/each}}
+        {{/if}}
+    </div>
+    {{/if}}
+</script>
+
+<script id="css_attribute_select" type="text/html">
+    {{if !hidden}}
+    <div class="aui-row aui-base-config-component aui-more-attr-link">
+        更多
+    </div>
+
+    {{/if}}
+</script>
+
+<script id="css_config_panel" type="text/html">
+    {{if !hidden}}
+    <!--组件搜索 Start-->
+    <div class="aui-aside-search-bar-ctt">
+        <i class="aui aui-sousuo"></i>
+        <input id="auiCssConfigSearch" type="text" class="aui-search-query" placeholder="搜索样式属性"/>
+    </div>
+    <!--组件搜索 End-->
+    <div class="aui-css-config-panel">
+        <div class="aui-css-style-name-list">
+            {{if nameArr}}
+            <ul>
+                {{each nameArr}}
+                <li  title="中文名：{{$value.desp}}&#10;类名：{{$value.value}}" data-value="{{$value.value}}" data-panel-id="{{$value.value}}"  data-event-role="select-style">{{$value.desp}} {{ if $value.closable}}<i class="array-del-span ivu-icon ivu-icon-close" data-event-role="delete-style"></i>{{/if}} </li>
+                {{/each}}
+            </ul>
+            {{/if}}
+        </div>
+        <div class="aui-css-style-config-list">
+
+        </div>
+    </div>
+    {{/if}}
+</script>
+<script id="css_tools_select" type="text/html">
+    {{if !hidden}}
+    <div class="aui-config-tools-box" data-role="auiConfigToolBox">
+        <span class="aui-config-tools-title"><sapn class="tools-title-text"><i class="aui aui-gengduo-zongxiang"></i></sapn></span><!-- 下拉标题 -->
+        <ul class="aui-config-tools-ul none">
+        </ul>
+    </div>
+    {{/if}}
+</script>
+
+
+<!--样式配置模版代码End-->
+
+<!--事件生命周期模板 Start-->
+<script id="event_string_input" type="text/html">
+    {{if display !=='hidden'}}
+    <div class="aui-row"  {{ if backgroundColor}} style=" background-color:{{backgroundColor}};"{{/if}} >
+    <span class="col-2">{{desp}}</span>
+    <input {{if name }} id="{{name}}" {{/if}} type="text" class="col-2 {{if unitGroup}}aui-css-input{{/if}}" data-role="cssBasicConfInput" data-desp="{{desp}}"
+    {{if value}}value="{{value}}"{{/if}}
+    {{if placeholder}}placeholder="{{placeholder}}"{{/if}}
+    {{if readonly}} readonly="readonly" {{/if}}
+    {{if pattern}} pattern="{{pattern}}"{{/if}}
+    {{if title}} title="{{title}} " {{/if}}
+    >
+    {{if unitGroup.length}}
+    <select {{if name }} id="{{name}}Unit" {{/if}} class="aui-css-unit-select" data-role="cssBasicConfInput" data-desp="{{desp}}单位">
+    {{each unitGroup as unitValue i}}
+    <option {{if unit === unitValue}}selected{{/if}} value={{unitValue}}>{{unitValue}}</option>
+    {{/each}}
+    </select>
+    {{/if}}
+    </div>
+
+    {{/if}}
+</script>
+
+
+<script id="eventBlock" type="text/html">
+    <li class="sortable-li" title="{{desp||name}}" data-id="{{eventID||lifecycleID}}">
+        <div class="aui-config-block">
+            <div class="aui-ttl">
+                <a href="javascript:" data-event-role="overview" class="aui-collapse">{{desp||name}}</a>
+                <i class="aui aui-guanbi aui-icon" data-event-role="del_block" title="删除"></i>
+            </div>
+        </div>
+    </li>
+</script>
+<!--事件生命周期模板 End-->
+
+
+<!--编辑器自定义木模板 Start-->
+<!--overview Start-->
+<script id="html_overviewCodeMenu" type="text/html">
+    <ul >
+        {{each children}}
+        <li class="aui-search-tree-node {{if $value.graph}} aui-tree-graph-ctn{{/if}}" {{if $value.graph}} data-var-namespace="{{$value.namespace}}" data-role="node" {{if $value.id}} data-code-id="{{$value.id}}" {{/if}}{{/if}}>
+        {{if $value.graph}}
+        <span class="aui-tree-node-graph {{$value.graph}}"></span>
+        {{/if}}
+        {{if $value.children && $value.children.length}}
+        <span data-role="folder">{{# $value.desp}}</span>
+        {{include 'html_overviewCodeMenu' $value}}
+        {{else}}
+
+        {{if $value.isAddButton}}
+
+        <button class="aui-row-btn" type="button" title="添加"
+                data-event-role="add_var" data-in-function-desp="{{$value.inFunctionDesp}}" data-in-function="{{$value.inFunction}}" data-var-namespace="{{$value.namespace}}" data-var-namespace-desp="{{$value.namespaceDesp}}">
+            <i class="aui aui-tianjia"></i>
+
+        </button>
+
+        {{else}}
+
+        {{if !$value.hidden}}
+
+        <span data-var-namespace="{{$value.namespace}}" data-role="node"  {{if !$value.graph}} {{if $value.id}} data-code-id="{{$value.id}}" {{/if}} {{/if}}>{{# $value.desp}}</span>
+
+        {{/if}}
+
+        {{/if}}
+        {{/if}}
+        </li>
+        {{/each}}
+    </ul>
+</script>
+
+<script id="html_overviewTabTreeSearchBar" type="text/html">
+    <!--代码搜索 Start-->
+    <div class="aui-tabtree-search-bar">
+        <div class="aui-aside-search-bar-ctt">
+            <i class="aui aui-sousuo"></i>
+            <input  id="{{searchId}}" type="text" class="aui-search-query" event-role="api" />
+        </div>
+    </div>
+    <!--代码搜索 End-->
+    <div id="{{searchPanelId}}" class="aui-tabtree-search-result-panel" style="display: none"></div>
+    <div class="aui-tabtree-container" id="{{ctnId}}">
+
+    </div>
+
+</script>
+
+<script id="html_overviewTabTreePanel" type="text/html">
+
+
+    <div class="aui-tabtree-left-container" >
+        <ul class="open">
+            {{each children}}
+            {{if !$value.canHide}}
+            <li class="aui-tab-tree-node">
+                {{if $value.children && $value.children.length}}
+                <div {{if $value.domId}} data-event-role="{{$value.domId}}" {{/if}}  title ="{{# $value.desp}}" > <i class="aui aui-jiantou-shang angle-up {{if !$value.showIcon}} hidden {{/if}} "></i><span data-role="folder" {{if $value.domId}} data-event-role="{{$value.domId}}" {{/if}} >{{# $value.desp}}</span></div>
+    {{include 'html_overviewTabTree' $value}}
+    {{else}}
+
+    {{if $value.isAddButton}}
+
+    <button class="aui-row-btn" type="button" title="添加"
+            data-event-role="add_var" data-in-function-desp="{{$value.inFunctionDesp}}" data-in-function="{{$value.inFunction}}" data-var-namespace="{{$value.namespace}}" data-var-namespace-desp="{{$value.namespaceDesp}}">
+
+        <i class="aui aui-tianjia"></i>
+
+    </button>
+
+    {{else}}
+
+    {{if !$value.hidden}}
+
+    <div {{if $value.domId}} data-event-role="{{$value.domId}}" {{/if}} title = "{{# $value.desp}}"> <i class="aui aui-jiantou-xia angle-up {{if !$value.showIcon}} hidden {{/if}} "></i><span data-var-namespace="{{$value.namespace}}" data-role="node" {{if $value.id}} data-code-id="{{$value.id}}" {{/if}}>{{# $value.desp}}</span></div>
+
+    {{/if}}
+
+    {{/if}}
+    {{/if}}
+    </li>
+    {{/if}}
+    {{/each}}
+    </ul>
+    </div>
+    <div class="aui-tabtree-right-container" ></div>
+    </div>
+
+</script>
+
+<script id="html_overviewTabTree" type="text/html">
+
+
+    <ul class="open">
+        {{each children}}
+        {{if !$value.canHide}}
+        <li class="aui-tab-tree-node">
+            {{if $value.children && $value.children.length}}
+
+            <div {{if $value.domId}} data-event-role="{{$value.domId}}" {{/if}}  title = "{{# $value.desp}}" > <i class="aui aui-jiantou-xia angle-up {{if !$value.showIcon}} hidden {{/if}} " style="margin-left: calc({{$value.level}} * .1em);" ></i><span data-role="folder" >{{# $value.desp}}</span></div>
+            {{include 'html_overviewTabTree' $value}}
+
+            {{else}}
+
+            {{if !$value.hidden}}
+
+            <div {{if $value.domId}} data-event-role="{{$value.domId}}" {{/if}}  title = "{{# $value.desp}}" > <i class="aui aui-jiantou-xia  angle-up {{if !$value.showIcon}} hidden {{/if}} " style="margin-left: calc({{$value.level}} * .1em);"></i><span data-var-namespace="{{$value.namespace}}" data-role="node" {{if $value.id}} data-code-id="{{$value.id}}" {{/if}}>{{# $value.desp}}</span></div>
+
+            {{/if}}
+
+            {{/if}}
+        </li>
+        {{/if}}
+        {{/each}}
+    </ul>
+</script>
+
+<script id="html_overviewTabTreeList" type="text/html">
+
+    <ul >
+        {{each children}}
+        <li data-var-namespace="{{$value.namespace}}" data-role="node" {{if $value.id}} data-code-id="{{$value.id}}" {{/if}}>
+        {{if !helper}} <i class="aui aui-questions2 aui-look-doc" data-role="auiOverviewDevelopment" title="开发者中心" data-layout-active="no"></i> {{/if}}
+        <span >{{# $value.desp}} {{#transformType($value.dataType)}}</span>
+        </li>
+        {{/each}}
+    </ul>
+</script>
+
+<script id="html_TabTreeSearchResult" type="text/html">
+
+    <ul >
+        {{each result}}
+
+        <li data-var-namespace="{{$value.namespace}}" data-role="node" {{if $value.id}} data-code-id="{{$value.id}}" {{/if}}>
+        <span class="tabtree-search-name">{{# $value.desp}}</span>
+        <span class="tabtree-search-path">{{# $value.path}}</span>
+        <i class="aui aui-questions2  aui-look-doc" data-role="auiOverviewDevelopment" title="开发者中心" data-layout-active="no"></i>
+        </li>
+        {{/each}}
+    </ul>
+
+</script>
+
+<script id="html_overviewVarList" type="text/html">
+    {{if varList}}
+    {{each varList}}
+    <ul class="aui-var-block open">
+        <div class="aui-normal-block-title"><span class="color-block {{$value.colorBlock}}"></span><span data-role="folder" title="{{# $value.desp}}">{{# $value.desp}}</span>
+            {{if $value.isAddButton}}
+            <button class="aui-row-btn" type="button" title="添加"
+                    data-event-role="add_var" data-in-function-desp="{{$value.inFunctionDesp}}" data-in-function="{{$value.inFunction}}" data-var-namespace="{{$value.namespace}}" data-var-namespace-desp="{{$value.namespaceDesp}}">
+
+                <i class="aui aui-tianjia"></i>
+                添加
+            </button>
+            {{/if}}
+            <i data-event-role="toggle" class="aui aui-jiantou-xia" ></i>
+        </div>
+        {{each $value.children}}
+        {{if !$value.hidden}}
+        <li class="aui-search-tree-node {{if !$value.children}} node {{/if}}">
+
+            {{if $value.children}}
+            <div class="aui-local-block-title">
+                <span class="color-block {{$value.colorBlock}}"><i class="aui {{$value.blockIcon}}"></i></span>
+                <span title="{{# $value.desp}}" style="overflow: visible">{{# $value.desp}}</span>
+                {{if $value.isAddButton}}
+                <button class="aui-row-btn" type="button" title="添加"
+                        data-event-role="add_var" data-in-function-desp="{{$value.inFunctionDesp}}" data-in-function="{{$value.inFunction}}" data-var-namespace="{{$value.namespace}}" data-var-namespace-desp="{{$value.namespaceDesp}}">
+
+                    <i class="aui aui-tianjia"></i>
+                    添加
+                </button>
+                {{/if}}
+
+            </div>
+            <ul class="aui-var-block">
+                {{each $value.children}}
+                <li class="aui-search-tree-node node"><span data-var-namespace="{{$value.namespace}}" data-role="node" {{if $value.id}} data-code-id="{{$value.id}}" {{/if}}>{{# $value.desp}}</span>
+                    {{if $value.id}}
+                    <div class="aui-var-icon-list">
+                        <i data-event-role="auiVarEdit" title="修改变量" class="aui aui-xiugaibianliang" data-var-namespace="{{$value.namespace}}"></i>
+                        <i data-event-role="auiVarDel" title="删除变量" class="aui aui-shanchu" data-var-namespace="{{$value.namespace}}"></i>
+                    </div>
+                    {{/if}}
+                </li>
+                {{/each}}
+            </ul>
+
+            {{else}}
+
+            <span data-var-namespace="{{$value.namespace}}" data-role="node" {{if $value.id}} data-code-id="{{$value.id}}" {{/if}}>{{# $value.desp}}</span>
+            {{if $value.id}}
+            <div class="aui-var-icon-list">
+                <i data-event-role="auiVarEdit" title="修改变量" class="aui aui-xiugaibianliang"  data-var-namespace="{{$value.namespace}}"></i>
+                <i data-event-role="auiVarDel" title="删除变量" class="aui aui-shanchu"  data-var-namespace="{{$value.namespace}}"></i>
+            </div>
+            {{/if}}
+
+            {{/if}}
+
+        </li>
+        {{/if}}
+        {{/each}}
+    </ul>
+    {{/each}}
+    {{/if}}
+
+</script>
+
+
+
+<!--overview End-->
+<!--编辑器自定义木模板 Start-->
+
+<!--右侧配置栏模板代码 End-->
+
+<!--逻辑概览 Start-->
+
+<!--逻辑概览 End-->
+
+<!--选择实体框 Start-->
+<div id="auiEdmCtn" class="aui-edm-panel hide aui-edm-ctn">
+
+    <div class="aui-page-nav">
+        <div class="aui-tabs-left-group">
+            <h5 class="aui-page-nav-header">数据字典与数据实体</h5>
+        </div>
+        <div class="aui-tabs-right-group">
+            <span class="divider-vertical"></span>
+            <button id="auiEdmCloseBtn" type="button" title="关闭" class="btn">
+                <i class="aui aui-guanbi"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="aui-tabbable">
+        <div class="aui-edm-panel-body">
+            <div class="aui-tabbable aui-edm-panel-left">
+                <ul class="aui-nav aui-nav-tabs">
+                    <li class="active"><a href="#auiEdmSearchFrame" data-toggle="tab">AWEB 应用</a></li>
+                    <li><a href="#auiEdmAgreeBusFrame" data-toggle="tab">Agree Bus 服务</a></li>
+                </ul>
+                <div class="aui-tab-content">
+
+                    <div class="aui-tab-pane active aui-edm-pane-frame" id="auiEdmSearchFrame">
+                        <div class="aui-edm-header">
+                            <div class="aui-aside-search-bar-ctt">
+                                <i class="aui aui-sousuo"></i>
+                                <input id="auiEdmSearch" type="text" class="aui-search-query" placeholder="输入关键字以搜索字段或数据实体…">
+                            </div>
+                        </div>
+                        <div class="aui-edm-container clearfix">
+                            <div class="aui-edm-content" id="auiEdmSearchFrameDictCtt">
+                                <div class="aui-header">
+                                    <h4>数据字典</h4>
+                                </div>
+                                <div class="aui-edm-inner-content">
+
+                                </div>
+                            </div>
+                            <div class="aui-edm-content" id="auiEdmSearchFrameEdmCtt">
+                                <div class="aui-header">
+                                    <h4>数据实体</h4>
+                                </div>
+                                <div class="aui-edm-inner-content">
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="aui-tab-pane aui-edm-agree-bus-frame" id="auiEdmAgreeBusFrame">
+                        <div class="aui-tab-pane-left">
+                            <div id="auiSvListCtn" class="aui-sv-list-container">
+
+                            </div>
+                        </div>
+                        <div class="aui-tab-pane-right">
+                            <div id="auiSvSltEntityName" class="aui-header">
+                                <h4>对应服务的名称</h4>
+                            </div>
+                            <div class="aui-edm-header">
+                                <div class="aui-aside-search-bar-ctt">
+                                    <i class="aui aui-sousuo"></i>
+                                    <input id="auiEdmAgreeBusSearch" type="text" class="aui-search-query" placeholder="输入关键字以搜索字段或数据实体…">
+                                </div>
+                            </div>
+
+                            <div id="auiSvEntitiesCtn" class="aui-sv-entities-container">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="aui-tab-pane aui-config-ctn" id="auiEdmUpdFrame">
+                        <div class="aui-config-inner-ctn"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="aui-tabbable aui-edm-panel-right">
+                <div id="auiEdmSltCtn" class="aui-edm-slt-ctn">
+                    <div class="aui-header">
+                        <h4>数据源</h4>
+                        <select id="auiEdmDataSourceSlt"></select>
+                    </div>
+                    <div class="aui-edm-tree-wrapper" id="auiEdmSltTree" >
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- auiEdmRegexCtn  -->
+
+<div id="auiEdmRegexCtn" class="aui-edm-panel hide aui-edm-ctn ">
+
+    <!--<div class="aui-page-nav">-->
+    <!--<div class="aui-tabs-left-group">-->
+    <!--<h5 class="aui-page-nav-header">数据字典与数据实体</h5>-->
+    <!--</div>-->
+    <!--<div class="aui-tabs-right-group">-->
+    <!--<span class="divider-vertical"></span>-->
+    <!--<button id="auiEdmCloseBtn" type="button" title="关闭" class="btn">-->
+    <!--<i class="aui aui-guanbi"></i>-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <div class="aui-edm-panel-body">
+        <div class="aui-tabbable">
+            <div class="aui-tab-content">
+                <div class="aui-tab-pane active aui-edm-pane-frame" id="auiEdmRegexSearchFrame">
+
+                    <div class="aui-edm-header">
+                        <div class="aui-aside-search-bar-ctt">
+                            <i class="aui aui-sousuo"></i>
+                            <input id="auiEdmRegexSearch" type="text" class="aui-search-query" placeholder="输入关键字以搜索字段或数据实体…">
+                        </div>
+                    </div>
+                    <div class="aui-edm-container clearfix">
+                        <div class="aui-edm-content" id="auiEdmRegexSearchFrameDictCtt">
+                            <div class="aui-edm-header aui-header">
+                                <h4>数据字典</h4>
+                            </div>
+                            <div class="aui-edm-inner-content"></div>
+                        </div>
+                        <div class="aui-edm-content" id="auiEdmRegexSearchFrameEdmCtt">
+                            <div class="aui-edm-header aui-header">
+                                <h4>数据实体</h4>
+                            </div>
+                            <div class="aui-edm-inner-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--选择实体框 End-->
+
+<!--假widget的div start-->
+<div data-widget-id="widgetCreator" data-type=""></div>
+<!--假widget的div end-->
+
+<div data-widget-id="newWidget" data-type=""></div>
+
+<!--开发者中心 start-->
+<!--<div id="auiDocsMask" class="aui-overview-mask hide"></div>-->
+<!--<div id="auiDocsPage" class="aui-overview-panel hide">-->
+<!--<span class="aui-overview-panel-close" title="关闭">×</span>-->
+<!--</div>-->
+<!--开发者中心 end-->
+
+<script id="overviewStatementList" type="text/html">
+    {{each}}
+    <div class="aui-overview-code-list-ctn">
+        <span>{{$value.desp}}</span>
+        <ul>
+            {{each $value.children}}
+            <li class="aui-search-tree-node aui-tree-graph-ctn" data-code-id="{{$value.id}}" data-node-type="{{$value.type}}" data-desp="{{$value.desp}}" data-role="node">
+                <span class="aui-tree-node-graph aui-graph-rectangles"></span>
+                <span data-var-namespace="" data-role="node">{{$value.desp}}</span>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/each}}
+</script>
+
+<script id="viewerTemplate" type="text/html">
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <title>
+            ##_AWEB_TITLE_##
+        </title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta content="minimal-ui" name="viewport" />
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+        <meta content="yes" name="apple-mobile-web-app-capable" />
+    </head>
+
+    <body class="default-theme" style="display: none;">
+    ##_AWEB_CONTENT_##
+    <!--##_CORDOVA_##-->
+    <script type="text/javascript" src="dependence/requireJS/require.js" data-main="bootloader"><\/script>
+    </body>
+
+    </html>;
+</script>
+
+<!--报错Temlate start-->
+<script id="auiErrorTemp" type="text/html">
+    {{#errorMsg}}，{{#scriptURI}}，第{{lineNumber}}行，第{{columnNumber}}列。
+</script>
+<!--报错Temlate end-->
+
+
+
+<!--开发者中心 start-->
+
+<!-- 模板 Start -->
+
+<!--搜索结果模板 Start-->
+<script id="searchTemp" type="text/html">
+    <div data-role="container" class="tabbable">
+        <!--	<span class="docs-search-result ">共{{length}}个结果，搜索用时{{time}}ms</span>-->
+        <ul data-role="tab" class="nav nav-tabs aweb-tabs docs-search-details" style="left: 5px;">
+            {{if length}}<li class="active" title="sAll"><a href="#sAll" data-toggle="tab">全部</a></li>{{/if}}
+            {{if docs.length}}<li class="" title="文档"><a href="#sDoc" data-toggle="tab">文档</a></li>{{/if}}
+            {{if widgets.length}}<li class="" title="组件"><a href="#sWidget" data-toggle="tab">组件</a></li>{{/if}}
+        </ul>
+
+        <div class="tab-content">
+            {{if length}}
+            <div class="tab-pane aui-edm-content active" id="sAll">
+                <div class="aui-edm-inner-content">
+                    {{each docs}}
+                    <div class="docs-search-ctn" data-file="{{$value.id}}" data-name="{{$value.id}}.{{$value.title}}">
+                        <h4 class="btn-link" title="{{$value.id}}.{{$value.title}}">{{$value.id}}.{{$value.title}}</h4>
+                        <div class="docs-search-ctt">{{#$value.searchResult}} … </div>
+                    </div>
+                    {{/each}}
+                    {{each widgets}}
+                    <div class="docs-search-ctn" data-href="{{$value.href}}" data-name="{{$value.name}}">
+                        <h4 class="btn-link" title="{{$value.name}}，{{$value.href}}">{{$value.name}}，{{$value.type}}</h4>
+                        <div class="docs-search-ctt">{{#$value.searchResult}} … </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+            {{if docs.length}}
+            <div class="tab-pane aui-edm-content" id="sDoc">
+                <div class="aui-edm-inner-content">
+                    {{each docs}}
+                    <div class="docs-search-ctn" data-file="{{$value.id}}" data-name="{{$value.id}}.{{$value.title}}">
+                        <h4 class="btn-link" title="{{$value.id}}.{{$value.title}}">{{$value.id}}.{{$value.title}}</h4>
+                        <div class="docs-search-ctt">{{#$value.searchResult}} … </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+
+            {{if widgets.length}}
+            <div class="tab-pane aui-edm-content" id="sWidget">
+                <div class="aui-edm-inner-content">
+                    {{each widgets}}
+                    <div class="docs-search-ctn" data-href="{{$value.href}}" data-name="{{$value.name}}">
+                        <h4 class="btn-link" title="{{$value.name}}，{{$value.href}}">{{$value.name}}，{{$value.type}}</h4>
+                        <div class="docs-search-ctt">{{#$value.searchResult}} … </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</script>
+<!--搜索结果模板 End-->
+<!--页内搜索模板 Start-->
+<script id="searchPageTemp" type="text/html">
+    {{if result.length}}
+    <div class="docs-search-item">共{{result.length}}结果，搜索用时{{time}}ms</div>
+    {{each result}}
+    <div class="docs-search-item" data-search-id="{{$value.uid}}" title="{{$value.title}}">{{#$value.text}}</div>
+    {{/each}}
+    {{else}}
+    <div class="docs-search-item">无搜索结果。</div>
+    {{/if}}
+</script>
+<!--页内搜索模板 End-->
+
+<!--帮助文档 Start-->
+<script type="text/html" id="docsIndexTemp">
+    {{each children}}
+    {{if $value.children&&$value.children.length}}
+    <div class="docs-index-ctt">
+        <h3 class="docs-index-header display-4" data-href="{{$value.id}}">{{$value.desp}}</h3>
+
+        <ul class="docs-index-list">
+            {{each $value.children as doc}}
+            <li class="docs-index-item" data-file="{{doc.id}}" title="{{doc.id}}. {{doc.title}}">{{doc.id}}. {{doc.title}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+    {{/each}}
+</script>
+<!--帮助文档 End-->
+<!--组件列表导航 Start-->
+<script id="docsIndexNav" type="text/html">
+    <ul>
+        {{each children}}
+        {{if $value.children&&$value.children.length}}
+        <li>
+            <a data-href="{{$value.id}}">{{$value.desp}}</a>
+        </li>
+        {{/if}}
+        {{/each}}
+    </ul>
+</script>
+<!--组件列表导航 End-->
+
+<!--帮助文档详情 Start-->
+<script type="text/html" id="tsTimeFormatTemp">
+    {{year}}/{{month}}/{{date}}
+</script>
+<script type="text/html" id="tsDetailsContentTemp">
+    {{if chain && chain.length}}
+    <ol class="breadcrumb">
+        {{each chain}}
+        <li class="breadcrumb-item">{{$value}}</li>
+        {{/each}}
+    </ol>
+    {{/if}}
+
+    <div class="ts-details-panel">
+        <div class="ts-details-nav-panel">
+            <div id="auiDocsIndexNavCtn" class="tabbable">
+                <ul class="nav nav-tabs">
+                    <li class="active" title="导航"><a href="#auiDocsIndexNav{{uid}}" data-toggle="tab"><i class="fa fa-bars"></i></a></li>
+                    <li title="搜索"><a href="#auiDocsIndexSearch{{uid}}" data-toggle="tab"><i class="fa fa-search"></i></a></li>
+                    <li title="信息"><a href="#auiDocsIndexInfo{{uid}}" data-toggle="tab"><i class="fa fa-info"></i></a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active ts-details-nav" id="auiDocsIndexNav{{uid}}">
+                        <div class="ts-details-nav" data-role="tsDetailsNavPanel"></div>
+                    </div>
+                    <div class="tab-pane" id="auiDocsIndexSearch{{uid}}">
+                        <!--代码搜索 Start-->
+                        <div class="docs-search-ctn">
+                            <input data-id="auiDocsPageSearch" type="text" placeholder="搜索当前页面内容"  class="docs-search-query"/>
+                        </div>
+                        <!--代码搜索 End-->
+                        <div data-id="auiDocsPageSearchList" class="docs-search-list"></div>
+                    </div>
+                    <div class="tab-pane" id="auiDocsIndexInfo{{uid}}">
+                        <blockquote class="blockquote">
+                            <p class="mb-0"><span class="badge badge-default">{{version}}</span></p>
+                            <p class="mb-0" title="{{author}}">{{#transformAuthor(author,true)}}</p>
+                            <p class="mb-0">{{lastModifiedTime}}</p>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ts-details-ctt-panel" data-role="content"></div>
+    </div>
+</script>
+<!--帮助文档详情 End-->
+
+<!--组件列表 Start-->
+<script type="text/html" id="widgetIndexTemp">
+    {{each cWidgets}}
+    {{if !$value.collapse && $value.cWidgets.length}}
+    <div class="widget-index-ctt">
+        {{if $value.name}}
+        <h{{$value.level}} class="widget-index-header" data-widget-href={{$value.href}} title="{{$value.name}}">{{$value.name}}</h{{$value.level}}>
+        {{/if}}
+        {{include 'widgetIndexTemp' $value}}
+    </div>
+    {{else if !$value.hidden}}
+    <div class="widget-index-block" data-widget-href="{{$value.href}}" title="{{$value.name}}">
+        <div class="widget-index-icon">
+            <i class="{{$value.icon||'fa fa-file'}}"></i>
+        </div>
+        <div class="widget-index-name">
+            <p>{{$value.name}}</p>
+            <small>{{$value.type}}</small>
+        </div>
+    </div>
+    {{/if}}
+    {{/each}}
+</script>
+<!--组件列表 End-->
+<!--组件列表导航 Start-->
+<script id="widgetIndexNav" type="text/html">
+    <ul>
+        {{each cWidgets}}
+        {{if !$value.collapse && $value.cWidgets.length}}
+        <li>
+            <a data-href="{{$value.href}}">{{$value.name}}</a>
+            <ul>
+                {{each $value.cWidgets}}
+                {{if !$value.collapse && $value.cWidgets.length}}
+                <li>
+                    <a data-href="{{$value.href}}">{{$value.name}}</a>
+                </li>
+                {{/if}}
+                {{/each}}
+            </ul>
+        </li>
+        {{/if}}
+        {{/each}}
+    </ul>
+</script>
+<!--组件列表导航 End-->
+
+<!--组件详情页模板 Start-->
+<script id="widgetDetails" type="text/html">
+
+    {{if widgetChain && widgetChain.length}}
+    <ol class="breadcrumb">
+        {{each widgetChain as item index}}
+        <li class="breadcrumb-item">{{item}}</li>
+        {{/each}}
+    </ol>
+    {{/if}}
+
+    <div style="margin:0 .5em;">
+        <h1 data-href="widget" class="display-4">
+            <i class="fa {{icon}}"></i>&nbsp;
+            {{name}}&nbsp;
+            <span class="badge badge-default">{{version}}</span>
+            <span class="badge badge-warning">{{#transformCompatibility(compatibility)}}</span>
+        </h1>
+        {{ if author}}
+        <blockquote class="blockquote">
+            <p class="mb-0">作者：{{#transformAuthor(author)}}</p>
+        </blockquote>
+        {{/if}}
+
+        {{if hidden || collapse}}
+        <i class="iconfont icon-danger_fill"></i> 弃用，该组件已不再支持或维护，请尽快改用其他组件。
+        {{/if}}
+
+        <p class="text-indent">
+            {{details}}
+        </p>
+        <p>&nbsp;</p>
+
+        <h2 class="m-2" data-href="info">信息</h2>
+        <div>
+            <h3 data-href="type" title="类型（type），组件短名称" class="m-3">
+                类型，type
+            </h3>
+            <p class="text-content">
+                <span class="badge badge-normal">{{type}}</span>
+            </p>
+            <p>&nbsp;</p>
+
+            <h3 data-href="href" title="文件名（href），组件长名称" class="m-3">
+                文件名，href
+            </h3>
+            <p class="text-content">
+                <span class="badge badge-normal">{{href}}</span>
+            </p>
+            <p>&nbsp;</p>
+            {{if belongTo}}
+            <h3 data-href="belongTo" title="级别（belongTo），按项目分类" class="m-3">
+                级别，belongTo
+            </h3>
+            <p class="text-content">
+                <span class="badge badge-normal">{{belongTo}}</span>
+            </p>
+            <p>&nbsp;</p>
+            {{/if}}
+        </div>
+
+        <h2 class="m-2" data-href="config">配置</h2>
+        <div>
+            {{if category}}
+            <h3 data-href="belongTo" title="类型（category）" class="m-3">
+                类型，category
+            </h3>
+            <p class="text-content">
+                <span class="badge badge-normal">{{category}}</span>
+            </p>
+            <p>&nbsp;</p>
+            {{/if}}
+
+            {{if baseName}}
+            <h3 data-href="base" title="布局模式继承于（base），组件的放置行为与继承组件一致，也就是说被继承组件可以放置什么组件，继承的组件也可以放置什么组件" class="m-3">
+                布局模式继承于，base
+            </h3>
+            <p class="text-content">
+                {{each baseName}}
+                <span class="badge badge-normal">{{$value}}</span>
+                {{/each}}
+            </p>
+            <p>&nbsp;</p>
+            {{/if}}
+            {{if accept}}
+            <h3 data-href="accept" title="可放置于（accept），组件放置于什么组件" class="m-3">
+                可放置于，accept
+            </h3>
+            <p class="text-content">
+                {{each acceptName}}
+                <span class="badge badge-normal">{{$value}}</span>
+                {{/each}}
+            </p>
+            <p>&nbsp;</p>
+            {{/if}}
+
+            {{if deps}}
+            <h3 data-href="deps" title="依赖" class="m-3">
+                依赖，deps
+            </h3>
+            <div class="text-content">
+                {{if deps.js}}
+                <h4 class="m-4">脚本文件</h4>
+
+                <ul>
+                    {{each deps.js as item index}}
+                    <li>{{item}}</li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+
+                {{if deps.css}}
+                <h4 class="m-4">样式文件</h4>
+
+                <ul>
+                    {{each deps.css as item index}}
+                    <li>{{item}}</li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+            </div>
+            <p>&nbsp;</p>
+            {{/if}}
+
+            {{if attr && attr.length}}
+            <h3 data-href="attr" title="属性" class="m-3">
+                属性，attr
+            </h3>
+            <div data-role="attr" class="example">
+                <pre data-type="json">{{attrCode}}</pre>
+                <div class="highlight">
+                    <ul>
+                        {{each attr}}
+                        <li {{if $value.hidden}} class="docs-option-item-hidden" {{/if}}>
+                        <code>{{$value.name}}</code>：
+                        {{#transformType($value.type)}}
+                        {{if $value.desp}}
+                        ，{{$value.desp}}
+                        {{/if}}
+                        {{if $value.defaultValue!==undefined }}
+                        ，默认值 <code>{{ $value.defaultValue +''}}</code>
+                        {{/if}}
+                        {{if $value.require }}
+                        ，当<code>{{ #transformRequire(attr,$value)}}</code>时，显示该选项
+                        {{/if}}
+                        ；
+
+                        {{if $value.attr}}
+                        <ul>
+                            {{include 'widgetDetailsObject' $value}}
+                        </ul>
+                        {{/if}}
+
+                        {{if $value.attrInEachElement}}
+                        <ul>
+                            {{include 'widgetDetailsArray' $value}}
+                        </ul>
+                        {{/if}}
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+            {{/if}}
+
+            {{if option && option.length}}
+            <h3 data-href="option" title="参数" class="m-3">
+                参数，option
+            </h3>
+            <div data-role="option" class="example">
+                <pre data-type="json">{{optionCode}}</pre>
+                <div class="highlight">
+                    <ul>
+                        {{each option}}
+                        <li {{if $value.hidden}} class="docs-option-item-hidden" {{/if}}>
+                        <code>{{$value.name}}</code>：
+                        {{#transformType($value.type)}}
+                        {{if $value.desp}}
+                        ，{{$value.desp}}
+                        {{/if}}
+                        {{if $value.defaultValue!==undefined }}
+                        ，默认值 <code>{{ $value.defaultValue +''}}</code>
+                        {{/if}}
+                        {{if $value.require }}
+                        ，当<code>{{ #transformRequire(option,$value)}}</code>时，显示该选项
+                        {{/if}}
+                        ；
+
+                        {{if $value.attr}}
+                        <ul>
+                            {{include 'widgetDetailsObject' $value}}
+                        </ul>
+                        {{/if}}
+
+                        {{if $value.attrInEachElement}}
+                        <ul>
+                            {{include 'widgetDetailsArray' $value}}
+                        </ul>
+                        {{/if}}
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+            {{/if}}
+
+            {{if css && css.length && (css[1].attr.length>0||css[0].attr.length>0)}}
+            <h3 data-href="css" title="样式" class="m-3">
+                样式，css
+            </h3>
+            <div data-role="css" class="example">
+                <pre data-type="json">{{cssCode}}</pre>
+                <div class="highlight">
+                    {{if css[0].attr.length>0}}
+                    <ul>
+                        <li>
+                            <span class="badge badge-themeName">{{css[0].name}}</span>:
+                            {{#transformType(css[0].type)}}
+                            {{css[0].desp}}
+                            {{if css[0].defaultValue!==undefined }}
+                            ，默认值 <code>{{ css[0].defaultValue +''}}</code>
+                            {{/if}}
+
+                            {{if css[0].attr}}
+                            <ul>
+                                {{include 'widgetThemeCofigObject' css[0]}}
+                            </ul>
+                            {{/if}}
+
+                        </li>
+                    </ul>
+                    {{/if}}
+                    {{if css[1].attr.length>0}}
+                    <ul>
+                        <li>
+                            <span class="badge badge-themeName">{{css[1].name}}</span>:
+                            {{#transformType(css[1].type)}}，{{css[1].desp}}
+                            {{if css[1].defaultValue!==undefined }}
+                            ，默认值 <code>{{ css[1].defaultValue +''}}</code>
+                            {{/if}}
+
+                            {{if css[1].attr}}
+                            <ul>
+                                {{include 'cssCofigObject' css[1]}}
+                            </ul>
+                            {{/if}}
+
+                        </li>
+
+                    </ul>
+                    {{/if}}
+                </div>
+            </div>
+            {{/if}}
+
+
+            {{if event &&(event.selector||event.type)}}
+            <h3 data-href="event" title="事件" class="m-3">
+                事件，event
+            </h3>
+            <div class="text-content">
+                {{if event.selector}}
+                <h4 class="m-4">可选触发范围</h4>
+
+                <ul>
+                    {{each event.selector as item index}}
+                    <li>{{item.desp}}：{{item.value}}</li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+
+                {{if event.type}}
+                <h4 class="m-4">可选触发条件</h4>
+
+                <ul>
+                    {{each event.type as item index}}
+                    <li>{{item.desp}}：{{item.value}}</li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+            </div>
+            <p>&nbsp;</p>
+            {{/if}}
+        </div>
+        <hr class="my-4">
+        {{if (api && api.length) || (methods && methods.app)}}
+        <h2 class="m-2" data-href="methods">接口</h2>
+        <div>
+            {{if  methods.universal && methods.universal.length}}
+            <h3 data-href="methods.universal" title="无参数接口" class="m-3">
+                无参数接口
+            </h3>
+            <div>
+                {{each methods.universal}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.getter && methods.getter.length}}
+            <h3 data-href="methods.getter" title="取值器" class="m-3">
+                取值器，Getter
+            </h3>
+            <div>
+                {{each methods.getter}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.setter && methods.setter.length}}
+            <h3 data-href="methods.setter" title="赋值器" class="m-3">
+                赋值器，Setter
+            </h3>
+            <div>
+                {{each methods.setter}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.successCallback && methods.successCallback.length}}
+            <h3 data-href="methods.successCallback" title="校验成功" class="m-3">
+                校验成功，Success Callback
+            </h3>
+            <div>
+                {{each methods.successCallback}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.errorCallback && methods.errorCallback.length}}
+            <h3 data-href="methods.errorCallback" title="校验错误" class="m-3">
+                校验错误，Error Callback
+            </h3>
+            <div>
+                {{each methods.errorCallback}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.cleanCallback && methods.cleanCallback.length}}
+            <h3 data-href="methods.cleanCallback" title="清除校验" class="m-3">
+                清除校验，Clean Callback
+            </h3>
+            <div>
+                {{each methods.cleanCallback}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.validateHandler && methods.validateHandler.length}}
+            <h3 data-href="methods.validateHandler" title="自定义校验方法" class="m-3">
+                自定义校验事件，Validate Handler
+            </h3>
+            <div>
+                {{each methods.validateHandler}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.event && methods.event.length}}
+            <h3 data-href="methods.event" title="事件接口" class="m-3">
+                事件接口，Event
+            </h3>
+            <div>
+                {{each methods.event}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.behavior && methods.behavior.length}}
+            <h3 data-href="methods.behavior" title="行为接口" class="m-3">
+                行为接口，Behavior
+            </h3>
+            <div>
+                {{each methods.behavior}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{if methods.dataFlow && methods.dataFlow.length}}
+            <h3 data-href="methods.dataFlow" title="上传接口（数据流接口）" class="m-3">
+                上传接口（数据流接口），Data Flow
+            </h3>
+            <div>
+                {{each methods.dataFlow}}
+                {{include 'methodDetails' $value}}
+                {{/each}}
+            </div>
+            {{/if}}
+        </div>
+
+        {{if methods.app}}
+        <h2 class="m-2" data-href="appInterfaces">应用接口</h2>
+        <div>
+            {{each methods.app}}
+
+            <h3 data-href="{{$value.href}}" name ="{{$value.href}}" title="{{$value.desp}}" class="m-3">{{$value.desp}}</h3>
+            <div>
+                {{each $value.children}}
+                {{include 'appMethodDetails' $value}}
+                {{/each}}
+            </div>
+
+            {{/each}}
+        </div>
+        {{/if}}
+        {{/if}}
+        {{if appInterfacesConst}}
+        <h2 class="m-2" data-href="appInterfacesConst">应用接口常量</h2>
+        <div>
+            {{each appInterfacesConst}}
+            <h4 data-href="{{$value.valueArray[0]}}"  title="{{$value.category}}" class="m-2">{{$value.category}}</h4>
+            <div>
+                <table class='docs-table'>
+                    <thead><tr><th style="width:50%;">常量</th><th  style="width: 50%;">注释</th></tr></thead>
+                    <tbody>
+                    {{each $value.valueArray as singleValue index}}
+                    <tr><td>{{singleValue}}</td><td>{{$value.despArray[index]}}</td></tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+
+        {{if variables}}
+        <h2 class="m-2" data-href="variables">主题变量</h2>
+        <div class="doc-theme-variables-block">
+            {{each variables}}
+            <blockquote class="blockquote">
+                <p class="mb-0">{{$value.name}}：{{$value.desp}}</p>
+            </blockquote>
+            <!--<div class="doc-theme-variables-note"><span></span><span class="note-text"></span></div>-->
+            <div class="doc-variables-layout">
+                <h4 data-href="{{$value.desp}}" title="{{$value.desp}}" class="m-3">
+                    {{$value.defaultValue}} &nbsp &nbsp {{$value.desp}}
+                </h4>
+                <ul class="doc-theme-variables-ctt">
+                    {{if $value.defaultValue!==undefined }}
+                    <li>
+                        <div class="doc-theme-color-block">
+                            {{#transformVariablesTemp($value.showType,$value.defaultValue)}}
+                            <!--<span {{if $value.showType !== undefined }} style="background-color:{{$value.defaultValue}}"{{/if}}</span>-->
+                        </div>
+                    </li>
+                    {{/if}}
+                    {{if $value.cssAttrs}}
+                    <li><div class="doc-theme-variables-ctn">
+                        {{each $value.cssAttrs}}
+                        <span class="badge badge-normal">{{$value.desp}}</span>
+                        {{/each}}
+                    </div></li>
+                    {{/if}}
+                </ul>
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+        {{if themeArray && themeArray.length}}
+        <h2 class="m-2" data-href="themeConfig">组件主题配置</h2>
+        <div class="example">
+            {{each themeArray}}
+            <h3 data-href="{{$value.desp}}" title="{{$value.desp}}" class="m-3">
+                {{$value.desp}}
+            </h3>
+            <blockquote class="blockquote">
+                <p class="mb-0">{{$value.type}}</p>
+            </blockquote>
+            {{if $value.cssConfig.length}}
+            <div class="highlight">
+                <h4>主题可配模块</h4>
+                <ul>
+                    {{each $value.cssConfig}}
+                    <li>
+                        <code>{{$value.name}}</code>：
+                        <span class="badge badge-dackBlue">{{$value.desp}}</span>
+                        {{if $value.cssAttrs}}
+
+                        <ul>
+                            可配项：
+                            {{each $value.cssAttrs}}
+                            <code>{{$value.desp}}</code>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+            {{/if}}
+
+            {{if $value.despArray && $value.despArray.length}}
+            <div class="details">
+                <h4>各主题具体配值</h4>
+                <ul>
+                    {{each $value.despArray}}
+                    <li>
+                        {{if $value.themeName}}
+                        <span class="badge badge-themeName">{{$value.themeNameDsp}}主题</span>，对应类名：{{$value.themeName}}
+                        {{/if}}
+                        {{if $value.themeNameArray}}
+                        <ul>
+                            {{each $value.themeNameArray}}
+                            <li>
+                                <span class="badge badge-themeTitle">{{$value.configName}}{{$value.configNameDsp}}</span>
+                                {{if $value.configArray}}
+
+                                {{each $value.configArray}}
+                                <ul>
+                                    <li>
+                                        <code>{{$value.name}}</code>：
+                                        {{#transformType($value.type)}}，{{$value.desp}}
+
+                                        {{if $value.value }}
+                                        ，配值: <span class="type" style="color:#000000;background-color:#ffffff;border:1px solid #000000;{{$value.name}}:{{ $value.value}};">{{$value.value}}</span>
+                                        {{/if}}
+
+                                    </li>
+
+                                </ul>
+                                {{/each}}
+                                {{/if}}
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+            <hr/>
+            {{/if}}
+            {{/each}}
+        </div>
+        {{/if}}
+    </div>
+
+</script>
+<!--组件详情页模板 End-->
+
+<!-- 组件详情 对象类型 Start-->
+<script id="widgetDetailsObject" type="text/html">
+    {{each attr}}
+    <li {{if $value.hidden}} class="docs-option-item-hidden" {{/if}}>
+    <code>{{$value.name||$value.desp}}</code>：
+    {{#transformType($value.type)}}，{{$value.details || $value.desp}}
+    {{if $value.defaultValue!==undefined  && !$value.attr && !$value.attrInEachElement}}
+    ，示例值 <code>{{ $value.defaultValue +''}}</code>
+    {{/if}}
+    {{if $value.require }}
+    ，当<code>{{ #transformRequire(attr,$value)}}</code>时，显示该选项
+    {{/if}}
+    ；
+
+    {{if $value.attr}}
+    <ul>
+        {{include 'widgetDetailsObject' $value}}
+    </ul>
+    {{/if}}
+
+    {{if $value.attrInEachElement}}
+    <ul>
+        {{include 'widgetDetailsArray' $value}}
+    </ul>
+    {{/if}}
+    </li>
+    {{/each}}
+</script>
+<!-- 组件详情 对象类型 End-->
+
+<!-- 样式配置详情 数组类型 Start-->
+<script id="cssCofigObject" type="text/html">
+    {{each attr}}
+    <li>
+        {{if $value.attr}}
+        <span class="badge  badge-themeTitle">{{$value.name||$value.desp}}</span>:
+        {{else}}
+        <code>{{$value.name||$value.desp}}</code>
+        {{/if}}
+        {{#transformType($value.type)}}，{{$value.desp}}
+        {{if $value.defaultValue!==undefined }}
+        ，默认值 <code>{{ $value.defaultValue +''}}</code>
+        {{/if}}
+
+        {{if $value.attr}}
+        <ul>
+            {{include 'cssCofigObject' $value}}
+        </ul>
+        {{/if}}
+    </li>
+    {{/each}}
+</script>
+<!-- 组件详情 对象类型 End-->
+
+<!-- 组件主题配置详情 对象类型 Start-->
+<script id="widgetThemeCofigObject" type="text/html">
+    {{each attr}}
+    <li>
+        <code>{{$value.name||$value.desp}}</code>：
+        {{#transformType($value.type)}}，{{$value.desp}}
+        {{if $value.defaultValue!==undefined }}
+        ，默认值 <code>{{ $value.defaultValue +''}}</code>
+        {{/if}}
+        {{if $value.template }}
+        ，组件模板 <code>{{ $value.template +''}}</code>
+        {{/if}}
+        {{if $value.zoom }}
+        ，缩放值 <code> zoom:{{$value.zoom +''}}</code>
+        {{/if}}
+
+        <ul>风格种类：{{if $value.valueArray}}
+            {{each $value.valueArray as item index}}
+            <span title="类名：{{item}}">{{$value.despArray[index]}}</span>、
+            {{/each}}
+            {{/if}}
+        </ul>
+    </li>
+    {{/each}}
+</script>
+<!-- 组件主题详情 对象类型 End-->
+
+<!-- 组件详情 数组类型 Start-->
+<script id="widgetDetailsArray" type="text/html">
+    {{each attrInEachElement}}
+    <li {{if $value.hidden}} class="docs-option-item-hidden" {{/if}}>
+    <code>{{$value.name||$value.desp}}</code>：
+    {{#transformType($value.type)}}，{{$value.details || $value.desp}}
+    {{if $value.defaultValue!==undefined  && !$value.attr && !$value.attrInEachElement}}
+    ，示例值 <code>{{ $value.defaultValue +''}}</code>
+    {{/if}}
+    {{if $value.require }}
+    ，当<code>{{ #transformRequire(attrInEachElement,$value)}}</code>时，显示该选项
+    {{/if}}
+    ；
+
+    {{if $value.attr}}
+    <ul>
+        {{include 'widgetDetailsObject' $value}}
+    </ul>
+    {{/if}}
+
+    {{if $value.attrInEachElement}}
+    <ul>
+        {{include 'widgetDetailsArray' $value}}
+    </ul>
+    {{/if}}
+    </li>
+    {{/each}}
+</script>
+<!-- 组件详情 数组类型 End-->
+
+<!--组件详情导航 Start-->
+<script id="widgetDetailsNav" type="text/html">
+    <ul>
+        {{each subItems}}
+        <li>
+            {{if $value.id}}
+            <a data-file="{{$value.file}}">{{$value.id}}.{{$value.name||$value.title}}</a>
+            {{else}}
+            <a data-href="{{$value.href}}">{{$value.name||$value.title}}</a>
+            {{/if}}
+            {{if $value.subItems && $value.subItems.length}}
+            {{include 'widgetDetailsNav' $value}}
+            {{/if}}
+        </li>
+        {{/each}}
+    </ul>
+</script>
+<!--组件详情导航 End-->
+
+<!--组件接口详情 Start-->
+<script id="methodDetails" type="text/html">
+    <h4 data-href="methods_{{name}}" class="m-2">{{desp}}，{{name.substr(1)}}</h4>
+
+    {{if details}}
+    <p class="text-indent">
+        {{details}}
+    </p>
+    {{/if}}
+
+    <ul class="docs-method-feature-list">
+        {{if deps}}
+        <li>调用接口可能需要发起异步请求：<span class="type type-boolean">需要</span> </li>
+
+        {{if order}}
+        <li> 发起异步请求顺序：<span class="type type-boolean">接口处理参数后再主动发起请求</span>  </li>
+        {{else}}
+        <li> 发起异步请求顺序：<span class="type type-boolean">在成功回调中调用接口</span>  </li>
+        {{/if}}
+        {{/if}}
+        {{if lifecycle}}
+        <li> 调用接口可以在：{{ #transformMethodLifecycle(lifecycle) }} </li>
+        {{/if}}
+    </ul>
+
+    <div class="example">
+        <div class="highlight-top">
+            <p class="text-content">
+                前台代码
+            </p>
+        </div>
+        <pre data-type="javascript">{{jsCode}}</pre>
+
+        {{if params && params.length || returnValue}}
+        <div class="highlight">
+            {{if params && params.length}}
+            <p class="text-content">
+                入参
+            </p>
+            <ul>
+                {{each params}}
+                <li>
+                    <code>{{$value.name||$value.desp}}</code>：
+                    {{#transformType($value.type)}}，{{$value.desp}}
+                    {{if $value.details }}
+                    ，{{$value.details}}
+                    {{/if}}
+                    {{if $value.defaultValue!==undefined  && !$value.attr && !$value.attrInEachElement}}
+                    ，示例值 <code>{{ $value.defaultValue +''}}</code>；
+                    {{/if}}
+
+                    {{if $value.attr}}
+                    <ul>
+                        {{include 'widgetDetailsObject' $value}}
+                    </ul>
+                    {{/if}}
+
+                    {{if $value.attrInEachElement}}
+                    <ul>
+                        {{include 'widgetDetailsArray' $value}}
+                    </ul>
+                    {{/if}}
+                </li>
+                {{/each}}
+            </ul>
+            {{/if}}
+
+            {{if hasReturn!==false && returnValue}}
+            <p class="text-content">
+                出参
+            </p>
+            <ul>
+                <li>
+                    <code>{{returnValue.name}}</code>：
+                    {{#transformType(returnValue.type)}}，{{returnValue.desp}}
+                    {{if returnValue.details }}
+                    ，{{returnValue.details}}
+                    {{/if}}
+                    {{if returnValue.defaultValue!==undefined  && !returnValue.attr && !returnValue.attrInEachElement}}
+                    ，示例值 <code>{{ returnValue.defaultValue +''}}</code>；
+                    {{/if}}
+
+                    {{if returnValue.attr}}
+                    <ul>
+                        {{include 'widgetDetailsObject' returnValue}}
+                    </ul>
+                    {{/if}}
+
+                    {{if returnValue.attrInEachElement}}
+                    <ul>
+                        {{include 'widgetDetailsArray' returnValue}}
+                    </ul>
+                    {{/if}}
+                </li>
+            </ul>
+            {{/if}}
+        </div>
+        {{/if}}
+    </div>
+    {{if code}}
+    <div class="example">
+        <div class="highlight-top">
+            <p class="text-content">
+                后台代码
+            </p>
+        </div>
+        <div data-type="java">{{code}}</div>
+    </div>
+    {{/if}}
+    <p>&nbsp;</p>
+</script>
+<!--组件接口详情 End-->
+<!--应用接口详情 Start-->
+<script id="appMethodDetails" type="text/html">
+    <h4 data-href="app{{name}}()" class="m-2">{{desp}}，{{name.substr(1)}}</h4>
+
+    {{if details}}
+    <p class="text-indent">
+        {{details}}
+    </p>
+    {{/if}}
+
+    <ul class="docs-method-feature-list">
+        {{if deps}}
+        <li>调用接口可能需要发起异步请求：<span class="type type-boolean">需要</span> </li>
+
+        {{if order}}
+        <li> 发起异步请求顺序：<span class="type type-boolean">接口处理参数后再主动发起请求</span>  </li>
+        {{else}}
+        <li> 发起异步请求顺序：<span class="type type-boolean">在成功回调中调用接口</span>  </li>
+        {{/if}}
+        {{/if}}
+        {{if lifecycle}}
+        <li> 调用接口可以在：{{ #transformMethodLifecycle(lifecycle) }} </li>
+        {{/if}}
+    </ul>
+
+    <div class="example">
+        {{if jsCode}}
+        <div class="highlight-top">
+            <p class="text-content">
+                前台代码
+            </p>
+        </div>
+        <pre data-type="javascript">{{jsCode}}</pre>
+        {{/if}}
+
+        {{if params && params.length || returnValue}}
+        <div class="highlight">
+            {{if params && params.length}}
+            <p class="text-content">
+                入参
+            </p>
+            <ul>
+                {{each params}}
+                <li>
+                    <code>{{$value.name||$value.desp}}</code>：
+                    {{#transformType($value.type)}}，{{$value.desp}}
+                    {{if $value.details }}
+                    ，{{$value.details}}
+                    {{/if}}
+                    {{if $value.defaultValue!==undefined  && !$value.attr && !$value.attrInEachElement}}
+                    ，示例值 <code>{{ $value.defaultValue +''}}</code>；
+                    {{/if}}
+
+                    {{if $value.attr}}
+                    <ul>
+                        {{include 'widgetDetailsObject' $value}}
+                    </ul>
+                    {{/if}}
+
+                    {{if $value.attrInEachElement}}
+                    <ul>
+                        {{include 'widgetDetailsArray' $value}}
+                    </ul>
+                    {{/if}}
+                </li>
+                {{/each}}
+            </ul>
+            {{/if}}
+
+            {{if hasReturn!==false && returnValue}}
+            <p class="text-content">
+                出参
+            </p>
+            <ul>
+                <li>
+                    <code>{{returnValue.name}}</code>：
+                    {{#transformType(returnValue.type)}}，{{returnValue.desp}}
+                    {{if returnValue.details }}
+                    ，{{returnValue.details}}
+                    {{/if}}
+                    {{if returnValue.defaultValue!==undefined  && !returnValue.attr && !returnValue.attrInEachElement}}
+                    ，示例值 <code>{{ returnValue.defaultValue +''}}</code>；
+                    {{/if}}
+
+                    {{if returnValue.attr}}
+                    <ul>
+                        {{include 'widgetDetailsObject' returnValue}}
+                    </ul>
+                    {{/if}}
+
+                    {{if returnValue.attrInEachElement}}
+                    <ul>
+                        {{include 'widgetDetailsArray' returnValue}}
+                    </ul>
+                    {{/if}}
+                </li>
+            </ul>
+            {{/if}}
+        </div>
+        {{/if}}
+    </div>
+    {{if code}}
+    <div class="example">
+        <div class="highlight-top">
+            <p class="text-content">
+                后台代码
+            </p>
+        </div>
+        <div data-type="java">{{code}}</div>
+    </div>
+    {{/if}}
+    <p>&nbsp;</p>
+</script>
+<!--应用接口详情 End-->
+
+<!--开发者中心 End-->
+
+
+<!--预览 start-->
+<!--报错Temlate start-->
+<script id="auiErrorTemp" type="text/html">
+    <div class="aui-error-ctn">
+        <h4 class="aui-error-ttl">错误信息</h4>
+        <div class="aui-error-ctt">{{#errorMsg}}</div>
+        <h4 class="aui-error-ttl">出错文件</h4>
+        <div class="aui-error-ctt">{{scriptURI}}</div>
+        <h4 class="aui-error-ttl">出错位置</h4>
+        <div class="aui-error-ctt">
+            第{{lineNumber}}行，第{{columnNumber}}列。
+        </div>
+        {{if errorObj&&errorObj.stack}}
+        <h4 class="aui-error-ttl">错误详情</h4>
+        <div class="aui-error-ctt">
+            {{#errorObj.stack}}
+        </div>
+        {{/if}}
+        <h4 class="aui-error-ttl">更多</h4>
+        <div class="aui-error-ctt">
+            <a target="_blank" href="http://www.stackoverflow.com/search?q=[js]{{errorMsg}}">联机查看错误原因</a>，或打开调试工具，查看更多。
+        </div>
+    </div>
+</script>
+<!--报错Temlate end-->
+<!--预览 End-->
