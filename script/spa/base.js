@@ -2305,6 +2305,7 @@
                                     case 'icon':
                                         app.popover({
                                             $elem: $el,
+                                            focusable:false,
                                             title: '配置' + option.desp,
                                             content: '',
                                             width: '60%',
@@ -2413,6 +2414,7 @@
                                                     content: $tree.html(),
                                                     width: '60%',
                                                     height: '80%',
+                                                    focusable:false,
                                                     init: function (popInstance) {
                                                         treeObj = $.fn.zTree.init(
                                                             $(this).find('#tree'), {
@@ -2453,6 +2455,7 @@
                                                 $elem: $el,
                                                 title: '配置' + option.desp,
                                                 content: '',
+                                                focusable:false,
                                                 init: function () {
                                                     var $popoverBody = $(this).find('.aweb-popover-body');
                                                     $popoverBody.css({'padding': '5px'});
@@ -2506,7 +2509,7 @@
                                                     content: '',
                                                     width: '50%',
                                                     height: '100%',
-                                                    focusable: (typeof option.focusable !== 'undefined') ? option.focusable : 'true',
+                                                    focusable:false,//(typeof option.focusable !== 'undefined') ? option.focusable : 'true'
                                                     init: function () {
                                                         var $popoverBody = $(this).find('.aweb-popover-body').empty();
                                                         $popoverBody.css({'padding': '0'});
@@ -2563,6 +2566,7 @@
                                                 content: '',
                                                 width: '50%',
                                                 height: '80%',
+                                                focusable:false,
                                                 init: function (popInstance) {
                                                     var $popoverBody, $div, that = this;
 
@@ -2664,6 +2668,7 @@
                                                 content: '',
                                                 width: '50%',
                                                 height: '80%',
+                                                focusable:false,
                                                 init: function (popInstance) {
                                                     var $popoverBody = $(this).find('.aweb-popover-body').empty();
 
@@ -2702,6 +2707,7 @@
                                                 content: '',
                                                 width: '50%',
                                                 height: '80%',
+                                                focusable:false,
                                                 init: function (popInstance) {
                                                     var $popoverBody = $(this).find('.aweb-popover-body').empty(),
                                                         oWidget = $AW(AUI.currentWidgetID),

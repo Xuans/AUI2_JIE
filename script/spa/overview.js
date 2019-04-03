@@ -1707,6 +1707,7 @@
                                                 title: '编译结果',
                                                 content: '',
                                                 width: '70%',
+                                                focusable:false,
                                                 height: '90%',
                                                 placement: 'auto bottom',
                                                 fixClick: true,
@@ -2859,6 +2860,8 @@
                                     title: '添加  ' + namespaceDesp + inFunctionDesp,
                                     content: '',
                                     width: '50%',
+                                    focusable:false,
+
                                     height: '65%',
                                     placement: 'auto bottom',
                                     init: function () {
@@ -2932,6 +2935,7 @@
                                     content: '',
                                     width: '50%',
                                     height: '65%',
+                                    focusable:false,
                                     placement: 'auto bottom',
                                     init: function () {
                                         var $popoverBody = $(this).find('.aweb-popover-body'),

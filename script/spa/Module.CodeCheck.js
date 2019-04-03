@@ -370,6 +370,7 @@ define(['jquery', 'widget', 'template', 'apiApp'], function ($, $AW, artTemplate
 
                     app.popover({
                         $elem: context.$btn,
+                        focusable:false,
                         title: "代码检查",
                         content: artTemplate(context.constant.TEMPLATE_SELECTOR, {line: context.errorList}),
                         hasHeader: false,

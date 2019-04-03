@@ -3492,8 +3492,12 @@ app.modal=function () {
                             }
 
                             modalHeight = Math.min(modalHeight, windowHeight);
-                            modalBodyHeight = modalHeight - $modal.children('.modal-footer').height() * 3 - 10;
 
+                            if(options.noFooter){
+                                modalBodyHeight = modalHeight;
+                            }else{
+                                modalBodyHeight = modalHeight - $modal.children('.modal-footer').height() * 3 - 10;
+                            }
 
                             modalCss.height = modalBodyHeight;
                             modalCss.marginTop = 0;
@@ -5720,7 +5724,6 @@ app.select=function (options, undefined) {
                             checkedMethod = !checked ? 'removeAttr' : 'attr';
 
 
-                            $(".paginate_button.current").attr("data-dt-idx");
                             if ($e.hasClass('paginate_button') || $e.parent().hasClass('paginate_button')) {
                                 if (!__isBCheckState) {
                                     _clear();

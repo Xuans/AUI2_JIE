@@ -270,6 +270,7 @@
                 content: '',
                 width: '60%',
                 height: '80%',
+                focusable:false,
                 // focusable: false,
                 init: function () {
 

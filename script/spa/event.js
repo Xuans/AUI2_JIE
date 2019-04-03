@@ -374,6 +374,7 @@
                     content: '',
                     width: '60%',
                     height: '80%',
+                    focusable:false,
                     init: function (popInstance) {
 
                         var $popoverBody = $(this).find('.aweb-popover-body'), i, item;

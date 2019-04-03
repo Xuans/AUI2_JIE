@@ -1288,6 +1288,7 @@
                     if (item.desp && (children = item.children)) {
                         unVisibleNum = 0;
                         uncheckedNum = 0;
+                        fromOtherNum=0;
                         platformInterfacesCategoryMap[item.desp] = {
                             order: i
                         };
@@ -1351,14 +1352,15 @@
 
                             } else if (_interface.fromOtherInterface) {
 
-                                visible = true
+                                visible = true;
+                                fromOtherNum+=1;
                             }
 
 
                             if (editionNum > 1) {
                                 treeLeaf.endIcons[0].show = true;
 
-                            } else if ((editionNum === 0)) {
+                            } else if ((editionNum === 0&& fromOtherNum===0)) {
                                 treeLeaf.visible = false;
                                 unVisibleNum += 1
                             }

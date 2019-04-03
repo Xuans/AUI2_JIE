@@ -180,6 +180,7 @@
                                     content: "",
                                     placement: 'auto bottom',
                                     title: '编译结果',
+                                    focusable:false,
                                     fixClick: true,
                                     init: function () {
                                         var $popoverBody = $(this).find('.aweb-popover-body').empty(),

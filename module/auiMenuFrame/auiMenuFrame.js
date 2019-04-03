@@ -732,6 +732,7 @@ define(["jquery", "const", "template", "css", "external", "index"], function ($,
                             app.popover({
                                 $elem: $target,
                                 title: '修改分组名',
+                                focusable:false,
                                 content: '<input type="text" class="span4 aui-popover-input" value="_value_" placeholder="请输入2~64个字符的分组名称"/>'.replace(/_value_/, inputValue),
                                 width: '360px',
                                 height: '120px',
@@ -897,6 +898,7 @@ define(["jquery", "const", "template", "css", "external", "index"], function ($,
 
                             app.popover({
                                 $elem: $el,
+                                focusable:false,
                                 title: '新建分组',
                                 content: '<input type="text" class="span4 aui-popover-input" placeholder="请输入2~64个字符的分组名称"/>',
                                 width: '360px',

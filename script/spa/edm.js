@@ -912,6 +912,7 @@
                                             content: '',
                                             width: '60%',
                                             height: '100%',
+                                            focusable:false,
                                             init: function (popInstance) {
 
                                                 $(this).find('.aweb-popover-body').append($updFrame);
@@ -1733,6 +1734,7 @@
                                 content: '',
                                 width: '60%',
                                 height: '100%',
+                                focusable:false,
                                 init: function (popInstance) {
                                     var $popoverBody = $(this).find('.aweb-popover-body');
                                     $popoverBody.css({'padding': '0'});
@@ -3077,6 +3079,7 @@
                                             content: '',
                                             width: '60%',
                                             height: '80%',
+                                            focusable:false,
                                             init: function (popInstance) {
 
                                                 var $popoverBody = $(this).find('.aweb-popover-body');

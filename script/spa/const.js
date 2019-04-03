@@ -2,7 +2,7 @@ define(['jquery', 'apiApp', 'template'], function ($, app, artTemplate) {
     var CONST = {
         MODEL_DATA: {
             taffyList: ['menu', 'widget', 'structure', 'event', 'lifecycle', 'edmModel', 'agreeBusEdmModel', 'pageEdm', 'appAndDictList', 'response', 'request', 'role', 'var', 'code', 'docs'],
-            stringList: ['name', 'desp', 'pageName', 'pageModule', 'customCode'],
+            stringList: ['name', 'desp', 'pageName', 'pageModule','customCode'],
             arrayList: ['eventHandlerList'],
             list: {
                 category: {
@@ -65,12 +65,11 @@ define(['jquery', 'apiApp', 'template'], function ($, app, artTemplate) {
             auiContentFrame: 'module/auiContentFrame',
             auiConfigureFrame: 'module/auiConfigureFrame',
             auiConfigureDefFrame: 'module/auiConfigureDefFrame',
-            auiDataModelFrame:'module/auiDataModelFrame'
         },
         CONFIGURATION_DATA: {
             webContentPath: '',
             layout: {},
-            widgetCollection: { types: ['默认'], map: {} },
+            widgetCollection: {types: ['默认'], map: {}},
             referenceLine: true
         },
         CREATOR: {
@@ -223,17 +222,17 @@ define(['jquery', 'apiApp', 'template'], function ($, app, artTemplate) {
 
                 TEMP: {
                     COLLECTION_LIST_TEMP: '<div data-href="_href_" data-type="_type_" data-collect-type="_cType_" data-accept="_accept_" class="aui-widget-menu-item _accept_" >' +
-                        '<small class="_icon_"></small><span>_name_</span>' +
-                        '<div class="aui-widget-menu-list-icon">' +
-                        '<i class="aui  aui-shoucangzujian" title="取消分组" data-role="cancelCollection"></i><i class="aui  aui-yidongfenzu" title="移动分组" data-role="moveGroupList"></i> ' +
-                        '</div></div>',
+                    '<small class="_icon_"></small><span>_name_</span>' +
+                    '<div class="aui-widget-menu-list-icon">' +
+                    '<i class="aui  aui-shoucangzujian" title="取消分组" data-role="cancelCollection"></i><i class="aui  aui-yidongfenzu" title="移动分组" data-role="moveGroupList"></i> ' +
+                    '</div></div>',
                     COLLECTION_TEMP: '<li data-collection-type="_type_">' +
-                        '<div class="aui-widget-menu-block" data-collection-type="_type_">' +
-                        '<div class="aui-widget-menu-header">' +
-                        '<i class="aui aui-jiantou-xia aui-menu-angle" data-role="collapse" />' +
-                        '<span data-role="modifyTitle">_type_</span>' +
-                        '<i class="aui aui-shanchu pull-right" data-role="del-collection-group" title="删除分组"></div><div class="aui-widget-menu-body"></div>' +
-                        '</div></li>',
+                    '<div class="aui-widget-menu-block" data-collection-type="_type_">' +
+                    '<div class="aui-widget-menu-header">' +
+                    '<i class="aui aui-jiantou-xia aui-menu-angle" data-role="collapse" />' +
+                    '<span data-role="modifyTitle">_type_</span>' +
+                    '<i class="aui aui-shanchu pull-right" data-role="del-collection-group" title="删除分组"></div><div class="aui-widget-menu-body"></div>' +
+                    '</div></li>',
                 }
 
             },
@@ -538,17 +537,12 @@ define(['jquery', 'apiApp', 'template'], function ($, app, artTemplate) {
                 NAME_SPACE: 'auiNavJsonFrame',
                 CSV_EDITOR_SELECTOR: '#auiWCCodeEditorCsv',
             },
-            CUSTOM_CODE_FRAME: {
+            CUSTOM_CODE_FRAME:{
                 SELF: 'auiCustomCodeFrame',
                 CTN: '#auiCustomCodeFrame',
                 NAME_SPACE: 'auiNavJsonFrame',
-                CTT: '#auiCustomCodeContent'
-            },
-
-            DATA_MODEL_OVERVIEW: {
-                NAME_SPACE: 'yaHan'
-            },
-
+                CTT:'#auiCustomCodeContent'
+            }
 
         },
         EVENT: {
@@ -589,80 +583,80 @@ define(['jquery', 'apiApp', 'template'], function ($, app, artTemplate) {
                     defaultValue: 'POST',
                     desp: '传参方式'
                 },
-                {
-                    name: 'url',
-                    domSelector: 'url',
-                    type: 'string_input',
-                    defaultValue: '',
-                    desp: 'URL',
-                    details: '发起请求时的请求路径'
-                }, {
-                    name: 'validate',
-                    domSelector: 'validate',
-                    type: 'boolean',
-                    defaultValue: 'true',
-                    desp: '传输数据校验'
-                }, {
-                    name: 'validateContinue',
-                    domSelector: 'validateContinue',
-                    type: 'string_select',
-                    valueArray: ['single', ''],
-                    despArray: ['逐个校验', '全量校验'],
-                    defaultValue: '',
-                    desp: '校验模式',
-                    details: '当校验失败后是否继续校验'
-                }, {
-                    name: 'validateErrorCallback',
-                    domSelector: 'validateErrorCallback',
-                    type: 'string_select',
-                    valueArray: ['', 'custom', 'alert', 'focus', 'focusAndAlert'],
-                    despArray: ['默认', '自定义', '提示', '聚焦', '聚焦并提示'],
-                    defaultValue: '',
-                    desp: '校验错误回调',
-                    details: '当校验错误后执行的回调函数'
-                }, {
-                    name: 'ajaxTimeout',
-                    domSelector: 'ajaxTimeout',
-                    type: 'number',
-                    defaultValue: '60000',
-                    desp: '超时时间（ms）',
-                    details: '异步请求超时时间，单位毫秒（ms）'
-                }, {
-                    name: 'ajaxShelter',
-                    domSelector: 'ajaxShelter',
-                    type: 'string_input',
-                    defaultValue: '正在加载数据，请稍候…',
-                    desp: '遮罩内容',
-                    details: '显示遮罩时，显示的提示语句，当值为false时，不显示遮罩'
-                }, {
-                    name: 'noAgreeBusData',
-                    domSelector: 'noAgreeBusData',
-                    type: 'boolean',
-                    defaultValue: true,
-                    desp: '非AgreeBus传输协议',
-                    details: '默认使用通用传输协议，若关闭该项则使用abusParams:序列化字符串'
-                }, {
-                    name: 'ajaxProcessData',
-                    domSelector: 'ajaxProcessData',
-                    type: 'boolean',
-                    defaultValue: true,
-                    desp: '使用字节流传输数据',
-                    details: '默认使用字节流传输数据，如果使用二进制流传输数据，需要上传文件时，应该关闭该项'
-                }, {
-                    name: 'ajaxNoBlobData',
-                    domSelector: 'ajaxNoBlobData',
-                    type: 'boolean',
-                    defaultValue: true,
-                    desp: '使用字节流返回数据',
-                    details: '默认使用字节流返回数据，如果返回为文件流（二进制流），应该关闭该项'
-                }, {
-                    name: 'urlDivider',
-                    domSelector: 'urlDivider',
-                    type: 'string_input',
-                    defaultValue: '\/',
-                    desp: '传输参数作为请求路径数据时的分隔符',
-                    details: '发起请求时，当传输参数作为路径的一部分时的分隔符'
-                }],
+                    {
+                        name: 'url',
+                        domSelector: 'url',
+                        type: 'string_input',
+                        defaultValue: '',
+                        desp: 'URL',
+                        details: '发起请求时的请求路径'
+                    }, {
+                        name: 'validate',
+                        domSelector: 'validate',
+                        type: 'boolean',
+                        defaultValue: 'true',
+                        desp: '传输数据校验'
+                    }, {
+                        name: 'validateContinue',
+                        domSelector: 'validateContinue',
+                        type: 'string_select',
+                        valueArray: ['single', ''],
+                        despArray: ['逐个校验', '全量校验'],
+                        defaultValue: '',
+                        desp: '校验模式',
+                        details: '当校验失败后是否继续校验'
+                    }, {
+                        name: 'validateErrorCallback',
+                        domSelector: 'validateErrorCallback',
+                        type: 'string_select',
+                        valueArray: ['', 'custom', 'alert', 'focus', 'focusAndAlert'],
+                        despArray: ['默认', '自定义', '提示', '聚焦', '聚焦并提示'],
+                        defaultValue: '',
+                        desp: '校验错误回调',
+                        details: '当校验错误后执行的回调函数'
+                    }, {
+                        name: 'ajaxTimeout',
+                        domSelector: 'ajaxTimeout',
+                        type: 'number',
+                        defaultValue: '60000',
+                        desp: '超时时间（ms）',
+                        details: '异步请求超时时间，单位毫秒（ms）'
+                    }, {
+                        name: 'ajaxShelter',
+                        domSelector: 'ajaxShelter',
+                        type: 'string_input',
+                        defaultValue: '正在加载数据，请稍候…',
+                        desp: '遮罩内容',
+                        details: '显示遮罩时，显示的提示语句，当值为false时，不显示遮罩'
+                    }, {
+                        name: 'noAgreeBusData',
+                        domSelector: 'noAgreeBusData',
+                        type: 'boolean',
+                        defaultValue: true,
+                        desp: '非AgreeBus传输协议',
+                        details: '默认使用通用传输协议，若关闭该项则使用abusParams:序列化字符串'
+                    }, {
+                        name: 'ajaxProcessData',
+                        domSelector: 'ajaxProcessData',
+                        type: 'boolean',
+                        defaultValue: true,
+                        desp: '使用字节流传输数据',
+                        details: '默认使用字节流传输数据，如果使用二进制流传输数据，需要上传文件时，应该关闭该项'
+                    }, {
+                        name: 'ajaxNoBlobData',
+                        domSelector: 'ajaxNoBlobData',
+                        type: 'boolean',
+                        defaultValue: true,
+                        desp: '使用字节流返回数据',
+                        details: '默认使用字节流返回数据，如果返回为文件流（二进制流），应该关闭该项'
+                    }, {
+                        name: 'urlDivider',
+                        domSelector: 'urlDivider',
+                        type: 'string_input',
+                        defaultValue: '\/',
+                        desp: '传输参数作为请求路径数据时的分隔符',
+                        details: '发起请求时，当传输参数作为路径的一部分时的分隔符'
+                    }],
                 WIDGET: [
                     {
                         name: 'validateHandler',
@@ -869,7 +863,7 @@ define(['jquery', 'apiApp', 'template'], function ($, app, artTemplate) {
                         dataModel = window.M;
 
 
-                    if (href && href !== 'undefined' && (item = dataModel.get('menu')({ href: href }).first())) {
+                    if (href && href !== 'undefined' && (item = dataModel.get('menu')({href: href}).first())) {
                         item = $.extend(true, {}, item);
 
                         item.belongTo = CONST.WIDGET.TYPE_TEXT[item.belongTo.toUpperCase()] + '组件';
@@ -880,7 +874,7 @@ define(['jquery', 'apiApp', 'template'], function ($, app, artTemplate) {
                             item.accept.map(function (elem) {
                                 var widget;
                                 if (!$AW.widget[elem]) {
-                                    widget = dataModel.get('menu')({ type: elem }).first();
+                                    widget = dataModel.get('menu')({type: elem}).first();
 
                                     $AW.widget[elem] = widget ? widget.name : elem;
                                 }
@@ -896,7 +890,7 @@ define(['jquery', 'apiApp', 'template'], function ($, app, artTemplate) {
                             item.base.map(function (elem) {
                                 var widget;
                                 if (!$AW.widget[elem]) {
-                                    widget = dataModel.get('menu')({ type: elem }).first();
+                                    widget = dataModel.get('menu')({type: elem}).first();
 
                                     $AW.widget[elem] = widget ? widget.name : elem;
                                 }
@@ -907,7 +901,7 @@ define(['jquery', 'apiApp', 'template'], function ($, app, artTemplate) {
                         }
 
                         if (item.category) {
-                            item.category = dataModel.get('menu')({ type: item.category }).first().name;
+                            item.category = dataModel.get('menu')({type: item.category}).first().name;
                         }
 
                         content = artTemplate('auiAsideMenuTooltip', item);
@@ -980,19 +974,19 @@ define(['jquery', 'apiApp', 'template'], function ($, app, artTemplate) {
             EVENT_SELECTOR_INPUT: '<input id="selector" class="col-2" value="_VALUE_">',
             SELECT_TEMP: '<option value>请选择…</option>',
             EVENT_ADVANCE: '<div class="aui-event-sub-ctt" data-event-role="advanceBlock">' +
-                '<div class="aui-config-block">' +
-                ' <div class="aui-ttl" title="高级配置">高级配置' +
-                '<div title="配置" class="config-modal-btn" data-role="advanceConfig"><i class="aui aui-peizhidingyi"></i>' +
-                '</div>' +
-                '</div>' +
-                '</div>',
+            '<div class="aui-config-block">' +
+            ' <div class="aui-ttl" title="高级配置">高级配置' +
+            '<div title="配置" class="config-modal-btn" data-role="advanceConfig"><i class="aui aui-peizhidingyi"></i>' +
+            '</div>' +
+            '</div>' +
+            '</div>',
             POPOVER_ICON_HEADER: '<div class="aui-iconList-header clearfix">' +
-                '<div class="aui-aside-search-bar-ctt"><i class="aui aui-sousuo"></i>' +
-                '<input type="text" class="aui-search-query aui-iconList-searcher" placeholder="搜索图标"></div>' +
-                '<div class="aui-iconList-sizeToggler"><button id="bigSize" class="toggle-btn ">大</button>' +
-                '<button id="mediumSize" class="toggle-btn active">中</button>' +
-                '<button id="smallSize" class="toggle-btn  ">小</button></div>' +
-                '</div>',
+            '<div class="aui-aside-search-bar-ctt"><i class="aui aui-sousuo"></i>' +
+            '<input type="text" class="aui-search-query aui-iconList-searcher" placeholder="搜索图标"></div>' +
+            '<div class="aui-iconList-sizeToggler"><button id="bigSize" class="toggle-btn ">大</button>' +
+            '<button id="mediumSize" class="toggle-btn active">中</button>' +
+            '<button id="smallSize" class="toggle-btn  ">小</button></div>' +
+            '</div>',
             POPOVER_ICON_LIST: '<li class="icon-wrapper" data-value="_value_" title="_value_"><i class="_namespace_ _value_" aria-hidden="true"></i><span class="icon-name"><span>_name_</span></span></li>',
             DEL_MODLE_HTML: '<div class="aui-ide-modal-content"><i class="aui aui-round_warming"></i><span class="aui-modal-content-title">_title_</span><p>_content_</p></div>',
 
@@ -1075,7 +1069,7 @@ define(['jquery', 'apiApp', 'template'], function ($, app, artTemplate) {
 
             navigatorList: ['tableName', 'menus', 'eventAccumulator'],
 
-            saveViewerList: ['url', 'eventAccumulator', 'accumulator', 'theme', 'variables', 'customCode'],
+            saveViewerList: ['url', 'eventAccumulator', 'accumulator', 'theme', 'variables','customCode'],
             saveThemeList: ['theme'],
             saveFresherList: ['theme', 'variables'],
 
@@ -1216,37 +1210,36 @@ define(['jquery', 'apiApp', 'template'], function ($, app, artTemplate) {
         // STATIC_SRC_PATH:'http://127.0.0.1:7350/projectSources/src/main/webapp',
         USE_VERSION: 'useVersion',
 
-        CONFIG_PATH: {
-            newDir: {
-                'awebPage': '@projectName/src/main/webapp/dependence/AWEB/css/aweb.page.less',
-                'indexLayout': '@projectName/src/main/webapp/module/index.layout',
-                'nsl': '@projectName/src/main/webapp/config/国际化配置.fbcpt',
-                'theme': '@projectName/src/main/webapp/config/主题配置.fbcpt',
-                'awebFresher': '@projectName/src/main/webapp/dependence/AWEB/js/aweb.fresher.js',
-                'awebDependence': '@projectName/src/main/webapp/dependence/AWEB/js/aweb.dependence.js',
-                'awebApi': '@projectName/src/main/webapp/dependence/AWEB/js/aweb.api.js',
-                'awebApiConfig': '@projectName/src/main/webapp/dependence/AWEB/js/aweb.api.config.js',
+        CONFIG_PATH:{
+            newDir:{
+                'awebPage':'@projectName/src/main/webapp/dependence/AWEB/css/aweb.page.less',
+                'indexLayout':'@projectName/src/main/webapp/module/index.layout',
+                'nsl':'@projectName/src/main/webapp/config/国际化配置.fbcpt',
+                'theme':'@projectName/src/main/webapp/config/主题配置.fbcpt',
+                'awebFresher':'@projectName/src/main/webapp/dependence/AWEB/js/aweb.fresher.js',
+                'awebDependence':'@projectName/src/main/webapp/dependence/AWEB/js/aweb.dependence.js',
+                'awebApi':'@projectName/src/main/webapp/dependence/AWEB/js/aweb.api.js',
+                'awebApiConfig':'@projectName/src/main/webapp/dependence/AWEB/js/aweb.api.config.js',
                 'awebEnvironment': '@projectName/src/main/webapp/dependence/AWEB/js/aweb.environment.js',
                 'awebDependencePage': '@projectName/src/main/webapp/dependence/css',
                 'awebThemeVariable': '@projectName/src/main/webapp/dependence/AWEB/css/aweb.theme.variable.less',
             },
-            oldDir: {
-                'awebPage': '@projectName/WebRoot/dependence/AWEB/css/aweb.page.less',
-                'indexLayout': '@projectName/pageModule/index.layout',
-                'nsl': '@projectName/webConfig/国际化配置.fbcpt',
-                'theme': '@projectName/webConfig/主题配置.fbcpt',
-                'awebFresher': '@projectName/WebRoot/dependence/AWEB/js/aweb.fresher.js',
-                'awebDependence': '@projectName/WebRoot/webapp/dependence/AWEB/js/aweb.dependence.js',
-                'awebApi': '@projectName/WebRoot/dependence/AWEB/js/aweb.api.js',
-                'awebApiConfig': '@projectName/WebRoot/dependence/AWEB/js/aweb.api.config.js',
+            oldDir:{
+                'awebPage':'@projectName/WebRoot/dependence/AWEB/css/aweb.page.less',
+                'indexLayout':'@projectName/pageModule/index.layout',
+                'nsl':'@projectName/webConfig/国际化配置.fbcpt',
+                'theme':'@projectName/webConfig/主题配置.fbcpt',
+                'awebFresher':'@projectName/WebRoot/dependence/AWEB/js/aweb.fresher.js',
+                'awebDependence':'@projectName/WebRoot/webapp/dependence/AWEB/js/aweb.dependence.js',
+                'awebApi':'@projectName/WebRoot/dependence/AWEB/js/aweb.api.js',
+                'awebApiConfig':'@projectName/WebRoot/dependence/AWEB/js/aweb.api.config.js',
                 'awebEnvironment': '@projectName/WebRoot/dependence/AWEB/js/aweb.environment.js',
                 'awebDependencePage': '@projectName/WebRoot/dependence/css',
                 'awebThemeVariable': '@projectName/WebRoot/dependence/AWEB/css/aweb.theme.variable.less',
             }
         },
-
-        REPLACE_REX: window.auiApp.isNewDir || (window.auiApp.isNewDir === undefined && window.parent.auiApp.isNewDir) ? 'src/main/webapp' : 'WebRoot',
-        REPLACE_TAG: window.auiApp.isNewDir || (window.auiApp.isNewDir === undefined && window.parent.auiApp.isNewDir) ? 'target/webapp' : 'WebContent',
+        REPLACE_REX :window.auiApp.isNewDir|| (window.auiApp.isNewDir ===undefined && window.parent.auiApp.isNewDir) ? 'src/main/webapp' : 'WebRoot',
+        REPLACE_TAG :window.auiApp.isNewDir||(window.auiApp.isNewDir ===undefined && window.parent.auiApp.isNewDir)? 'target/webapp' : 'WebContent',
         VERSION: "5.2",
         AWOS_APP_UNITED_VERSION: "520000"
     };

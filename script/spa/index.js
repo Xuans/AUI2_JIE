@@ -1566,6 +1566,7 @@
                                         content: '',
                                         width: '100%',
                                         height: '99%',
+                                        focusable:false,
                                         init: function (popInstance) {
                                             var $popoverBody = $(this).find('.aweb-popover-body');
                                             $popoverBody.append($list.removeClass('hide').detach());

@@ -1868,6 +1868,143 @@ define([],function(){
         ]
     },
     {
+        "desp": "便捷操作",
+        "children": [
+            {
+                "require": true,
+                "name": "close",
+                "desp": "关闭标签页",
+                "details": "该方法挂载到app.close下,底层是调用app.router.tab.close方法",
+                "hasReturn": false,
+                "fromOtherInterface": true,
+                "params": [
+                    {
+                        "name": "domID",
+                        "type": "string",
+                        "desp": "页面数据模型的唯一ID",
+                        "defaultValue": "app.router.getCurrentHandler().domID",
+                        "details": "非必需，可以在单页页面中通过handler.domID获取，默认值为当前标签页"
+                    },
+                    {
+                        "name": "_doNotResume",
+                        "type": "boolean",
+                        "desp": "不调用上个页面的恢复动作",
+                        "defaultValue": "false",
+                        "details": "非必需，需要关闭多个页面的时候，可以增加此配置项以优化性能，但可能会导致页面混乱，慎用"
+                    }
+                ],
+                "depJsArr": "[]"
+            },
+            {
+                "require": true,
+                "name": "open",
+                "desp": "打开标签页",
+                "details": "该方法挂载到app.open下，底层是调用app.router.open方法",
+                "hasReturn": false,
+                "fromOtherInterface": true,
+                "params": [
+                    {
+                        "name": "option",
+                        "desp": "配置",
+                        "type": "object",
+                        "children": [
+                            {
+                                "name": "status",
+                                "type": "boolean",
+                                "desp": "状态是否正常",
+                                "defaultValue": false,
+                                "details": "必需"
+                            },
+                            {
+                                "name": "fixed",
+                                "type": "boolean",
+                                "desp": "标签页是否固定",
+                                "defaultValue": false,
+                                "details": "非必需，表示打开的标签页是否固定，该参数只在打开BLANK(新标签页)、WINDOW(新窗口)类型标签页时生效"
+                            },
+                            {
+                                "name": "content",
+                                "type": "object",
+                                "desp": "页面数据",
+                                "details": "在单页页面中，可以通过auiCtx.pageParams获取页面数据"
+                            },
+                            {
+                                "name": "page",
+                                "type": "string",
+                                "desp": "模块路径",
+                                "defaultValue": "error#404",
+                                "details": "使用井号#将文件夹进行分割"
+                            },
+                            {
+                                "name": "title",
+                                "type": "string",
+                                "desp": "标题",
+                                "details": "可以在初始化Controller时，设置option.view.untitled属性。如果是通过自子页面标题打开，title=undefined，则不会显示标题"
+                            },
+                            {
+                                "name": "type",
+                                "type": "string",
+                                "desp": "页面类型",
+                                "defaultValue": "BLANK",
+                                "details": "可选值有新标签页BLANK、子标签页SUB、当前标签页SELF、新窗口WINDOW"
+                            },
+                            {
+                                "name": "id",
+                                "type": "string",
+                                "desp": "页面的ID标识",
+                                "defaultValue": "BLANK",
+                                "details": "此ID与单页页面中的handler.id相同"
+                            },
+                            {
+                                "name": "hasFooter",
+                                "type": "boolean",
+                                "desp": "是否由底部按钮",
+                                "defaultValue": true,
+                                "details": "如果是通过子页面打开，可以设置子页面是否由底部footer按钮"
+                            },
+                            {
+                                "name": "height",
+                                "type": "string",
+                                "desp": "子页面高度",
+                                "defaultValue": "80%",
+                                "details": "如果是通过子页面打开，可以设置子页面的高度"
+                            },
+                            {
+                                "name": "width",
+                                "type": "string",
+                                "desp": "子页面宽度",
+                                "defaultValue": "80%",
+                                "details": "如果是通过子页面打开，可以设置子页面的宽度"
+                            },
+                            {
+                                "name": "fullscreen",
+                                "type": "boolean",
+                                "desp": "是否全屏",
+                                "defaultValue": "false",
+                                "details": "是否使用全屏打开"
+                            },
+                            {
+                                "name": "displayNav",
+                                "type": "boolean",
+                                "desp": "显示标签导航栏",
+                                "defaultValue": "true",
+                                "details": "是否显示标签导航栏"
+                            },
+                            {
+                                "desp": "项目地址",
+                                "defaultValue": "",
+                                "details": "如果打开多个项目时，需要配置",
+                                "name": "server",
+                                "type": "string"
+                            }
+                        ]
+                    }
+                ],
+                "depJsArr": "[]"
+            }
+        ]
+    },
+    {
         "desp": "数据操作",
         "children": [
             {
